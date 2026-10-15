@@ -26,9 +26,9 @@
     <!-- Apex Charts -->
     <link rel="stylesheet" href="{{ asset('assets/css/apexcharts.css') }}">
     <!-- Main CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}?v={{ filemtime(public_path('assets/css/main.css')) }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}?v=1.0.1">
     <!-- KREASI RPL Custom Branding -->
-    <link rel="stylesheet" href="{{ asset('assets/css/kreasi-custom.css') }}?v={{ filemtime(public_path('assets/css/kreasi-custom.css')) }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/kreasi-custom.css') }}?v=1.0.1">
     
     <style>
         /* Force button visibility across entire application regardless of browser cache */

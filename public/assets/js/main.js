@@ -182,9 +182,15 @@
   // ==========================================
 
   // ========================= Preloader Js Start =====================
+    $(document).ready(function(){
+      $('.preloader').fadeOut(250);
+    });
     $(window).on("load", function(){
-      $('.preloader').fadeOut(); 
-    })
+      $('.preloader').fadeOut(150); 
+    });
+    setTimeout(function() {
+      $('.preloader').fadeOut(150);
+    }, 500);
     // ========================= Preloader Js End=====================
 
     // ========================= Header Sticky Js Start ==============
