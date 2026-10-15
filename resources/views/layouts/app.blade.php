@@ -12,9 +12,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="KREASI RPL">
-    <link rel="apple-touch-icon" href="{{ asset('assets/images/logo/icon-192.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('assets/images/thumbs/panda.png') }}">
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('assets/images/logo/kreasi-logo.png') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/images/thumbs/panda.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/thumbs/panda.png') }}">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <!-- File upload -->

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kreasi-rpl-v1';
+const CACHE_NAME = 'kreasi-rpl-v2';
 const STATIC_ASSETS = [
     '/',
     '/login',
@@ -10,6 +10,7 @@ const STATIC_ASSETS = [
     '/assets/js/boostrap.bundle.min.js',
     '/assets/js/phosphor-icon.js',
     '/assets/js/main.js',
+    '/assets/images/thumbs/panda.png',
     '/assets/images/logo/kreasi-logo.png',
     '/assets/images/logo/icon-192.png',
     '/manifest.json'
