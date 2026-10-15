@@ -1,0 +1,229 @@
+/* KREASI RPL Custom Branding Overrides for Edmate Template */
+:root {
+    --kreasi-blue: #064A8E;
+    --kreasi-blue-hover: #0B5FA5;
+    --kreasi-turquoise: #13B8B0;
+    --kreasi-turquoise-light: #22C7C0;
+    --kreasi-accent: #FFB703;
+    --kreasi-accent-light: #FFC857;
+}
+
+/* Primary buttons and highlights */
+.btn-main, 
+.bg-main-600 {
+    background-color: var(--kreasi-blue) !important;
+    border-color: var(--kreasi-blue) !important;
+    color: #ffffff !important;
+}
+
+.btn-main:hover,
+.btn-main:focus,
+.btn-main:active {
+    background-color: var(--kreasi-blue-hover) !important;
+    border-color: var(--kreasi-blue-hover) !important;
+    color: #ffffff !important;
+}
+
+.text-main-600 {
+    color: var(--kreasi-blue) !important;
+}
+
+.bg-main-50 {
+    background-color: #f0f6fc !important;
+}
+
+.bg-main-100 {
+    background-color: #e0ecf8 !important;
+}
+
+.bg-main-two-600 {
+    background-color: var(--kreasi-turquoise) !important;
+}
+
+.text-main-two-600 {
+    color: var(--kreasi-turquoise) !important;
+}
+
+.sidebar-menu__link.activePage,
+.sidebar-menu__link:hover {
+    background-color: rgba(6, 74, 142, 0.08) !important;
+    color: var(--kreasi-blue) !important;
+}
+
+.sidebar-menu__link.activePage .icon,
+.sidebar-menu__link:hover .icon {
+    color: var(--kreasi-blue) !important;
+}
+
+/* Custom logo sizing */
+.kreasi-logo-img {
+    max-height: 48px;
+    width: auto;
+    object-fit: contain;
+}
+
+.auth-right__logo img {
+    max-height: 54px;
+    width: auto;
+    object-fit: contain;
+}
+
+/* ==========================================================================
+   FIX: Edmate Template Button Visibility & Contrast Fixes
+   The base template sets "color: hsl(var(--white)) !important" on all .btn,
+   causing outline / light buttons to have invisible white text on white bg!
+   ========================================================================== */
+
+/* 1. Outline Primary / Main Buttons (e.g. Header action buttons next to Tambah Pengguna) */
+.btn-outline-main,
+.btn-outline-primary {
+    background-color: #eef5fc !important;
+    border: 1.5px solid var(--kreasi-blue) !important;
+    color: var(--kreasi-blue) !important;
+    font-weight: 600 !important;
+}
+
+.btn-outline-main i,
+.btn-outline-primary i {
+    color: var(--kreasi-blue) !important;
+}
+
+.btn-outline-main:hover,
+.btn-outline-primary:hover {
+    background-color: var(--kreasi-blue) !important;
+    border-color: var(--kreasi-blue) !important;
+    color: #ffffff !important;
+}
+
+.btn-outline-main:hover i,
+.btn-outline-primary:hover i {
+    color: #ffffff !important;
+}
+
+/* 2. Outline Gray / Neutral Buttons (e.g. Role filter tabs "Semua", "Admin", "Guru", "Siswa") */
+.btn-outline-gray,
+.btn-outline-secondary {
+    background-color: #f1f5f9 !important;
+    border: 1.5px solid #cbd5e1 !important;
+    color: #334155 !important;
+    font-weight: 600 !important;
+}
+
+.btn-outline-gray i,
+.btn-outline-secondary i {
+    color: #475569 !important;
+}
+
+.btn-outline-gray:hover,
+.btn-outline-secondary:hover {
+    background-color: #e2e8f0 !important;
+    border-color: #94a3b8 !important;
+    color: #0f172a !important;
+}
+
+.btn-outline-gray:hover i,
+.btn-outline-secondary:hover i {
+    color: #0f172a !important;
+}
+
+/* 3. Outline Warning Buttons (e.g. Edit icon in tables) */
+.btn-outline-warning {
+    background-color: #fffbeb !important;
+    border: 1.5px solid #f59e0b !important;
+    color: #b45309 !important;
+    font-weight: 600 !important;
+}
+
+.btn-outline-warning i {
+    color: #b45309 !important;
+}
+
+.btn-outline-warning:hover {
+    background-color: #f59e0b !important;
+    border-color: #f59e0b !important;
+    color: #ffffff !important;
+}
+
+.btn-outline-warning:hover i {
+    color: #ffffff !important;
+}
+
+/* 4. Outline Danger Buttons (e.g. Delete icon in tables) */
+.btn-outline-danger {
+    background-color: #fef2f2 !important;
+    border: 1.5px solid #ef4444 !important;
+    color: #b91c1c !important;
+    font-weight: 600 !important;
+}
+
+.btn-outline-danger i {
+    color: #b91c1c !important;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc2626 !important;
+    border-color: #dc2626 !important;
+    color: #ffffff !important;
+}
+
+.btn-outline-danger:hover i {
+    color: #ffffff !important;
+}
+
+/* 5. Outline Success Buttons (e.g. Aktifkan status in tables) */
+.btn-outline-success {
+    background-color: #f0fdf4 !important;
+    border: 1.5px solid #22c55e !important;
+    color: #15803d !important;
+    font-weight: 600 !important;
+}
+
+.btn-outline-success i {
+    color: #15803d !important;
+}
+
+.btn-outline-success:hover {
+    background-color: #16a34a !important;
+    border-color: #16a34a !important;
+    color: #ffffff !important;
+}
+
+.btn-outline-success:hover i {
+    color: #ffffff !important;
+}
+
+/* 6. Outline Info Buttons */
+.btn-outline-info {
+    background-color: #f0fdfa !important;
+    border: 1.5px solid #14b8a6 !important;
+    color: #0f766e !important;
+    font-weight: 600 !important;
+}
+
+.btn-outline-info i {
+    color: #0f766e !important;
+}
+
+.btn-outline-info:hover {
+    background-color: #0d9488 !important;
+    border-color: #0d9488 !important;
+    color: #ffffff !important;
+}
+
+/* 7. Action Button Sizing & Alignment in Tables */
+.table .btn-sm {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+    line-height: 1.3 !important;
+}
+
+.btn-action-circle {
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 14px !important;
+}
