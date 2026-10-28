@@ -51,6 +51,7 @@
                                         <th class="py-6">B: NIS</th>
                                         <th class="py-6">C: Email</th>
                                         <th class="py-6">D: Kelas</th>
+                                        <th class="py-6">E: Tgl Lahir</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -59,6 +60,7 @@
                                         <td>2026120110</td>
                                         <td class="text-start ps-8">bima@kreasi.test</td>
                                         <td><span class="badge bg-gray-100 text-gray-700 text-10">XII RPL 1 <i class="ph ph-caret-down text-8"></i></span></td>
+                                        <td>15-08-2008</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -76,7 +78,7 @@
                         </li>
                         <li class="d-flex align-items-start gap-8">
                             <span class="w-20 h-20 rounded-circle bg-success-50 text-success-600 flex-center text-12 shrink-0 mt-2"><i class="ph ph-check"></i></span>
-                            <span>Password awal akun siswa otomatis diatur sama dengan nomor <strong>NIS</strong> mereka.</span>
+                            <span>Password awal akun siswa <strong>otomatis dibuat dari Tanggal Lahir (DDMMYYYY)</strong>. Contoh: 15-08-2008 &rarr; password <code>15082008</code> (fallback NIS jika kosong).</span>
                         </li>
                     </ul>
                 </div>
@@ -142,6 +144,7 @@
                                     <th>NIS</th>
                                     <th>Email</th>
                                     <th>Kelas</th>
+                                    <th>Tgl Lahir / Password Awal</th>
                                     <th>Status Validasi</th>
                                 </tr>
                             </thead>
@@ -154,6 +157,19 @@
                                         <td class="text-gray-700">{{ $row['email'] ?: '-' }}</td>
                                         <td>
                                             <span class="badge bg-gray-100 text-gray-800 text-12">{{ $row['kelas_nama'] ?: '-' }}</span>
+                                        </td>
+                                        <td>
+                                            @if($row['birth_date'])
+                                                <div class="text-12">
+                                                    <span class="text-gray-900 fw-medium"><i class="ph ph-calendar me-2"></i>{{ \Carbon\Carbon::parse($row['birth_date'])->format('d M Y') }}</span>
+                                                    <div class="text-main-600 font-monospace text-11 mt-2">Pass: <code>{{ $row['auto_password'] }}</code></div>
+                                                </div>
+                                            @else
+                                                <div class="text-12">
+                                                    <span class="text-gray-400 fst-italic">Tidak diisi</span>
+                                                    <div class="text-gray-600 font-monospace text-11 mt-2">Pass: <code>{{ $row['nis'] }}</code> (NIS)</div>
+                                                </div>
+                                            @endif
                                         </td>
                                         <td>
                                             @if($row['is_valid'])

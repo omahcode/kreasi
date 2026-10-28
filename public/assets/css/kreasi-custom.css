@@ -55,6 +55,19 @@
     color: var(--kreasi-blue) !important;
 }
 
+/* Sidebar single line enforcement */
+.sidebar-menu__link {
+    white-space: nowrap !important;
+    flex-wrap: nowrap !important;
+}
+
+.sidebar-menu__link .text {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: inline-block !important;
+}
+
 /* Custom logo sizing */
 .kreasi-logo-img {
     max-height: 48px;

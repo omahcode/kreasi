@@ -65,6 +65,12 @@
                                         <label class="form-label text-13 fw-semibold">Kelas</label>
                                         <input type="text" class="form-control bg-gray-50" value="{{ $user->student->schoolClass->name ?? '-' }}" disabled>
                                     </div>
+                                    @if($user->student->birth_date)
+                                        <div class="col-sm-6">
+                                            <label class="form-label text-13 fw-semibold">Tanggal Lahir</label>
+                                            <input type="text" class="form-control bg-gray-50" value="{{ \Carbon\Carbon::parse($user->student->birth_date)->translatedFormat('d F Y') }}" disabled>
+                                        </div>
+                                    @endif
                                 @elseif($user->teacher)
                                     <div class="col-sm-6">
                                         <label class="form-label text-13 fw-semibold">NIP / Kode Guru</label>
@@ -102,6 +108,62 @@
                                 </button>
                             </div>
                         </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dedicated Change Password Card -->
+    <div class="col-12">
+        <div class="card border border-gray-100 rounded-16">
+            <div class="card-body p-24">
+                <div class="d-flex align-items-center gap-12 mb-8">
+                    <span class="w-40 h-40 rounded-circle bg-warning-50 text-warning-600 flex-center text-20 shrink-0">
+                        <i class="ph ph-shield-check"></i>
+                    </span>
+                    <div>
+                        <h4 class="mb-2 fw-bold text-gray-900">Ubah Kata Sandi Akun</h4>
+                        <p class="text-gray-500 text-14 mb-0">Pastikan akun Anda menggunakan kata sandi acak dan panjang agar tetap terlindungi.</p>
+                    </div>
+                </div>
+
+                <hr class="border-gray-100 my-20">
+
+                <form method="POST" action="{{ route('profile.password.update') }}">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label class="form-label text-13 fw-semibold">Kata Sandi Saat Ini <span class="text-danger">*</span></label>
+                            <div class="position-relative">
+                                <input type="password" name="current_password" class="form-control @error('current_password') is-invalid @enderror" placeholder="Masukkan kata sandi lama Anda" required>
+                                @error('current_password')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <small class="text-gray-400 text-12">Bagi siswa yang baru diimpor, sandi awal adalah tanggal lahir (DDMMYYYY) atau nomor NIS.</small>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label text-13 fw-semibold">Kata Sandi Baru <span class="text-danger">*</span></label>
+                            <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Minimal 8 karakter" required>
+                            @error('password')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label text-13 fw-semibold">Ulangi Kata Sandi Baru <span class="text-danger">*</span></label>
+                            <input type="password" name="password_confirmation" class="form-control" placeholder="Ulangi kata sandi baru" required>
+                        </div>
+                    </div>
+
+                    <div class="mt-24 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-warning rounded-pill px-24 text-white">
+                            <i class="ph ph-key me-4"></i> Perbarui Kata Sandi
+                        </button>
                     </div>
                 </form>
             </div>

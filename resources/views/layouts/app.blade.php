@@ -226,119 +226,119 @@
                     @if($role === 'admin')
                         <!-- ADMIN MENU -->
                         <li class="sidebar-menu__item">
-                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase">Manajemen Akademik</span>
+                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase text-nowrap">Manajemen Akademik</span>
                         </li>
                         <li class="sidebar-menu__item">
-                            <a href="{{ route('admin.users.index') }}" class="sidebar-menu__link {{ request()->routeIs('admin.users.*') ? 'activePage' : '' }}">
+                            <a href="{{ route('admin.users.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('admin.users.*') ? 'activePage' : '' }}">
                                 <span class="icon"><i class="ph ph-users"></i></span>
-                                <span class="text">Kelola Pengguna</span>
+                                <span class="text text-nowrap">Kelola Pengguna</span>
                             </a>
                         </li>
                         <li class="sidebar-menu__item">
-                            <a href="{{ route('admin.classes.index') }}" class="sidebar-menu__link {{ request()->routeIs('admin.classes.*') ? 'activePage' : '' }}">
+                            <a href="{{ route('admin.classes.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('admin.classes.*') ? 'activePage' : '' }}">
                                 <span class="icon"><i class="ph ph-chalkboard"></i></span>
-                                <span class="text">Kelas & Tahun Ajaran</span>
+                                <span class="text text-nowrap">Kelas & TA</span>
                             </a>
                         </li>
                         <li class="sidebar-menu__item">
-                            <a href="{{ route('admin.students.import') }}" class="sidebar-menu__link {{ request()->routeIs('admin.students.import') ? 'activePage' : '' }}">
+                            <a href="{{ route('admin.students.import') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('admin.students.import') ? 'activePage' : '' }}">
                                 <span class="icon"><i class="ph ph-file-arrow-up"></i></span>
-                                <span class="text">Import Siswa Excel</span>
+                                <span class="text text-nowrap">Import Siswa</span>
                             </a>
                         </li>
                         <li class="sidebar-menu__item">
-                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase">Manajemen PKL & Industri</span>
+                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase text-nowrap">PKL & Industri</span>
                         </li>
                         <li class="sidebar-menu__item">
-                            <a href="{{ route('admin.companies.index') }}" class="sidebar-menu__link {{ request()->routeIs('admin.companies.*') ? 'activePage' : '' }}">
+                            <a href="{{ route('admin.companies.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('admin.companies.*') ? 'activePage' : '' }}">
                                 <span class="icon"><i class="ph ph-buildings"></i></span>
-                                <span class="text">Mitra Industri (DU/DI)</span>
+                                <span class="text text-nowrap">Mitra Industri</span>
                             </a>
                         </li>
                         <li class="sidebar-menu__item">
-                            <a href="{{ route('admin.pkl-groups.index') }}" class="sidebar-menu__link {{ request()->routeIs('admin.pkl-groups.*') ? 'activePage' : '' }}">
+                            <a href="{{ route('admin.pkl-groups.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('admin.pkl-groups.*') ? 'activePage' : '' }}">
                                 <span class="icon"><i class="ph ph-users-three"></i></span>
-                                <span class="text">Ploting Kelompok PKL</span>
+                                <span class="text text-nowrap">Kelompok PKL</span>
                             </a>
                         </li>
                         <li class="sidebar-menu__item">
-                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase">Monitoring & Laporan</span>
+                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase text-nowrap">Monitoring</span>
                         </li>
                         <li class="sidebar-menu__item">
-                            <a href="{{ route('admin.audit-logs') }}" class="sidebar-menu__link {{ request()->routeIs('admin.audit-logs') ? 'activePage' : '' }}">
+                            <a href="{{ route('admin.audit-logs') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('admin.audit-logs') ? 'activePage' : '' }}">
                                 <span class="icon"><i class="ph ph-activity"></i></span>
-                                <span class="text">Audit Log & Aktivitas</span>
+                                <span class="text text-nowrap">Audit Log</span>
                             </a>
                         </li>
 
                     @elseif($role === 'guru')
                         <!-- GURU MENU -->
                         <li class="sidebar-menu__item">
-                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase">Project Based Learning</span>
+                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase text-nowrap">Proyek PjBL</span>
                         </li>
                         <li class="sidebar-menu__item">
-                            <a href="{{ route('guru.projects.index') }}" class="sidebar-menu__link {{ request()->routeIs('guru.projects.*') ? 'activePage' : '' }}">
+                            <a href="{{ route('guru.projects.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('guru.projects.*') ? 'activePage' : '' }}">
                                 <span class="icon"><i class="ph ph-folder-notch"></i></span>
-                                <span class="text">Daftar Proyek PjBL</span>
+                                <span class="text text-nowrap">Proyek PjBL</span>
                             </a>
                         </li>
                         <li class="sidebar-menu__item">
-                            <a href="{{ route('guru.submissions.index') }}" class="sidebar-menu__link {{ request()->routeIs('guru.submissions.*') ? 'activePage' : '' }}">
+                            <a href="{{ route('guru.submissions.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('guru.submissions.*') ? 'activePage' : '' }}">
                                 <span class="icon"><i class="ph ph-check-square-offset"></i></span>
-                                <span class="text">Review Tugas & Nilai</span>
+                                <span class="text text-nowrap">Review Tugas</span>
                             </a>
                         </li>
                         <li class="sidebar-menu__item">
-                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase">Bimbingan PKL</span>
+                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase text-nowrap">Bimbingan PKL</span>
                         </li>
                         <li class="sidebar-menu__item">
-                            <a href="{{ route('guru.pkl-groups.index') }}" class="sidebar-menu__link {{ request()->routeIs('guru.pkl-groups.*') ? 'activePage' : '' }}">
+                            <a href="{{ route('guru.pkl-groups.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('guru.pkl-groups.*') ? 'activePage' : '' }}">
                                 <span class="icon"><i class="ph ph-users-three"></i></span>
-                                <span class="text">Ploting Siswa Bimbingan</span>
+                                <span class="text text-nowrap">Kelompok PKL</span>
                             </a>
                         </li>
                         <li class="sidebar-menu__item">
-                            <a href="{{ route('guru.pkl.index') }}" class="sidebar-menu__link {{ request()->routeIs('guru.pkl.*') ? 'activePage' : '' }}">
+                            <a href="{{ route('guru.pkl.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('guru.pkl.*') ? 'activePage' : '' }}">
                                 <span class="icon"><i class="ph ph-briefcase"></i></span>
-                                <span class="text">Berkas Laporan PKL</span>
+                                <span class="text text-nowrap">Laporan PKL</span>
                             </a>
                         </li>
 
                     @else
                         <!-- SISWA / KETUA KELOMPOK MENU -->
                         <li class="sidebar-menu__item">
-                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase">PjBL Siswa</span>
+                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase text-nowrap">PjBL Siswa</span>
                         </li>
                         <li class="sidebar-menu__item">
-                            <a href="{{ route('siswa.projects.index') }}" class="sidebar-menu__link {{ request()->routeIs('siswa.projects.*') ? 'activePage' : '' }}">
+                            <a href="{{ route('siswa.projects.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('siswa.projects.*') ? 'activePage' : '' }}">
                                 <span class="icon"><i class="ph ph-folder-notch-open"></i></span>
-                                <span class="text">Proyek Saya</span>
+                                <span class="text text-nowrap">Proyek Saya</span>
                             </a>
                         </li>
                         <li class="sidebar-menu__item">
-                            <a href="{{ route('siswa.logbook.index') }}" class="sidebar-menu__link {{ request()->routeIs('siswa.logbook.*') ? 'activePage' : '' }}">
+                            <a href="{{ route('siswa.logbook.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('siswa.logbook.*') ? 'activePage' : '' }}">
                                 <span class="icon"><i class="ph ph-notepad"></i></span>
-                                <span class="text">Logbook Aktivitas</span>
+                                <span class="text text-nowrap">Logbook Harian</span>
                             </a>
                         </li>
                         <li class="sidebar-menu__item">
-                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase">Laporan PKL</span>
+                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase text-nowrap">Laporan PKL</span>
                         </li>
                         <li class="sidebar-menu__item">
-                            <a href="{{ route('siswa.pkl.index') }}" class="sidebar-menu__link {{ request()->routeIs('siswa.pkl.*') ? 'activePage' : '' }}">
+                            <a href="{{ route('siswa.pkl.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('siswa.pkl.*') ? 'activePage' : '' }}">
                                 <span class="icon"><i class="ph ph-file-text"></i></span>
-                                <span class="text">Laporan PKL (Bab I-V)</span>
+                                <span class="text text-nowrap">Laporan PKL</span>
                             </a>
                         </li>
                     @endif
 
                     <li class="sidebar-menu__item">
-                        <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase">Pengaturan Akun</span>
+                        <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase text-nowrap">Pengaturan Akun</span>
                     </li>
                     <li class="sidebar-menu__item">
-                        <a href="{{ route('profile.edit') }}" class="sidebar-menu__link {{ request()->routeIs('profile.edit') ? 'activePage' : '' }}">
+                        <a href="{{ route('profile.edit') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('profile.edit') ? 'activePage' : '' }}">
                             <span class="icon"><i class="ph ph-user-circle"></i></span>
-                            <span class="text">Profil Saya</span>
+                            <span class="text text-nowrap">Profil Saya</span>
                         </a>
                     </li>
                 </ul>

@@ -34,7 +34,7 @@ class ProjectController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
@@ -46,6 +46,7 @@ class ProjectController extends Controller
     public function create()
     {
         $classes = SchoolClass::with('students.user')->get();
+
         return view('guru.projects.create', compact('classes'));
     }
 
@@ -94,7 +95,7 @@ class ProjectController extends Controller
 
             foreach ($request->student_ids as $studentId) {
                 $isLeader = ($request->type === 'group' && $studentId == $leaderId);
-                
+
                 ProjectMember::create([
                     'project_id' => $project->id,
                     'student_id' => $studentId,
@@ -116,7 +117,7 @@ class ProjectController extends Controller
                     Notification::create([
                         'user_id' => $studentObj->user_id,
                         'title' => 'Tugas Proyek PjBL Baru',
-                        'message' => "Guru " . Auth::user()->name . " telah menugaskan Anda ke dalam proyek: {$project->title}",
+                        'message' => 'Guru '.Auth::user()->name." telah menugaskan Anda ke dalam proyek: {$project->title}",
                         'link' => route('siswa.projects.show', $project->id),
                     ]);
                 }
@@ -127,7 +128,8 @@ class ProjectController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->withInput()->with('error', 'Gagal membuat proyek: ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Gagal membuat proyek: '.$e->getMessage());
         }
 
         return redirect()->route('guru.projects.index')->with('success', "Proyek '{$project->title}' berhasil dibuat dan siswa telah ditugaskan.");
@@ -210,5 +212,214 @@ class ProjectController extends Controller
         AuditLog::record(Auth::id(), 'delete_project', "Menghapus proyek PjBL: {$title}");
 
         return redirect()->route('guru.projects.index')->with('success', "Proyek '{$title}' berhasil dihapus.");
+    }
+
+    /**
+     * Preview automated grouping for PjBL without saving.
+     */
+    public function autoGroupPreview(Request $request)
+    {
+        $request->validate([
+            'class_id' => ['required', 'exists:classes,id'],
+            'method' => ['required', 'in:members_per_group,total_groups'],
+            'size' => ['required', 'integer', 'min:1', 'max:50'],
+            'balance_gender' => ['nullable', 'boolean'],
+            'auto_leader' => ['nullable', 'boolean'],
+        ]);
+
+        $students = Student::where('class_id', $request->class_id)
+            ->with('user')
+            ->get();
+
+        if ($students->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak ada siswa terdaftar pada kelas yang dipilih.',
+            ], 422);
+        }
+
+        $balanceGender = $request->boolean('balance_gender');
+        $autoLeader = $request->boolean('auto_leader', true);
+        $totalStudents = $students->count();
+
+        // Calculate number of groups
+        if ($request->method === 'members_per_group') {
+            $membersPerGroup = max(1, (int) $request->size);
+            $numGroups = max(1, (int) ceil($totalStudents / $membersPerGroup));
+        } else {
+            $numGroups = min($totalStudents, max(1, (int) $request->size));
+        }
+
+        // Initialize group buckets
+        $groups = [];
+        for ($i = 0; $i < $numGroups; $i++) {
+            $groups[$i] = [];
+        }
+
+        if ($balanceGender) {
+            $males = $students->filter(fn ($s) => strtoupper((string) $s->gender) === 'L')->shuffle()->values();
+            $females = $students->filter(fn ($s) => strtoupper((string) $s->gender) === 'P')->shuffle()->values();
+            $others = $students->filter(fn ($s) => ! in_array(strtoupper((string) $s->gender), ['L', 'P']))->shuffle()->values();
+
+            $idx = 0;
+            foreach ($males as $st) {
+                $groups[$idx % $numGroups][] = $st;
+                $idx++;
+            }
+            foreach ($females as $st) {
+                $groups[$idx % $numGroups][] = $st;
+                $idx++;
+            }
+            foreach ($others as $st) {
+                $groups[$idx % $numGroups][] = $st;
+                $idx++;
+            }
+        } else {
+            $shuffled = $students->shuffle()->values();
+            foreach ($shuffled as $idx => $st) {
+                $groups[$idx % $numGroups][] = $st;
+            }
+        }
+
+        // Filter out empty groups (if any)
+        $groups = array_values(array_filter($groups, fn ($g) => count($g) > 0));
+
+        // Format result structure
+        $resultGroups = [];
+        foreach ($groups as $gIdx => $groupStudents) {
+            $groupNum = $gIdx + 1;
+            $leaderId = $autoLeader && ! empty($groupStudents) ? $groupStudents[0]->id : null;
+
+            $members = [];
+            foreach ($groupStudents as $st) {
+                $isLeader = ($st->id === $leaderId);
+                $members[] = [
+                    'student_id' => $st->id,
+                    'name' => $st->user->name ?? 'Siswa',
+                    'nis' => $st->nis,
+                    'gender' => $st->gender ?? '-',
+                    'is_leader' => $isLeader,
+                ];
+            }
+
+            $resultGroups[] = [
+                'group_number' => $groupNum,
+                'name' => "Kelompok {$groupNum}",
+                'leader_id' => $leaderId,
+                'leader_name' => $autoLeader && ! empty($groupStudents) ? $groupStudents[0]->user->name : null,
+                'members' => $members,
+            ];
+        }
+
+        return response()->json([
+            'success' => true,
+            'total_students' => $totalStudents,
+            'total_groups' => count($resultGroups),
+            'groups' => $resultGroups,
+        ]);
+    }
+
+    /**
+     * Batch create group projects for an entire class from auto-grouping result.
+     */
+    public function batchStoreGroupProjects(Request $request)
+    {
+        $request->validate([
+            'title_prefix' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string'],
+            'goals' => ['nullable', 'string'],
+            'instructions' => ['nullable', 'string'],
+            'status' => ['required', 'in:draft,active'],
+            'deadline' => ['nullable', 'date'],
+            'attachment' => ['nullable', 'file', 'mimes:pdf,zip,rar,doc,docx,ppt,pptx', 'max:10240'],
+            'rubric' => ['nullable', 'string'],
+            'groups_json' => ['required', 'string'],
+        ]);
+
+        $groupsData = json_decode($request->groups_json, true);
+
+        if (! is_array($groupsData) || empty($groupsData)) {
+            return back()->with('error', 'Data pembagian kelompok tidak valid atau kosong.');
+        }
+
+        DB::beginTransaction();
+        try {
+            $attachmentPath = null;
+            if ($request->hasFile('attachment')) {
+                $attachmentPath = $request->file('attachment')->store('project_attachments', 'public');
+            }
+
+            $createdCount = 0;
+
+            foreach ($groupsData as $g) {
+                $groupName = $g['name'] ?? "Kelompok {$createdCount}";
+                $title = "{$request->title_prefix} - {$groupName}";
+                $members = $g['members'] ?? [];
+                $leaderId = $g['leader_id'] ?? null;
+
+                if (empty($members)) {
+                    continue;
+                }
+
+                $project = Project::create([
+                    'title' => $title,
+                    'description' => $request->description,
+                    'goals' => $request->goals,
+                    'instructions' => $request->instructions,
+                    'type' => 'group',
+                    'status' => $request->status,
+                    'deadline' => $request->deadline,
+                    'attachment' => $attachmentPath,
+                    'rubric' => $request->rubric,
+                    'created_by' => Auth::id(),
+                ]);
+
+                foreach ($members as $m) {
+                    $studentId = $m['student_id'] ?? null;
+                    if (! $studentId) {
+                        continue;
+                    }
+
+                    $isLeader = ($studentId == $leaderId || (! empty($m['is_leader'])));
+
+                    ProjectMember::create([
+                        'project_id' => $project->id,
+                        'student_id' => $studentId,
+                        'role' => $isLeader ? 'leader' : 'member',
+                    ]);
+
+                    if ($isLeader) {
+                        $student = Student::with('user')->find($studentId);
+                        if ($student && $student->user && $student->user->role === 'siswa') {
+                            $student->user->update(['role' => 'ketua_kelompok']);
+                            $student->user->syncRoles('ketua_kelompok');
+                        }
+                    }
+
+                    $studentObj = Student::find($studentId);
+                    if ($studentObj) {
+                        Notification::create([
+                            'user_id' => $studentObj->user_id,
+                            'title' => 'Tugas Proyek PjBL Baru',
+                            'message' => 'Guru '.Auth::user()->name." telah menugaskan Anda ke dalam proyek: {$project->title}",
+                            'link' => route('siswa.projects.show', $project->id),
+                        ]);
+                    }
+                }
+
+                $createdCount++;
+            }
+
+            DB::commit();
+
+            AuditLog::record(Auth::id(), 'batch_create_projects', "Membuat {$createdCount} proyek PjBL kelompok otomatis: {$request->title_prefix}");
+
+            return redirect()->route('guru.projects.index')
+                ->with('success', "Berhasil membuat {$createdCount} proyek PjBL kelompok secara otomatis.");
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with('error', 'Terjadi kesalahan saat memproses pembagian kelompok: '.$e->getMessage());
+        }
     }
 }

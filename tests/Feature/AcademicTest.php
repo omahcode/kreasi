@@ -7,6 +7,7 @@ use App\Models\SchoolClass;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class AcademicTest extends TestCase
@@ -14,7 +15,9 @@ class AcademicTest extends TestCase
     use RefreshDatabase;
 
     protected $admin;
+
     protected $guru;
+
     protected $siswa;
 
     protected function setUp(): void
@@ -94,8 +97,8 @@ class AcademicTest extends TestCase
         $this->actingAs($this->admin);
 
         $class = SchoolClass::first();
-        $csvContent = "Nama,NIS,Email,Kelas\n\"Bayu Wicaksono\",\"2026120888\",\"bayu@kreasi.test\",\"{$class->name}\"\n";
-        $file = \Illuminate\Http\UploadedFile::fake()->createWithContent('students.csv', $csvContent);
+        $csvContent = "Nama,NIS,Email,Kelas,Tanggal Lahir\n\"Bayu Wicaksono\",\"2026120888\",\"bayu@kreasi.test\",\"{$class->name}\",\"15-08-2008\"\n";
+        $file = UploadedFile::fake()->createWithContent('students.csv', $csvContent);
 
         $previewResponse = $this->post(route('admin.students.import.preview'), [
             'file' => $file,
@@ -103,13 +106,54 @@ class AcademicTest extends TestCase
 
         $previewResponse->assertStatus(200);
         $previewResponse->assertSee('Bayu Wicaksono');
+        $previewResponse->assertSee('15082008');
         $previewResponse->assertSee('Siap Diimport');
 
         $commitResponse = $this->post(route('admin.students.import.commit'));
         $commitResponse->assertRedirect(route('admin.users.index', ['role' => 'siswa']));
 
         $this->assertDatabaseHas('users', ['email' => 'bayu@kreasi.test']);
-        $this->assertDatabaseHas('students', ['nis' => '2026120888']);
+        $student = Student::where('nis', '2026120888')->first();
+        $this->assertNotNull($student);
+        $this->assertEquals('2008-08-15', $student->birth_date->format('Y-m-d'));
+
+        // Verify student can log in using auto-generated password (DDMMYYYY = 15082008)
+        $this->post('/logout');
+        $loginResponse = $this->post('/login', [
+            'login' => '2026120888',
+            'password' => '15082008',
+        ]);
+        $loginResponse->assertRedirect('/siswa/dashboard');
+    }
+
+    public function test_user_can_change_password_in_profile_settings(): void
+    {
+        $this->actingAs($this->siswa);
+
+        // Fail if current password wrong
+        $failResponse = $this->put(route('profile.password.update'), [
+            'current_password' => 'wrongpassword',
+            'password' => 'newsecret123',
+            'password_confirmation' => 'newsecret123',
+        ]);
+        $failResponse->assertSessionHasErrors(['current_password']);
+
+        // Success if current password correct
+        $successResponse = $this->put(route('profile.password.update'), [
+            'current_password' => 'password',
+            'password' => 'newsecret123',
+            'password_confirmation' => 'newsecret123',
+        ]);
+        $successResponse->assertRedirect();
+        $successResponse->assertSessionHas('success');
+
+        // Test login with newly updated password
+        $this->post('/logout');
+        $loginResponse = $this->post('/login', [
+            'login' => 'siswa@kreasi.test',
+            'password' => 'newsecret123',
+        ]);
+        $loginResponse->assertRedirect('/siswa/dashboard');
     }
 
     public function test_admin_can_view_audit_logs(): void

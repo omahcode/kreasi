@@ -14,8 +14,16 @@ class Student extends Model
         'nis',
         'class_id',
         'gender',
+        'birth_date',
         'address',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'birth_date' => 'date',
+        ];
+    }
 
     public function user()
     {
@@ -35,8 +43,8 @@ class Student extends Model
     public function projects()
     {
         return $this->belongsToMany(Project::class, 'project_members', 'student_id', 'project_id')
-                    ->withPivot('role')
-                    ->withTimestamps();
+            ->withPivot('role')
+            ->withTimestamps();
     }
 
     public function submissions()
@@ -62,8 +70,8 @@ class Student extends Model
     public function pklGroups()
     {
         return $this->belongsToMany(PklGroup::class, 'pkl_group_members', 'student_id', 'pkl_group_id')
-                    ->withPivot('is_leader')
-                    ->withTimestamps();
+            ->withPivot('is_leader')
+            ->withTimestamps();
     }
 
     public function currentPklGroup()

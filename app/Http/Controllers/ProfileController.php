@@ -13,6 +13,7 @@ class ProfileController extends Controller
     public function edit()
     {
         $user = Auth::user()->load(['teacher', 'student.schoolClass']);
+
         return view('profile.edit', compact('user'));
     }
 
@@ -49,5 +50,35 @@ class ProfileController extends Controller
         AuditLog::record($user->id, 'update_profile', 'Memperbarui profil akun');
 
         return back()->with('success', 'Profil Anda berhasil diperbarui.');
+    }
+
+    /**
+     * Dedicated method for updating account password.
+     */
+    public function updatePassword(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'current_password' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:8', 'confirmed', 'different:current_password'],
+        ], [
+            'current_password.required' => 'Kata sandi saat ini wajib diisi.',
+            'password.required' => 'Kata sandi baru wajib diisi.',
+            'password.min' => 'Kata sandi baru minimal harus terdiri dari 8 karakter.',
+            'password.confirmed' => 'Konfirmasi kata sandi baru tidak cocok.',
+            'password.different' => 'Kata sandi baru harus berbeda dengan kata sandi saat ini.',
+        ]);
+
+        if (! Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Kata sandi saat ini tidak sesuai dengan data kami.']);
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        AuditLog::record($user->id, 'change_password', 'Pengguna berhasil memperbarui kata sandi akun');
+
+        return back()->with('success', 'Kata sandi akun Anda berhasil diperbarui.');
     }
 }

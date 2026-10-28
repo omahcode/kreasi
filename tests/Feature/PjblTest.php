@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Project;
+use App\Models\SchoolClass;
 use App\Models\Student;
 use App\Models\Submission;
 use App\Models\User;
@@ -15,7 +16,9 @@ class PjblTest extends TestCase
     use RefreshDatabase;
 
     protected $guru;
+
     protected $ketua;
+
     protected $siswa;
 
     protected function setUp(): void
@@ -172,6 +175,53 @@ class PjblTest extends TestCase
             'submission_id' => $submission->id,
             'score' => 92.5,
             'status' => 'approved',
+        ]);
+    }
+
+    public function test_guru_can_auto_group_students_and_batch_create_projects(): void
+    {
+        $this->actingAs($this->guru);
+
+        $class = SchoolClass::first();
+
+        // 1. Test auto-group preview API
+        $previewResponse = $this->postJson(route('guru.projects.auto-group'), [
+            'class_id' => $class->id,
+            'method' => 'members_per_group',
+            'size' => 1,
+            'balance_gender' => true,
+            'auto_leader' => true,
+        ]);
+
+        $previewResponse->assertStatus(200);
+        $previewResponse->assertJsonStructure([
+            'success',
+            'total_students',
+            'total_groups',
+            'groups' => [
+                '*' => [
+                    'group_number',
+                    'name',
+                    'leader_id',
+                    'members',
+                ],
+            ],
+        ]);
+
+        $groups = $previewResponse->json('groups');
+        $this->assertNotEmpty($groups);
+
+        // 2. Test batch store projects
+        $batchResponse = $this->post(route('guru.projects.batch-store'), [
+            'title_prefix' => 'Tugas PjBL Semester 1',
+            'description' => 'Mengerjakan sistem aplikasi kelompok.',
+            'status' => 'active',
+            'groups_json' => json_encode($groups),
+        ]);
+
+        $batchResponse->assertRedirect(route('guru.projects.index'));
+        $this->assertDatabaseHas('projects', [
+            'title' => 'Tugas PjBL Semester 1 - Kelompok 1',
         ]);
     }
 }
