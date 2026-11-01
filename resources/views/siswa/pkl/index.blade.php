@@ -237,7 +237,7 @@
                                         <h6 class="mb-2 text-15 fw-bold text-gray-900">{{ $chapterTitles[$i] }}</h6>
                                         @if($chapter && $chapter->file)
                                             <span class="text-12 text-gray-500">
-                                                Berkas saat ini: <a href="{{ asset('storage/' . $chapter->file) }}" target="_blank" download class="text-main-600 fw-semibold hover-text-decoration-underline">Unduh Bab {{ $i }}</a>
+                                                Berkas saat ini: <a href="{{ asset('storage/' . $chapter->file) }}" target="_blank" class="text-main-600 fw-semibold hover-text-decoration-underline"><i class="ph ph-eye me-2"></i> Lihat / Unduh Bab {{ $i }}</a>
                                                 &bull; Diperbarui {{ $chapter->updated_at->diffForHumans() }}
                                             </span>
                                         @else

@@ -126,4 +126,83 @@ class PklTest extends TestCase
             'status' => 'approved',
         ]);
     }
+
+    public function test_teacher_cannot_grant_final_approval_if_not_all_5_chapters_are_approved(): void
+    {
+        $student = $this->siswa->student;
+        $report = PklReport::create([
+            'student_id' => $student->id,
+            'title' => 'Sistem Informasi Manajemen Laboratorium',
+            'company_name' => 'PT. Inovasi Kreatif',
+            'mentor_teacher_id' => $this->guru->id,
+            'status' => 'submitted',
+        ]);
+
+        // Create 5 chapters with only 3 approved and 2 in draft/revision
+        for ($i = 1; $i <= 5; $i++) {
+            PklChapter::create([
+                'report_id' => $report->id,
+                'chapter_number' => $i,
+                'title' => "Bab {$i}",
+                'file' => $i <= 3 ? "pkl_chapters/bab_{$i}.pdf" : null,
+                'status' => $i <= 3 ? 'approved' : 'draft',
+            ]);
+        }
+
+        $this->actingAs($this->guru);
+
+        // Attempt final approval
+        $response = $this->post(route('guru.pkl.final-approval', $report->id));
+
+        $response->assertRedirect();
+        $response->assertSessionHas('error');
+
+        $report->refresh();
+        $this->assertNotSame('approved', $report->status);
+
+        // Check view does not show sahkan button
+        $viewResponse = $this->get(route('guru.pkl.show', $report->id));
+        $viewResponse->assertStatus(200);
+        $viewResponse->assertDontSee('Sahkan Persetujuan Final Laporan');
+        $viewResponse->assertSee('Pengesahan aktif setelah seluruh 5 bab disetujui');
+    }
+
+    public function test_teacher_can_grant_final_approval_when_all_5_chapters_are_uploaded_and_approved(): void
+    {
+        $student = $this->siswa->student;
+        $report = PklReport::create([
+            'student_id' => $student->id,
+            'title' => 'Sistem Rekomendasi Portofolio Berbasis Web',
+            'company_name' => 'PT. Kode Kreatif',
+            'mentor_teacher_id' => $this->guru->id,
+            'status' => 'submitted',
+        ]);
+
+        // Create 5 chapters, all uploaded and approved
+        for ($i = 1; $i <= 5; $i++) {
+            PklChapter::create([
+                'report_id' => $report->id,
+                'chapter_number' => $i,
+                'title' => "Bab {$i}",
+                'file' => "pkl_chapters/bab_{$i}.pdf",
+                'status' => 'approved',
+            ]);
+        }
+
+        $this->actingAs($this->guru);
+
+        // View should now display the Sahkan button and Preview Bab button
+        $viewResponse = $this->get(route('guru.pkl.show', $report->id));
+        $viewResponse->assertStatus(200);
+        $viewResponse->assertSee('Sahkan Persetujuan Final Laporan');
+        $viewResponse->assertSee('Preview Bab');
+
+        // Post final approval
+        $response = $this->post(route('guru.pkl.final-approval', $report->id));
+        $response->assertRedirect();
+        $response->assertSessionHas('success');
+
+        $report->refresh();
+        $this->assertSame('approved', $report->status);
+    }
 }

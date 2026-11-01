@@ -23,6 +23,13 @@
     </div>
 
     <!-- Student & Title Overview Card -->
+    @php
+        $totalChapters = 5;
+        $approvedChaptersCount = $report->chapters->where('status', 'approved')->whereNotNull('file')->count();
+        $hasPendingOrRevision = $report->chapters->whereIn('status', ['revision_required', 'submitted', 'draft'])->count() > 0;
+        $allChaptersUploaded = $report->chapters->count() >= $totalChapters && $report->chapters->every(fn($c) => !empty($c->file));
+        $canFinalApprove = ($approvedChaptersCount >= $totalChapters) && !$hasPendingOrRevision && $allChaptersUploaded && ($report->status !== 'approved');
+    @endphp
     <div class="col-12">
         <div class="card border border-gray-100 rounded-16 p-24 bg-white">
             <div class="d-flex flex-wrap justify-content-between align-items-start gap-16 mb-20 pb-20 border-bottom border-gray-100">
@@ -39,16 +46,29 @@
                 </div>
                 <div class="text-end">
                     <span class="badge {{ $report->status === 'approved' ? 'bg-success-50 text-success-700' : 'bg-primary-50 text-primary-700' }} text-13 px-14 py-6 rounded-pill">
-                        Status Laporan: {{ strtoupper($report->status) }}
+                        Status Laporan: {{ $report->status === 'approved' ? 'DISETUJUI FINAL' : strtoupper($report->status) }}
                     </span>
-                    @if($report->status !== 'approved')
+
+                    @if($report->status === 'approved')
                         <div class="mt-8">
-                            <form method="POST" action="{{ route('guru.pkl.final-approval', $report->id) }}" data-confirm="Sahkan kelulusan dan persetujuan final seluruh laporan PKL siswa ini?" data-confirm-title="Pengesahan Laporan PKL" data-confirm-btn="Ya, Sahkan!" data-confirm-icon="question">
+                            <span class="badge bg-success-50 text-success-700 border border-success-200 text-12 px-14 py-6 rounded-pill">
+                                <i class="ph ph-seal-check me-4 text-14"></i> Seluruh Bab Tuntas & Disahkan
+                            </span>
+                        </div>
+                    @elseif($canFinalApprove)
+                        <div class="mt-8">
+                            <form method="POST" action="{{ route('guru.pkl.final-approval', $report->id) }}" data-confirm="Sahkan kelulusan dan persetujuan final seluruh laporan PKL siswa ini? Seluruh 5 bab telah disetujui tanpa ada revisi." data-confirm-title="Pengesahan Laporan PKL" data-confirm-btn="Ya, Sahkan!" data-confirm-icon="question">
                                 @csrf
-                                <button type="submit" class="btn btn-sm btn-success rounded-pill px-16 text-12">
+                                <button type="submit" class="btn btn-sm btn-success rounded-pill px-16 text-12 shadow-xs">
                                     <i class="ph ph-seal-check me-4"></i> Sahkan Persetujuan Final Laporan
                                 </button>
                             </form>
+                        </div>
+                    @else
+                        <div class="mt-8">
+                            <span class="text-12 text-gray-500 d-inline-flex align-items-center gap-4 bg-gray-50 border border-gray-100 rounded-pill px-12 py-5">
+                                <i class="ph ph-info text-main-600"></i> Pengesahan aktif setelah seluruh 5 bab disetujui ({{ $approvedChaptersCount }}/5)
+                            </span>
                         </div>
                     @endif
                 </div>
@@ -129,9 +149,9 @@
                                 @endif
 
                                 @if($chapter && $chapter->file)
-                                    <a href="{{ asset('storage/' . $chapter->file) }}" target="_blank" download class="btn btn-sm btn-outline-primary rounded-pill px-12 py-4 text-12">
-                                        <i class="ph ph-download-simple me-2"></i> Unduh Bab
-                                    </a>
+                                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-14 py-4 text-12 flex-align gap-4" data-bs-toggle="modal" data-bs-target="#previewChapterModal{{ $chapter->id }}">
+                                        <i class="ph ph-eye text-14"></i> Preview Bab
+                                    </button>
                                 @endif
 
                                 @if($chapter)
@@ -156,6 +176,78 @@
                         @endif
                     </div>
                 </div>
+
+                <!-- Preview Chapter Modal -->
+                @if($chapter && $chapter->file)
+                    @php
+                        $fileExtension = strtolower(pathinfo($chapter->file, PATHINFO_EXTENSION));
+                        $fileUrl = asset('storage/' . $chapter->file);
+                    @endphp
+                    <div class="modal fade" id="previewChapterModal{{ $chapter->id }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+                            <div class="modal-content rounded-16 border-0 shadow-lg">
+                                <div class="modal-header border-bottom border-gray-100 py-16 px-24 flex-between">
+                                    <div class="d-flex align-items-center gap-10">
+                                        <span class="w-36 h-36 rounded-circle bg-main-50 text-main-600 flex-center fw-bold text-14">
+                                            <i class="ph ph-file-text"></i>
+                                        </span>
+                                        <div>
+                                            <h5 class="modal-title fw-bold text-16 mb-0">{{ $chapterTitles[$i] }}</h5>
+                                            <span class="text-12 text-gray-400">Pratinjau Dokumen Siswa (Format .{{ strtoupper($fileExtension) }})</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-8">
+                                        <a href="{{ $fileUrl }}" target="_blank" class="btn btn-sm btn-outline-secondary rounded-pill px-14 text-12 flex-align gap-4">
+                                            <i class="ph ph-arrow-square-out text-14"></i> Buka di Tab Baru
+                                        </a>
+                                        <a href="{{ $fileUrl }}" download class="btn btn-sm btn-main rounded-pill px-14 text-12 flex-align gap-4">
+                                            <i class="ph ph-download-simple text-14"></i> Unduh Berkas
+                                        </a>
+                                        <button type="button" class="btn-close ms-8" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                                    </div>
+                                </div>
+                                <div class="modal-body p-0 bg-gray-50" style="min-height: 580px;">
+                                    @if($fileExtension === 'pdf')
+                                        <iframe src="{{ $fileUrl }}#toolbar=1" class="w-100 border-0" style="height: 72vh; min-height: 580px;" allowfullscreen>
+                                            <div class="p-32 text-center">
+                                                <p class="text-gray-600">Peramban Anda tidak mendukung pratinjau PDF langsung.</p>
+                                                <a href="{{ $fileUrl }}" target="_blank" class="btn btn-main rounded-pill px-20">Buka PDF di Tab Baru</a>
+                                            </div>
+                                        </iframe>
+                                    @elseif(in_array($fileExtension, ['png', 'jpg', 'jpeg', 'webp']))
+                                        <div class="text-center p-24">
+                                            <img src="{{ $fileUrl }}" alt="{{ $chapterTitles[$i] }}" class="img-fluid rounded-8 shadow-sm" style="max-height: 75vh;">
+                                        </div>
+                                    @else
+                                        <div class="d-flex flex-column align-items-center justify-content-center p-48 text-center" style="min-height: 480px;">
+                                            <span class="w-72 h-72 rounded-circle bg-primary-50 text-primary-600 flex-center text-36 mb-16 shadow-xs">
+                                                <i class="ph ph-file-doc"></i>
+                                            </span>
+                                            <h5 class="text-18 fw-bold text-gray-900 mb-8">Dokumen Microsoft Word (.{{ strtoupper($fileExtension) }})</h5>
+                                            <p class="text-gray-500 text-13 mb-24 max-w-440">
+                                                Berkas ini berformat dokumen Word (.{{ $fileExtension }}). Anda dapat membuka pratinjau melalui Google Docs Viewer atau langsung mengunduhnya ke perangkat Anda.
+                                            </p>
+                                            <div class="d-flex gap-12 flex-wrap justify-content-center">
+                                                <a href="https://docs.google.com/viewer?url={{ urlencode($fileUrl) }}&embedded=true" target="_blank" class="btn btn-outline-primary rounded-pill px-20 text-13">
+                                                    <i class="ph ph-eye me-4"></i> Pratinjau via Google Viewer
+                                                </a>
+                                                <a href="{{ $fileUrl }}" download class="btn btn-main rounded-pill px-20 text-13">
+                                                    <i class="ph ph-download-simple me-4"></i> Unduh Berkas Word
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="modal-footer border-top border-gray-100 py-12 px-24 flex-between">
+                                    <span class="text-12 text-gray-500">
+                                        <i class="ph ph-info me-2 text-main-600"></i> Pembimbing dapat membaca dokumen langsung di atas atau mengunduh jika diperlukan.
+                                    </span>
+                                    <button type="button" class="btn btn-outline-gray rounded-pill px-20 text-13" data-bs-dismiss="modal">Tutup</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
 
                 <!-- Review Chapter Modal -->
                 @if($chapter)

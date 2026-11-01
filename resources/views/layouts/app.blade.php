@@ -477,7 +477,6 @@
                     <span class="fw-bold text-gray-800 text-16 flex-align gap-8">
                         <img src="{{ asset('assets/images/thumbs/panda.png') }}" alt="" class="w-24 h-24 bounce-cute d-inline-block">
                         <span>KREASI RPL</span>
-                        <span class="text-gray-400 fw-normal">&bull; SMKN Rekayasa Perangkat Lunak</span>
                     </span>
                 </div>
             </div>

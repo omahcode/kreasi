@@ -150,10 +150,12 @@ class PklController extends Controller
     {
         $report = PklReport::with(['chapters', 'student.user'])->findOrFail($id);
 
-        // Check if all 5 chapters are approved
-        $approvedCount = $report->chapters()->where('status', 'approved')->count();
-        if ($approvedCount < 5) {
-            return back()->with('error', "Persetujuan final belum dapat diberikan karena baru {$approvedCount} dari 5 bab yang berstatus disetujui.");
+        // Check if all 5 chapters are approved without revision
+        $approvedCount = $report->chapters()->where('status', 'approved')->whereNotNull('file')->count();
+        $hasPendingOrRevision = $report->chapters()->whereIn('status', ['revision_required', 'submitted', 'draft'])->exists();
+
+        if ($approvedCount < 5 || $hasPendingOrRevision) {
+            return back()->with('error', 'Persetujuan final belum dapat disahkan. Siswa harus telah mengunggah seluruh Bab I s/d Bab V dan semuanya berstatus Disetujui tanpa ada revisi.');
         }
 
         $report->update(['status' => 'approved']);
