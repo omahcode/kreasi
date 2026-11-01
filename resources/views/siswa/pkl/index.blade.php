@@ -191,21 +191,38 @@
                             <span class="badge bg-main-50 text-main-600 text-12 text-uppercase px-12 py-4">
                                 Laporan PKL Kelas XII
                             </span>
-                            <span class="badge {{ $report->status === 'approved' ? 'bg-success-50 text-success-700' : 'bg-primary-50 text-primary-700' }} text-12 px-12 py-4 text-capitalize">
-                                Status Judul: {{ $report->status }}
-                            </span>
+                            @if(($report->title_status ?? '') === 'approved')
+                                <span class="badge bg-success-50 text-success-700 text-12 px-12 py-4">
+                                    <i class="ph ph-check-circle me-1"></i> Status Judul: Disetujui (ACC)
+                                </span>
+                            @elseif(($report->title_status ?? '') === 'revision_required' || $report->status === 'revision_required')
+                                <span class="badge bg-warning-50 text-warning-700 text-12 px-12 py-4">
+                                    <i class="ph ph-arrow-counter-clockwise me-1"></i> Status Judul: Perlu Revisi
+                                </span>
+                            @else
+                                <span class="badge bg-primary-50 text-primary-700 text-12 px-12 py-4">
+                                    <i class="ph ph-clock me-1"></i> Status Judul: Menunggu Verifikasi
+                                </span>
+                            @endif
                         </div>
                         <h4 class="mb-6 fw-bold text-gray-900">{{ $report->title }}</h4>
                         <div class="text-13 text-gray-600">
                             <i class="ph ph-buildings me-2 text-main-600"></i> Mitra Industri: <strong>{{ $report->company_name }}</strong> &bull;
                             Guru Pembimbing: <strong class="text-main-600">{{ $report->mentorTeacher->name ?? '-' }}</strong>
+                            @if($report->company_address)
+                                &bull; <span class="text-gray-400">({{ $report->company_address }})</span>
+                            @endif
                         </div>
                     </div>
                     <div class="text-end">
-                        @if($report->status !== 'approved')
+                        @if(($report->title_status ?? '') !== 'approved')
                             <button type="button" class="btn btn-sm btn-outline-gray rounded-pill px-16 text-12" data-bs-toggle="modal" data-bs-target="#editTitleModal">
-                                <i class="ph ph-pencil-simple me-2"></i> Edit Judul / Data PKL
+                                <i class="ph ph-pencil-simple me-2"></i> {{ (($report->title_status ?? '') === 'revision_required' || $report->status === 'revision_required') ? 'Revisi Judul PKL' : 'Ubah Judul PKL' }}
                             </button>
+                        @else
+                            <span class="badge bg-success-50 text-success-700 border border-success-200 rounded-pill px-14 py-6 text-12 fw-semibold d-inline-flex align-items-center gap-4">
+                                <i class="ph ph-lock-key text-14"></i> Judul Terkunci (ACC)
+                            </span>
                         @endif
                     </div>
                 </div>
@@ -318,53 +335,59 @@
             </div>
         </div>
 
-        <!-- Edit Title Modal -->
-        <div class="modal fade" id="editTitleModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content rounded-16 border-0 shadow-lg">
-                    <div class="modal-header border-bottom border-gray-100 py-16 px-24">
-                        <h5 class="modal-title fw-bold">Edit / Revisi Data Judul PKL</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <!-- Edit Title Modal (Hanya jika judul belum di-ACC) -->
+        @if(($report->title_status ?? '') !== 'approved')
+            <div class="modal fade" id="editTitleModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content rounded-16 border-0 shadow-lg">
+                        <div class="modal-header border-bottom border-gray-100 py-16 px-24">
+                            <h5 class="modal-title fw-bold">Revisi Judul Laporan PKL</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <form method="POST" action="{{ route('siswa.pkl.title.update') }}">
+                            @csrf
+                            @method('PUT')
+                            <div class="modal-body p-24">
+                                <div class="mb-20">
+                                    <label class="form-label text-13 fw-semibold">Judul Laporan PKL <span class="text-danger">*</span></label>
+                                    <input type="text" name="title" class="form-control" value="{{ old('title', $report->title) }}" placeholder="Tuliskan judul laporan PKL..." required>
+                                    <small class="text-gray-400 text-12 mt-4 d-block">Sesuaikan judul dengan instruksi atau catatan koreksi dari guru pembimbing.</small>
+                                </div>
+
+                                <!-- Data PKL (Hanya Lihat / Read-Only) -->
+                                <div class="p-16 rounded-12 bg-gray-50 border border-gray-100">
+                                    <div class="d-flex align-items-center gap-6 mb-12">
+                                        <i class="ph ph-lock-key text-main-600 text-16"></i>
+                                        <span class="text-12 fw-bold text-gray-700 text-uppercase">Data Penempatan PKL (Terkunci / Hanya Melihat)</span>
+                                    </div>
+                                    <div class="row g-3">
+                                        <div class="col-sm-6">
+                                            <label class="form-label text-12 text-gray-500 mb-2">Nama Perusahaan / DUDI</label>
+                                            <input type="text" class="form-control form-control-sm bg-white" value="{{ $report->company_name }}" disabled readonly>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="form-label text-12 text-gray-500 mb-2">Guru Pembimbing</label>
+                                            <input type="text" class="form-control form-control-sm bg-white" value="{{ $report->mentorTeacher->name ?? '-' }}" disabled readonly>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label text-12 text-gray-500 mb-2">Alamat Mitra Industri</label>
+                                            <input type="text" class="form-control form-control-sm bg-white" value="{{ $report->company_address ?: '-' }}" disabled readonly>
+                                        </div>
+                                    </div>
+                                    <small class="text-gray-400 text-11 mt-8 d-block">
+                                        <i class="ph ph-info me-1"></i> Data perusahaan dan guru pembimbing bersifat tetap. Hubungi guru pembimbing jika terdapat perubahan lokasi PKL.
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="modal-footer border-top border-gray-100 py-12 px-24">
+                                <button type="button" class="btn btn-outline-gray rounded-pill px-16" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-main rounded-pill px-20">Kirim Revisi Judul</button>
+                            </div>
+                        </form>
                     </div>
-                    <form method="POST" action="{{ route('siswa.pkl.title.update') }}">
-                        @csrf
-                        @method('PUT')
-                        <div class="modal-body p-24">
-                            <div class="mb-16">
-                                <label class="form-label text-13 fw-semibold">Judul Laporan PKL <span class="text-danger">*</span></label>
-                                <input type="text" name="title" class="form-control" value="{{ old('title', $report->title) }}" required>
-                            </div>
-
-                            <div class="row g-3 mb-16">
-                                <div class="col-sm-6">
-                                    <label class="form-label text-13 fw-semibold">Nama Perusahaan / DUDI <span class="text-danger">*</span></label>
-                                    <input type="text" name="company_name" class="form-control" value="{{ old('company_name', $report->company_name) }}" required>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label text-13 fw-semibold">Guru Pembimbing <span class="text-danger">*</span></label>
-                                    <select name="mentor_teacher_id" class="form-select" required>
-                                        @foreach($teachers as $teacher)
-                                            <option value="{{ $teacher->id }}" {{ $report->mentor_teacher_id == $teacher->id ? 'selected' : '' }}>
-                                                {{ $teacher->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="mb-16">
-                                <label class="form-label text-13 fw-semibold">Alamat Perusahaan / Mitra Industri</label>
-                                <textarea name="company_address" rows="2" class="form-control">{{ old('company_address', $report->company_address) }}</textarea>
-                            </div>
-                        </div>
-                        <div class="modal-footer border-top border-gray-100 py-12 px-24">
-                            <button type="button" class="btn btn-outline-gray rounded-pill px-16" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-main rounded-pill px-20">Kirim Revisi Judul</button>
-                        </div>
-                    </form>
                 </div>
             </div>
-        </div>
+        @endif
     @endif
 </div>
 @endsection

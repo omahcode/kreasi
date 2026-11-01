@@ -217,4 +217,68 @@ class PklTest extends TestCase
         $report->refresh();
         $this->assertSame('approved', $report->status);
     }
+
+    public function test_student_cannot_edit_pkl_title_if_already_approved(): void
+    {
+        $student = $this->siswa->student;
+        $report = PklReport::create([
+            'student_id' => $student->id,
+            'title' => 'Sistem Rekomendasi Portofolio Berbasis Web',
+            'company_name' => 'PT. Kode Kreatif',
+            'mentor_teacher_id' => $this->guru->id,
+            'title_status' => 'approved',
+            'status' => 'in_progress',
+        ]);
+
+        $this->actingAs($this->siswa);
+
+        // Student visits PKL page
+        $viewResponse = $this->get(route('siswa.pkl.index'));
+        $viewResponse->assertStatus(200);
+        $viewResponse->assertSee('Judul Terkunci (ACC)');
+        $viewResponse->assertDontSee('Edit Judul / Data PKL');
+        $viewResponse->assertDontSee('Ubah Judul PKL');
+
+        // Student attempts to update title directly
+        $updateResponse = $this->put(route('siswa.pkl.title.update'), [
+            'title' => 'Judul Baru Yang Ilegal Diubah',
+        ]);
+
+        $updateResponse->assertRedirect();
+        $updateResponse->assertSessionHas('error');
+
+        $report->refresh();
+        $this->assertSame('Sistem Rekomendasi Portofolio Berbasis Web', $report->title);
+    }
+
+    public function test_student_can_only_revise_title_when_needed_and_cannot_change_company_data(): void
+    {
+        $student = $this->siswa->student;
+        $report = PklReport::create([
+            'student_id' => $student->id,
+            'title' => 'Judul Awal',
+            'company_name' => 'PT. Asli Tetap',
+            'company_address' => 'Jl. Industri No. 1',
+            'mentor_teacher_id' => $this->guru->id,
+            'title_status' => 'revision_required',
+            'status' => 'revision_required',
+            'rejection_note' => 'Perbaiki judul agar lebih spesifik.',
+        ]);
+
+        $this->actingAs($this->siswa);
+
+        // Student revises title
+        $updateResponse = $this->put(route('siswa.pkl.title.update'), [
+            'title' => 'Judul Revisi Sempurna',
+            'company_name' => 'PT. Palsu Berubah', // should be ignored
+        ]);
+
+        $updateResponse->assertRedirect();
+        $updateResponse->assertSessionHas('success');
+
+        $report->refresh();
+        $this->assertSame('Judul Revisi Sempurna', $report->title);
+        $this->assertSame('PT. Asli Tetap', $report->company_name); // unchanged!
+        $this->assertSame('submitted', $report->title_status);
+    }
 }

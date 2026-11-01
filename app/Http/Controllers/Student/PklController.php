@@ -148,18 +148,20 @@ class PklController extends Controller
 
         $report = PklReport::where('student_id', $student->id)->firstOrFail();
 
+        // 1. Jika judul sudah disetujui (ACC), siswa tidak dapat mengedit lagi
+        if (($report->title_status ?? '') === 'approved') {
+            return back()->with('error', 'Judul laporan PKL telah disetujui (ACC) oleh Guru Pembimbing dan sudah terkunci sehingga tidak dapat diubah lagi.');
+        }
+
+        // 2. Siswa hanya dapat mengubah judul laporan (data perusahaan & guru pembimbing hanya dapat dilihat)
         $request->validate([
             'title' => ['required', 'string', 'max:255'],
-            'company_name' => ['required', 'string', 'max:255'],
-            'company_address' => ['nullable', 'string'],
-            'mentor_teacher_id' => ['required', 'exists:users,id'],
+        ], [
+            'title.required' => 'Judul laporan PKL wajib diisi.',
         ]);
 
         $report->update([
             'title' => $request->title,
-            'company_name' => $request->company_name,
-            'company_address' => $request->company_address,
-            'mentor_teacher_id' => $request->mentor_teacher_id,
             'status' => 'submitted', // re-submit after revision
             'title_status' => 'submitted',
             'rejection_note' => null,
