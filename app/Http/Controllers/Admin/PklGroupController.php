@@ -9,6 +9,7 @@ use App\Models\Company;
 use App\Models\Notification;
 use App\Models\PklGroup;
 use App\Models\PklGroupMember;
+use App\Models\PklReport;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -103,6 +104,16 @@ class PklGroupController extends Controller
                 }
             }
 
+            // Sinkronkan laporan PKL siswa yang sudah ada dengan guru pembimbing & DU/DI pilihan admin
+            $group->load('company');
+            PklReport::whereIn('student_id', $request->student_ids)->update([
+                'pkl_group_id' => $group->id,
+                'mentor_teacher_id' => $group->mentor_teacher_id,
+                'company_id' => $group->company_id,
+                'company_name' => $group->company->name ?? 'DUDI',
+                'company_address' => $group->company->address ?? '',
+            ]);
+
             AuditLog::create([
                 'user_id' => Auth::id(),
                 'action' => 'CREATE_PKL_GROUP',
@@ -168,6 +179,16 @@ class PklGroupController extends Controller
                     'is_leader' => ($studentId == $leaderId),
                 ]);
             }
+
+            // Sinkronkan laporan PKL siswa yang sudah ada dengan guru pembimbing & DU/DI pilihan admin
+            $group->load('company');
+            PklReport::whereIn('student_id', $request->student_ids)->update([
+                'pkl_group_id' => $group->id,
+                'mentor_teacher_id' => $group->mentor_teacher_id,
+                'company_id' => $group->company_id,
+                'company_name' => $group->company->name ?? 'DUDI',
+                'company_address' => $group->company->address ?? '',
+            ]);
 
             AuditLog::create([
                 'user_id' => Auth::id(),

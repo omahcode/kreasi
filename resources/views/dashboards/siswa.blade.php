@@ -142,8 +142,22 @@
                     <span class="text-purple-800 text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1">
                         💼 Status Laporan PKL
                     </span>
-                    <h4 class="mb-0 fw-bold text-gray-900 text-capitalize mt-4">
-                        {{ $pklReport->status ?? 'Belum Ada' }}
+                    <h4 class="mb-0 fw-bold text-gray-900 mt-4">
+                        @if($pklReport)
+                            @if($pklReport->status === 'approved' && $pklReport->chapters->where('status', 'approved')->count() >= 5)
+                                Disetujui Final
+                            @elseif($pklReport->status === 'in_progress')
+                                In Progress
+                            @elseif($pklReport->status === 'revision_required')
+                                Perlu Revisi
+                            @elseif($pklReport->status === 'submitted')
+                                Menunggu Review
+                            @else
+                                {{ ucwords(str_replace('_', ' ', $pklReport->status)) }}
+                            @endif
+                        @else
+                            Belum Ada
+                        @endif
                     </h4>
                 </div>
                 <div class="w-52 h-52 rounded-20 bg-white text-purple-600 flex-center flex-shrink-0 text-26 shadow-sm">
@@ -374,7 +388,7 @@
                     <span class="text-12 text-sky-700 d-block">{{ $pklReport->company_name }}</span>
                     <div class="mt-8">
                         <span class="badge bg-white text-sky-800 rounded-pill px-10 py-4 text-11 fw-bold shadow-xs">
-                            Status: {{ strtoupper($pklReport->status) }}
+                            Status: @if($pklReport->status === 'in_progress') In Progress @elseif($pklReport->status === 'revision_required') Perlu Revisi @elseif($pklReport->status === 'submitted') Menunggu Review @elseif($pklReport->status === 'approved' && $pklReport->chapters->where('status', 'approved')->count() >= 5) Disetujui Final @else {{ ucwords(str_replace('_', ' ', $pklReport->status)) }} @endif
                         </span>
                     </div>
                 </div>

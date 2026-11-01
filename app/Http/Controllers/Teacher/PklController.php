@@ -57,6 +57,20 @@ class PklController extends Controller
         $report = PklReport::with(['student.user', 'student.schoolClass', 'chapters', 'mentorTeacher'])
             ->findOrFail($id);
 
+        if ($report->student) {
+            $activeGroup = $report->student->currentPklGroup();
+            if ($activeGroup && $activeGroup->mentor_teacher_id && $report->mentor_teacher_id !== $activeGroup->mentor_teacher_id) {
+                $report->update([
+                    'mentor_teacher_id' => $activeGroup->mentor_teacher_id,
+                    'pkl_group_id' => $activeGroup->id,
+                    'company_id' => $activeGroup->company_id,
+                    'company_name' => $activeGroup->company->name ?? $report->company_name,
+                    'company_address' => $activeGroup->company->address ?? $report->company_address,
+                ]);
+                $report->load('mentorTeacher');
+            }
+        }
+
         $chapterTitles = [
             1 => 'Bab I: Pendahuluan (Latar Belakang, Tujuan, Manfaat)',
             2 => 'Bab II: Gambaran Umum Perusahaan / DUDI',

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Company;
+use App\Models\PklReport;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -119,5 +120,54 @@ class PklGroupTest extends TestCase
             'title' => 'Pengembangan Modul Billing Otomatis pada PT. Solusi Teknologi Nusantara',
             'company_name' => 'PT. Solusi Teknologi Nusantara',
         ]);
+    }
+
+    public function test_admin_updates_pkl_group_mentor_syncs_student_report_and_dashboard_formats_in_progress(): void
+    {
+        $admin = User::where('email', 'admin@kreasi.test')->first();
+        $studentUser = User::where('email', 'ketua@kreasi.test')->first();
+        $student = $studentUser->student;
+
+        // Create an existing report for this student with an initial mentor
+        $initialTeacher = User::where('role', 'guru')->first();
+        $newTeacher = User::factory()->create(['role' => 'guru', 'name' => 'Pak Herri Heriyanto']);
+
+        $report = PklReport::create([
+            'student_id' => $student->id,
+            'title' => 'Sistem Rekayasa Aplikasi PKL',
+            'company_name' => 'PT Awal',
+            'mentor_teacher_id' => $initialTeacher->id,
+            'status' => 'in_progress',
+        ]);
+
+        // Admin updates the PKL group of the student to assign newTeacher
+        $group = $student->currentPklGroup();
+        $this->actingAs($admin);
+        $response = $this->put("/admin/pkl-groups/{$group->id}", [
+            'name' => $group->name,
+            'company_id' => $group->company_id,
+            'mentor_teacher_id' => $newTeacher->id,
+            'student_ids' => [$student->id],
+        ]);
+        $response->assertRedirect('/admin/pkl-groups');
+
+        // Check report in database is synced with newTeacher
+        $this->assertDatabaseHas('pkl_reports', [
+            'id' => $report->id,
+            'mentor_teacher_id' => $newTeacher->id,
+            'pkl_group_id' => $group->id,
+        ]);
+
+        // Student visits dashboard: mentor should match and status should be "In Progress" without underscores
+        $this->actingAs($studentUser);
+        $dashResponse = $this->get('/siswa/dashboard');
+        $dashResponse->assertStatus(200);
+        $dashResponse->assertSee('In Progress');
+        $dashResponse->assertDontSee('In_progress');
+
+        // Student visits PKL index: mentor teacher name displays the admin-assigned mentor
+        $pklResponse = $this->get('/siswa/pkl');
+        $pklResponse->assertStatus(200);
+        $pklResponse->assertSee('Pak Herri Heriyanto');
     }
 }

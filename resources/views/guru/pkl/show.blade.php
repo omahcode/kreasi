@@ -44,7 +44,7 @@
                         <div class="text-13 text-gray-500">
                             NIS: <strong>{{ $report->student->nis }}</strong> &bull; 
                             Kelas: <strong>{{ $report->student->schoolClass->name ?? '-' }}</strong> &bull; 
-                            Guru Pembimbing: <strong class="text-main-600">{{ $report->mentorTeacher->name ?? 'Belum Ditentukan' }}</strong>
+                            Guru Pembimbing: <strong class="text-main-600">{{ $report->student->currentPklGroup()?->mentorTeacher->name ?? $report->mentorTeacher->name ?? 'Belum Ditentukan' }}</strong>
                         </div>
                     </div>
                 </div>

@@ -31,6 +31,41 @@ class PklController extends Controller
         $pklGroup = $student->currentPklGroup();
         if ($pklGroup) {
             $pklGroup->load(['company', 'mentorTeacher', 'students.user']);
+
+            if ($report) {
+                $needsSync = false;
+                $syncData = [];
+
+                if ($pklGroup->mentor_teacher_id && $report->mentor_teacher_id !== $pklGroup->mentor_teacher_id) {
+                    $syncData['mentor_teacher_id'] = $pklGroup->mentor_teacher_id;
+                    $needsSync = true;
+                }
+
+                if ($report->pkl_group_id !== $pklGroup->id) {
+                    $syncData['pkl_group_id'] = $pklGroup->id;
+                    $needsSync = true;
+                }
+
+                if ($pklGroup->company) {
+                    if ($report->company_id !== $pklGroup->company_id) {
+                        $syncData['company_id'] = $pklGroup->company_id;
+                        $needsSync = true;
+                    }
+                    if ($report->company_name !== $pklGroup->company->name) {
+                        $syncData['company_name'] = $pklGroup->company->name;
+                        $needsSync = true;
+                    }
+                    if ($pklGroup->company->address && $report->company_address !== $pklGroup->company->address) {
+                        $syncData['company_address'] = $pklGroup->company->address;
+                        $needsSync = true;
+                    }
+                }
+
+                if ($needsSync) {
+                    $report->update($syncData);
+                    $report->load(['mentorTeacher', 'chapters', 'pklGroup.company', 'pklGroup.students.user']);
+                }
+            }
         }
 
         $teachers = User::where('role', 'guru')->get();

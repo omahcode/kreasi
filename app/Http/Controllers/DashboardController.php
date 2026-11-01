@@ -122,6 +122,41 @@ class DashboardController extends Controller
         $pklGroup = $student->currentPklGroup();
         if ($pklGroup) {
             $pklGroup->load(['company', 'mentorTeacher.teacher', 'students.user', 'students.schoolClass']);
+
+            if ($pklReport) {
+                $needsSync = false;
+                $syncData = [];
+
+                if ($pklGroup->mentor_teacher_id && $pklReport->mentor_teacher_id !== $pklGroup->mentor_teacher_id) {
+                    $syncData['mentor_teacher_id'] = $pklGroup->mentor_teacher_id;
+                    $needsSync = true;
+                }
+
+                if ($pklReport->pkl_group_id !== $pklGroup->id) {
+                    $syncData['pkl_group_id'] = $pklGroup->id;
+                    $needsSync = true;
+                }
+
+                if ($pklGroup->company) {
+                    if ($pklReport->company_id !== $pklGroup->company_id) {
+                        $syncData['company_id'] = $pklGroup->company_id;
+                        $needsSync = true;
+                    }
+                    if ($pklReport->company_name !== $pklGroup->company->name) {
+                        $syncData['company_name'] = $pklGroup->company->name;
+                        $needsSync = true;
+                    }
+                    if ($pklGroup->company->address && $pklReport->company_address !== $pklGroup->company->address) {
+                        $syncData['company_address'] = $pklGroup->company->address;
+                        $needsSync = true;
+                    }
+                }
+
+                if ($needsSync) {
+                    $pklReport->update($syncData);
+                    $pklReport->load(['mentorTeacher', 'chapters']);
+                }
+            }
         }
 
         $recentSubmissions = $student->submissions()->with('project')->latest()->take(5)->get();

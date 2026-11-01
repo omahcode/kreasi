@@ -153,7 +153,7 @@
                         <div>
                             <h5 class="text-16 fw-bold text-gray-900 mb-2">Judul Laporan Sedang Ditinjau Guru</h5>
                             <p class="text-gray-600 text-14 mb-0">
-                                Pengajuan judul Anda sedang dalam antrean verifikasi oleh Guru Pembimbing (<strong>{{ $report->mentorTeacher->name ?? 'Guru RPL' }}</strong>). Anda dapat mulai mengunggah Bab I s/d V setelah judul disetujui.
+                                Pengajuan judul Anda sedang dalam antrean verifikasi oleh Guru Pembimbing (<strong>{{ $pklGroup->mentorTeacher->name ?? $report->mentorTeacher->name ?? 'Guru RPL' }}</strong>). Anda dapat mulai mengunggah Bab I s/d V setelah judul disetujui.
                             </p>
                         </div>
                     </div>
@@ -208,7 +208,7 @@
                         <h4 class="mb-6 fw-bold text-gray-900">{{ $report->title }}</h4>
                         <div class="text-13 text-gray-600">
                             <i class="ph ph-buildings me-2 text-main-600"></i> Mitra Industri: <strong>{{ $report->company_name }}</strong> &bull;
-                            Guru Pembimbing: <strong class="text-main-600">{{ $report->mentorTeacher->name ?? '-' }}</strong>
+                            Guru Pembimbing: <strong class="text-main-600">{{ $pklGroup->mentorTeacher->name ?? $report->mentorTeacher->name ?? '-' }}</strong>
                             @if($report->company_address)
                                 &bull; <span class="text-gray-400">({{ $report->company_address }})</span>
                             @endif
@@ -367,7 +367,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="form-label text-12 text-gray-500 mb-2">Guru Pembimbing</label>
-                                            <input type="text" class="form-control form-control-sm bg-white" value="{{ $report->mentorTeacher->name ?? '-' }}" disabled readonly>
+                                            <input type="text" class="form-control form-control-sm bg-white" value="{{ $pklGroup->mentorTeacher->name ?? $report->mentorTeacher->name ?? '-' }}" disabled readonly>
                                         </div>
                                         <div class="col-12">
                                             <label class="form-label text-12 text-gray-500 mb-2">Alamat Mitra Industri</label>
