@@ -77,8 +77,16 @@ class PklController extends Controller
             'rejection_note' => ['nullable', 'string'],
         ]);
 
-        $report->status = $request->status;
-        $report->rejection_note = $request->rejection_note;
+        if ($request->status === 'approved') {
+            $report->title_status = 'approved';
+            $report->status = 'in_progress';
+            $report->rejection_note = null;
+        } else {
+            $report->title_status = 'revision_required';
+            $report->status = 'revision_required';
+            $report->rejection_note = $request->rejection_note;
+        }
+
         if (! $report->mentor_teacher_id) {
             $report->mentor_teacher_id = Auth::id();
         }
@@ -113,7 +121,11 @@ class PklController extends Controller
 
         AuditLog::record(Auth::id(), 'review_pkl_title', "Meninjau judul PKL siswa {$report->student->user->name}: {$statusLabel}");
 
-        return back()->with('success', "Status judul laporan PKL berhasil diperbarui menjadi {$statusLabel}.");
+        $successMsg = ($request->status === 'approved')
+            ? 'Judul laporan PKL siswa berhasil disetujui. Siswa kini dapat melanjutkan bimbingan Bab I s/d Bab V.'
+            : 'Catatan revisi judul laporan PKL berhasil dikirimkan kepada siswa.';
+
+        return back()->with('success', $successMsg);
     }
 
     public function reviewChapter(Request $request, $chapterId)

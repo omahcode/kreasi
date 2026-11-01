@@ -28,7 +28,11 @@
         $approvedChaptersCount = $report->chapters->where('status', 'approved')->whereNotNull('file')->count();
         $hasPendingOrRevision = $report->chapters->whereIn('status', ['revision_required', 'submitted', 'draft'])->count() > 0;
         $allChaptersUploaded = $report->chapters->count() >= $totalChapters && $report->chapters->every(fn($c) => !empty($c->file));
-        $canFinalApprove = ($approvedChaptersCount >= $totalChapters) && !$hasPendingOrRevision && $allChaptersUploaded && ($report->status !== 'approved');
+        $allChaptersApproved = ($approvedChaptersCount >= $totalChapters) && !$hasPendingOrRevision && $allChaptersUploaded;
+
+        // Strictly only final approved if status is 'approved' AND all 5 chapters are truly approved without revision!
+        $isFinalApproved = ($report->status === 'approved') && $allChaptersApproved;
+        $canFinalApprove = $allChaptersApproved && !$isFinalApproved;
     @endphp
     <div class="col-12">
         <div class="card border border-gray-100 rounded-16 p-24 bg-white">
@@ -45,17 +49,19 @@
                     </div>
                 </div>
                 <div class="text-end">
-                    <span class="badge {{ $report->status === 'approved' ? 'bg-success-50 text-success-700' : 'bg-primary-50 text-primary-700' }} text-13 px-14 py-6 rounded-pill">
-                        Status Laporan: {{ $report->status === 'approved' ? 'DISETUJUI FINAL' : strtoupper($report->status) }}
-                    </span>
-
-                    @if($report->status === 'approved')
+                    @if($isFinalApproved)
+                        <span class="badge bg-success-50 text-success-700 border border-success-200 text-13 px-14 py-6 rounded-pill">
+                            Status Laporan: DISETUJUI FINAL
+                        </span>
                         <div class="mt-8">
-                            <span class="badge bg-success-50 text-success-700 border border-success-200 text-12 px-14 py-6 rounded-pill">
+                            <span class="badge bg-success text-white text-12 px-14 py-6 rounded-pill shadow-xs">
                                 <i class="ph ph-seal-check me-4 text-14"></i> Seluruh Bab Tuntas & Disahkan
                             </span>
                         </div>
                     @elseif($canFinalApprove)
+                        <span class="badge bg-primary-50 text-primary-700 text-13 px-14 py-6 rounded-pill">
+                            Status Laporan: SIAP DISAHKAN
+                        </span>
                         <div class="mt-8">
                             <form method="POST" action="{{ route('guru.pkl.final-approval', $report->id) }}" data-confirm="Sahkan kelulusan dan persetujuan final seluruh laporan PKL siswa ini? Seluruh 5 bab telah disetujui tanpa ada revisi." data-confirm-title="Pengesahan Laporan PKL" data-confirm-btn="Ya, Sahkan!" data-confirm-icon="question">
                                 @csrf
@@ -64,10 +70,31 @@
                                 </button>
                             </form>
                         </div>
-                    @else
+                    @elseif(($report->title_status ?? '') === 'revision_required' || $report->status === 'revision_required')
+                        <span class="badge bg-warning-50 text-warning-700 text-13 px-14 py-6 rounded-pill">
+                            Status Laporan: PERLU REVISI JUDUL
+                        </span>
+                        <div class="mt-8">
+                            <span class="text-12 text-warning-700 d-inline-flex align-items-center gap-4 bg-warning-50 border border-warning-200 rounded-pill px-12 py-5">
+                                <i class="ph ph-warning-circle"></i> Menunggu siswa merevisi judul
+                            </span>
+                        </div>
+                    @elseif(($report->title_status ?? '') === 'approved' || $report->status === 'in_progress' || $report->status === 'approved')
+                        <span class="badge bg-primary-50 text-primary-700 text-13 px-14 py-6 rounded-pill">
+                            Status Laporan: BIMBINGAN BERJALAN
+                        </span>
                         <div class="mt-8">
                             <span class="text-12 text-gray-500 d-inline-flex align-items-center gap-4 bg-gray-50 border border-gray-100 rounded-pill px-12 py-5">
                                 <i class="ph ph-info text-main-600"></i> Pengesahan aktif setelah seluruh 5 bab disetujui ({{ $approvedChaptersCount }}/5)
+                            </span>
+                        </div>
+                    @else
+                        <span class="badge bg-primary-50 text-primary-700 text-13 px-14 py-6 rounded-pill">
+                            Status Laporan: MENUNGGU VERIFIKASI JUDUL
+                        </span>
+                        <div class="mt-8">
+                            <span class="text-12 text-gray-500 d-inline-flex align-items-center gap-4 bg-gray-50 border border-gray-100 rounded-pill px-12 py-5">
+                                <i class="ph ph-clock text-main-600"></i> Silakan verifikasi judul terlebih dahulu
                             </span>
                         </div>
                     @endif
@@ -93,10 +120,16 @@
                 </div>
 
                 <div class="col-md-4 text-md-end">
-                    <!-- Title Verification Actions -->
-                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-16 text-12 mb-8" data-bs-toggle="modal" data-bs-target="#reviewTitleModal">
-                        <i class="ph ph-check-circle me-4"></i> Verifikasi / Revisi Judul
-                    </button>
+                    @if(($report->title_status ?? '') === 'approved')
+                        <span class="badge bg-success-50 text-success-700 border border-success-200 rounded-pill px-16 py-8 text-12 fw-semibold d-inline-flex align-items-center gap-6">
+                            <i class="ph ph-check-circle text-16"></i> Judul Telah Disetujui
+                        </span>
+                    @else
+                        <!-- Title Verification Actions -->
+                        <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-16 text-12 mb-8" data-bs-toggle="modal" data-bs-target="#reviewTitleModal">
+                            <i class="ph ph-check-circle me-4"></i> Verifikasi / Revisi Judul
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>

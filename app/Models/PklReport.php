@@ -20,6 +20,7 @@ class PklReport extends Model
         'start_date',
         'end_date',
         'rejection_note',
+        'title_status',
         'status',
     ];
 

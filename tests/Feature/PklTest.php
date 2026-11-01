@@ -75,8 +75,18 @@ class PklTest extends TestCase
         $response->assertRedirect();
         $this->assertDatabaseHas('pkl_reports', [
             'id' => $report->id,
-            'status' => 'approved',
+            'title_status' => 'approved',
+            'status' => 'in_progress',
         ]);
+
+        // When title is approved, verification button is hidden, and report is in progress
+        $viewResponse = $this->get(route('guru.pkl.show', $report->id));
+        $viewResponse->assertStatus(200);
+        $viewResponse->assertDontSee('Verifikasi / Revisi Judul');
+        $viewResponse->assertSee('Judul Telah Disetujui');
+        $viewResponse->assertDontSee('DISETUJUI FINAL');
+        $viewResponse->assertDontSee('Seluruh Bab Tuntas & Disahkan');
+        $viewResponse->assertSee('BIMBINGAN BERJALAN');
     }
 
     public function test_student_can_upload_pkl_chapter_and_teacher_can_review(): void
@@ -135,7 +145,8 @@ class PklTest extends TestCase
             'title' => 'Sistem Informasi Manajemen Laboratorium',
             'company_name' => 'PT. Inovasi Kreatif',
             'mentor_teacher_id' => $this->guru->id,
-            'status' => 'submitted',
+            'title_status' => 'approved',
+            'status' => 'in_progress',
         ]);
 
         // Create 5 chapters with only 3 approved and 2 in draft/revision
@@ -175,7 +186,8 @@ class PklTest extends TestCase
             'title' => 'Sistem Rekomendasi Portofolio Berbasis Web',
             'company_name' => 'PT. Kode Kreatif',
             'mentor_teacher_id' => $this->guru->id,
-            'status' => 'submitted',
+            'title_status' => 'approved',
+            'status' => 'in_progress',
         ]);
 
         // Create 5 chapters, all uploaded and approved

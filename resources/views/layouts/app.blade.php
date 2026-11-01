@@ -555,16 +555,38 @@
         <!-- Dashboard Content Body -->
         <div class="dashboard-body">
             @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show mb-24 rounded-12" role="alert">
-                    <i class="ph ph-check-circle me-8 text-lg"></i> {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <div class="alert alert-success alert-dismissible fade show mb-20 rounded-16 border-0 shadow-xs bg-success-50 text-success-900 d-flex align-items-center gap-12 py-14 px-20" role="alert">
+                    <span class="w-32 h-32 rounded-circle bg-success text-white flex-center text-18 shrink-0 shadow-xs">
+                        <i class="ph ph-check"></i>
+                    </span>
+                    <div class="text-14 fw-medium flex-grow-1">
+                        {{ session('success') }}
+                    </div>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Tutup"></button>
                 </div>
             @endif
 
             @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show mb-24 rounded-12" role="alert">
-                    <i class="ph ph-x-circle me-8 text-lg"></i> {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <div class="alert alert-danger alert-dismissible fade show mb-20 rounded-16 border-0 shadow-xs bg-danger-50 text-danger-900 d-flex align-items-center gap-12 py-14 px-20" role="alert">
+                    <span class="w-32 h-32 rounded-circle bg-danger text-white flex-center text-18 shrink-0 shadow-xs">
+                        <i class="ph ph-warning-circle"></i>
+                    </span>
+                    <div class="text-14 fw-medium flex-grow-1">
+                        {{ session('error') }}
+                    </div>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Tutup"></button>
+                </div>
+            @endif
+
+            @if (session('status'))
+                <div class="alert alert-info alert-dismissible fade show mb-20 rounded-16 border-0 shadow-xs bg-primary-50 text-primary-900 d-flex align-items-center gap-12 py-14 px-20" role="alert">
+                    <span class="w-32 h-32 rounded-circle bg-primary-600 text-white flex-center text-18 shrink-0 shadow-xs">
+                        <i class="ph ph-info"></i>
+                    </span>
+                    <div class="text-14 fw-medium flex-grow-1">
+                        {{ session('status') }}
+                    </div>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Tutup"></button>
                 </div>
             @endif
 

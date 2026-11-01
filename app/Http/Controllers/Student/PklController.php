@@ -105,6 +105,7 @@ class PklController extends Controller
             'start_date' => $startDate,
             'end_date' => $endDate,
             'status' => 'submitted',
+            'title_status' => 'submitted',
         ]);
 
         // Create 5 chapter draft records
@@ -160,6 +161,7 @@ class PklController extends Controller
             'company_address' => $request->company_address,
             'mentor_teacher_id' => $request->mentor_teacher_id,
             'status' => 'submitted', // re-submit after revision
+            'title_status' => 'submitted',
             'rejection_note' => null,
         ]);
 
