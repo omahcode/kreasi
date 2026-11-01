@@ -117,7 +117,7 @@
                                                     title="Edit Kelas">
                                                 <i class="ph ph-pencil-simple"></i>
                                             </button>
-                                            <form method="POST" action="{{ route('admin.classes.destroy', $c->id) }}" onsubmit="return confirm('Hapus kelas {{ $c->name }}?')">
+                                            <form method="POST" action="{{ route('admin.classes.destroy', $c->id) }}" data-confirm="Hapus kelas {{ $c->name }} beserta seluruh data siswa di dalamnya?" data-confirm-title="Hapus Kelas" data-confirm-btn="Ya, Hapus!">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-outline-danger btn-action-circle" title="Hapus Kelas">

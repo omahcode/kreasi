@@ -109,7 +109,7 @@
                                 <a href="{{ route('guru.projects.edit', $project->id) }}" class="btn btn-sm btn-outline-warning rounded-pill px-10 py-2 text-12" title="Edit">
                                     <i class="ph ph-pencil-simple"></i>
                                 </a>
-                                <form method="POST" action="{{ route('guru.projects.destroy', $project->id) }}" onsubmit="return confirm('Hapus proyek ini beserta seluruh tugas terkait?')">
+                                <form method="POST" action="{{ route('guru.projects.destroy', $project->id) }}" data-confirm="Hapus proyek {{ $project->title }} beserta seluruh tugas dan submission terkait?" data-confirm-title="Hapus Proyek PjBL" data-confirm-btn="Ya, Hapus!">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-10 py-2 text-12" title="Hapus">

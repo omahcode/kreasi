@@ -122,7 +122,7 @@
                                                 </button>
                                             </form>
 
-                                            <form method="POST" action="{{ route('admin.companies.destroy', $company->id) }}" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data mitra industri ini?')">
+                                            <form method="POST" action="{{ route('admin.companies.destroy', $company->id) }}" class="d-inline" data-confirm="Hapus data mitra industri {{ $company->name }}?" data-confirm-title="Hapus Mitra Industri" data-confirm-btn="Ya, Hapus!">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle p-6 w-32 h-32 flex-center" title="Hapus Perusahaan">

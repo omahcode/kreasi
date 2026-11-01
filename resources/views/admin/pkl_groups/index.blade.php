@@ -120,7 +120,7 @@
                                                title="Edit Kelompok">
                                                 <i class="ph ph-pencil-simple text-14"></i>
                                             </a>
-                                            <form method="POST" action="{{ route('admin.pkl-groups.destroy', $group->id) }}" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kelompok PKL ini?')">
+                                            <form method="POST" action="{{ route('admin.pkl-groups.destroy', $group->id) }}" class="d-inline" data-confirm="Hapus kelompok PKL {{ $group->name }}?" data-confirm-title="Hapus Kelompok PKL" data-confirm-btn="Ya, Hapus!">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle p-6 w-32 h-32 flex-center" title="Hapus Kelompok">

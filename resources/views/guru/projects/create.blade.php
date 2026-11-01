@@ -311,7 +311,13 @@
         const autoLeader = document.getElementById('autoGroupAutoLeader').checked;
 
         if (!classId) {
-            alert('Pilih kelas terlebih dahulu.');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Perhatian',
+                text: 'Silakan pilih kelas terlebih dahulu.',
+                confirmButtonColor: '#064A8E',
+                customClass: { popup: 'rounded-24 p-24', confirmButton: 'rounded-pill px-24 py-10 fw-semibold' }
+            });
             return;
         }
 
@@ -344,7 +350,13 @@
             loading.classList.add('d-none');
 
             if (!response.ok || !data.success) {
-                alert(data.message || 'Gagal memproses pembagian kelompok.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Memproses Kelompok',
+                    text: data.message || 'Gagal memproses pembagian kelompok.',
+                    confirmButtonColor: '#dc2626',
+                    customClass: { popup: 'rounded-24 p-24', confirmButton: 'rounded-pill px-24 py-10 fw-semibold' }
+                });
                 return;
             }
 
@@ -356,7 +368,13 @@
             results.classList.remove('d-none');
         } catch (err) {
             loading.classList.add('d-none');
-            alert('Terjadi kesalahan jaringan: ' + err.message);
+            Swal.fire({
+                icon: 'error',
+                title: 'Kesalahan Jaringan',
+                text: 'Terjadi kesalahan jaringan: ' + err.message,
+                confirmButtonColor: '#dc2626',
+                customClass: { popup: 'rounded-24 p-24', confirmButton: 'rounded-pill px-24 py-10 fw-semibold' }
+            });
         }
     }
 
@@ -454,7 +472,13 @@
 
     function batchSubmitProjects() {
         if (!currentAutoGroups.length) {
-            alert('Belum ada susunan kelompok.');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Perhatian',
+                text: 'Belum ada susunan kelompok yang digenerate.',
+                confirmButtonColor: '#064A8E',
+                customClass: { popup: 'rounded-24 p-24', confirmButton: 'rounded-pill px-24 py-10 fw-semibold' }
+            });
             return;
         }
 
@@ -462,58 +486,89 @@
         const descInput = document.querySelector('textarea[name="description"]');
 
         if (!titleInput.value.trim()) {
-            alert('Harap isi Judul Pokok Proyek di formulir terlebih dahulu (misal: "Aplikasi Kasir Toko").');
-            titleInput.focus();
-            const modal = bootstrap.Modal.getInstance(document.getElementById('autoGroupModal'));
-            if (modal) modal.hide();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Judul Diperlukan',
+                text: 'Harap isi Judul Pokok Proyek di formulir terlebih dahulu (misal: "Aplikasi Kasir Toko").',
+                confirmButtonColor: '#064A8E',
+                customClass: { popup: 'rounded-24 p-24', confirmButton: 'rounded-pill px-24 py-10 fw-semibold' }
+            }).then(() => {
+                titleInput.focus();
+                const modal = bootstrap.Modal.getInstance(document.getElementById('autoGroupModal'));
+                if (modal) modal.hide();
+            });
             return;
         }
 
         if (!descInput.value.trim()) {
-            alert('Harap isi Deskripsi Proyek di formulir terlebih dahulu.');
-            descInput.focus();
-            const modal = bootstrap.Modal.getInstance(document.getElementById('autoGroupModal'));
-            if (modal) modal.hide();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Deskripsi Diperlukan',
+                text: 'Harap isi Deskripsi Proyek di formulir terlebih dahulu.',
+                confirmButtonColor: '#064A8E',
+                customClass: { popup: 'rounded-24 p-24', confirmButton: 'rounded-pill px-24 py-10 fw-semibold' }
+            }).then(() => {
+                descInput.focus();
+                const modal = bootstrap.Modal.getInstance(document.getElementById('autoGroupModal'));
+                if (modal) modal.hide();
+            });
             return;
         }
 
-        if (!confirm(`Terbitkan ${currentAutoGroups.length} proyek kelompok sekaligus untuk seluruh kelas?`)) {
-            return;
-        }
+        Swal.fire({
+            title: 'Terbitkan Proyek Kelompok?',
+            text: `Terbitkan ${currentAutoGroups.length} proyek kelompok sekaligus untuk seluruh kelas?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#064A8E',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: '<i class="ph ph-check me-2"></i> Ya, Terbitkan Sekarang!',
+            cancelButtonText: 'Batal',
+            reverseButtons: true,
+            customClass: {
+                popup: 'rounded-24 p-24 shadow-2xl border border-gray-100',
+                title: 'text-18 fw-bold text-gray-900 mb-8',
+                htmlContainer: 'text-14 text-gray-600 mb-20',
+                confirmButton: 'btn btn-main rounded-pill px-20 py-10 fw-semibold',
+                cancelButton: 'btn btn-outline-secondary rounded-pill px-18 py-10 fw-medium me-8'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Create a hidden form to submit batch
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = "{{ route('guru.projects.batch-store') }}";
+                form.style.display = 'none';
 
-        // Create a hidden form to submit batch
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = "{{ route('guru.projects.batch-store') }}";
-        form.style.display = 'none';
+                const csrf = document.createElement('input');
+                csrf.type = 'hidden';
+                csrf.name = '_token';
+                csrf.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                form.appendChild(csrf);
 
-        const csrf = document.createElement('input');
-        csrf.type = 'hidden';
-        csrf.name = '_token';
-        csrf.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        form.appendChild(csrf);
+                const fields = [
+                    { name: 'title_prefix', value: titleInput.value },
+                    { name: 'description', value: descInput.value },
+                    { name: 'goals', value: document.querySelector('textarea[name="goals"]')?.value || '' },
+                    { name: 'instructions', value: document.querySelector('textarea[name="instructions"]')?.value || '' },
+                    { name: 'status', value: document.querySelector('select[name="status"]')?.value || 'active' },
+                    { name: 'deadline', value: document.querySelector('input[name="deadline"]')?.value || '' },
+                    { name: 'rubric', value: document.querySelector('textarea[name="rubric"]')?.value || '' },
+                    { name: 'groups_json', value: JSON.stringify(currentAutoGroups) },
+                ];
 
-        const fields = [
-            { name: 'title_prefix', value: titleInput.value },
-            { name: 'description', value: descInput.value },
-            { name: 'goals', value: document.querySelector('textarea[name="goals"]')?.value || '' },
-            { name: 'instructions', value: document.querySelector('textarea[name="instructions"]')?.value || '' },
-            { name: 'status', value: document.querySelector('select[name="status"]')?.value || 'active' },
-            { name: 'deadline', value: document.querySelector('input[name="deadline"]')?.value || '' },
-            { name: 'rubric', value: document.querySelector('textarea[name="rubric"]')?.value || '' },
-            { name: 'groups_json', value: JSON.stringify(currentAutoGroups) },
-        ];
+                fields.forEach(f => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = f.name;
+                    input.value = f.value;
+                    form.appendChild(input);
+                });
 
-        fields.forEach(f => {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = f.name;
-            input.value = f.value;
-            form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+            }
         });
-
-        document.body.appendChild(form);
-        form.submit();
     }
 
     function toggleLeaderRadio(studentId) {

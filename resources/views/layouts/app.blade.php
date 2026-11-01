@@ -631,6 +631,23 @@
 
     <!-- SweetAlert2 Global Confirm & Toast Handler -->
     <script>
+        // Override native window.alert with SweetAlert2
+        window.alert = function(message) {
+            Swal.fire({
+                title: 'Perhatian',
+                text: message,
+                icon: 'info',
+                confirmButtonText: 'Mengerti',
+                confirmButtonColor: '#064A8E',
+                customClass: {
+                    popup: 'rounded-24 p-24 shadow-xl border border-gray-100',
+                    title: 'text-18 fw-bold text-gray-900 mb-8',
+                    htmlContainer: 'text-14 text-gray-600 mb-20',
+                    confirmButton: 'btn btn-main rounded-pill px-24 py-10 fw-semibold'
+                }
+            });
+        };
+
         document.addEventListener('DOMContentLoaded', function() {
             // Reusable Toast
             window.KreasiToast = Swal.mixin({
@@ -645,60 +662,147 @@
                 }
             });
 
-            @if(session('swal_success'))
+            @if(session('success') || session('swal_success'))
                 window.KreasiToast.fire({
                     icon: 'success',
-                    title: '{{ addslashes(session('swal_success')) }}'
+                    title: '{{ addslashes(session('success') ?? session('swal_success')) }}'
                 });
             @endif
 
-            @if(session('swal_error'))
-                window.KreasiToast.fire({
+            @if(session('error') || session('swal_error'))
+                Swal.fire({
+                    title: 'Terjadi Kesalahan',
+                    text: '{{ addslashes(session('error') ?? session('swal_error')) }}',
                     icon: 'error',
-                    title: '{{ addslashes(session('swal_error')) }}'
+                    confirmButtonText: 'Tutup',
+                    confirmButtonColor: '#dc2626',
+                    customClass: {
+                        popup: 'rounded-24 p-24 shadow-xl border border-gray-100',
+                        title: 'text-18 fw-bold text-gray-900 mb-8',
+                        htmlContainer: 'text-14 text-gray-600 mb-20',
+                        confirmButton: 'btn btn-danger rounded-pill px-24 py-10 fw-semibold'
+                    }
                 });
             @endif
 
-            // Intercept [data-confirm] buttons / forms
-            document.addEventListener('click', function(e) {
-                const target = e.target.closest('[data-confirm]');
-                if (!target) return;
+            @if(session('status'))
+                window.KreasiToast.fire({
+                    icon: 'info',
+                    title: '{{ addslashes(session('status')) }}'
+                });
+            @endif
+
+            // Automatically upgrade all forms with onsubmit containing confirm(...) to data-confirm
+            function upgradeConfirmForms() {
+                document.querySelectorAll('form').forEach(form => {
+                    const onsubmitAttr = form.getAttribute('onsubmit');
+                    if (onsubmitAttr && onsubmitAttr.includes('confirm(')) {
+                        const match = onsubmitAttr.match(/confirm\(\s*['"`](.*?)['"`]\s*\)/s);
+                        const message = match ? match[1] : 'Apakah Anda yakin ingin melanjutkan tindakan ini?';
+                        form.removeAttribute('onsubmit');
+                        form.setAttribute('data-confirm', message);
+
+                        const isDelete = form.querySelector('input[name="_method"][value="DELETE"]') || form.action.includes('destroy') || form.action.includes('delete') || message.toLowerCase().includes('hapus');
+                        if (isDelete) {
+                            form.setAttribute('data-confirm-title', 'Konfirmasi Hapus');
+                            form.setAttribute('data-confirm-icon', 'warning');
+                            form.setAttribute('data-confirm-btn', 'Ya, Hapus!');
+                        }
+                    }
+                });
+            }
+            upgradeConfirmForms();
+
+            // Intercept submit on forms that require confirmation
+            document.addEventListener('submit', function(e) {
+                const form = e.target;
+                if (!form || !form.hasAttribute('data-confirm') || form.dataset.confirmed === 'true') {
+                    return;
+                }
 
                 e.preventDefault();
-                const message = target.getAttribute('data-confirm') || 'Apakah Anda yakin ingin melanjutkan tindakan ini?';
-                const title = target.getAttribute('data-confirm-title') || 'Konfirmasi Tindakan';
-                const icon = target.getAttribute('data-confirm-icon') || 'warning';
-                const confirmBtnText = target.getAttribute('data-confirm-btn') || 'Ya, Lanjutkan';
-                const isDangerous = target.classList.contains('btn-danger') || target.classList.contains('btn-outline-danger') || icon === 'warning';
+                e.stopPropagation();
+
+                const message = form.getAttribute('data-confirm') || 'Apakah Anda yakin ingin melanjutkan tindakan ini?';
+                const title = form.getAttribute('data-confirm-title') || 'Konfirmasi Tindakan';
+                const icon = form.getAttribute('data-confirm-icon') || 'warning';
+                const confirmBtnText = form.getAttribute('data-confirm-btn') || 'Ya, Lanjutkan';
+                const isDelete = form.querySelector('input[name="_method"][value="DELETE"]') || form.action.includes('destroy') || form.action.includes('delete') || confirmBtnText.toLowerCase().includes('hapus') || icon === 'warning';
 
                 Swal.fire({
                     title: title,
                     text: message,
                     icon: icon,
                     showCancelButton: true,
-                    confirmButtonText: confirmBtnText,
+                    confirmButtonColor: isDelete ? '#dc2626' : '#064A8E',
+                    cancelButtonColor: '#64748b',
+                    confirmButtonText: '<i class="ph ph-check me-2"></i> ' + confirmBtnText,
                     cancelButtonText: 'Batal',
                     reverseButtons: true,
                     focusCancel: true,
-                    buttonsStyling: false,
                     customClass: {
-                        popup: 'rounded-16 shadow-lg border border-gray-100 p-24',
-                        title: 'text-18 fw-bold text-gray-800 mb-8',
+                        popup: 'rounded-24 p-24 shadow-2xl border border-gray-100',
+                        title: 'text-18 fw-bold text-gray-900 mb-8',
                         htmlContainer: 'text-14 text-gray-600 mb-20',
-                        confirmButton: (isDangerous ? 'btn btn-danger' : 'btn btn-main') + ' rounded-pill px-24 py-10 fw-semibold',
-                        cancelButton: 'btn btn-outline-secondary rounded-pill px-20 py-10 fw-medium me-12',
-                        actions: 'gap-8'
+                        confirmButton: (isDelete ? 'btn btn-danger' : 'btn btn-main') + ' rounded-pill px-20 py-10 fw-semibold shadow-xs',
+                        cancelButton: 'btn btn-outline-secondary rounded-pill px-18 py-10 fw-medium me-8'
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        const form = target.closest('form');
-                        if (form) {
-                            form.submit();
-                        } else if (target.tagName === 'A' && target.href && target.href !== '#') {
-                            window.location.href = target.href;
-                        }
+                        form.dataset.confirmed = 'true';
+                        form.submit();
                     }
                 });
+            }, true);
+
+            // Intercept clicks on links or non-form elements with data-confirm
+            document.addEventListener('click', function(e) {
+                const target = e.target.closest('[data-confirm]');
+                if (!target || target.tagName === 'FORM') return;
+
+                const parentForm = target.closest('form');
+                if (parentForm && target.type === 'submit') {
+                    // Let form submit event handle it
+                    if (!parentForm.hasAttribute('data-confirm')) {
+                        parentForm.setAttribute('data-confirm', target.getAttribute('data-confirm'));
+                        if (target.hasAttribute('data-confirm-title')) parentForm.setAttribute('data-confirm-title', target.getAttribute('data-confirm-title'));
+                        if (target.hasAttribute('data-confirm-btn')) parentForm.setAttribute('data-confirm-btn', target.getAttribute('data-confirm-btn'));
+                        if (target.hasAttribute('data-confirm-icon')) parentForm.setAttribute('data-confirm-icon', target.getAttribute('data-confirm-icon'));
+                    }
+                    return;
+                }
+
+                if (target.tagName === 'A' && target.href && target.href !== '#' && target.dataset.confirmed !== 'true') {
+                    e.preventDefault();
+                    const message = target.getAttribute('data-confirm');
+                    const title = target.getAttribute('data-confirm-title') || 'Konfirmasi Tindakan';
+                    const icon = target.getAttribute('data-confirm-icon') || 'question';
+                    const confirmBtnText = target.getAttribute('data-confirm-btn') || 'Ya, Lanjutkan';
+
+                    Swal.fire({
+                        title: title,
+                        text: message,
+                        icon: icon,
+                        showCancelButton: true,
+                        confirmButtonColor: '#064A8E',
+                        cancelButtonColor: '#64748b',
+                        confirmButtonText: confirmBtnText,
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true,
+                        customClass: {
+                            popup: 'rounded-24 p-24 shadow-2xl border border-gray-100',
+                            title: 'text-18 fw-bold text-gray-900 mb-8',
+                            htmlContainer: 'text-14 text-gray-600 mb-20',
+                            confirmButton: 'btn btn-main rounded-pill px-20 py-10 fw-semibold',
+                            cancelButton: 'btn btn-outline-secondary rounded-pill px-18 py-10 fw-medium me-8'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            target.dataset.confirmed = 'true';
+                            window.location.href = target.href;
+                        }
+                    });
+                }
             });
         });
     </script>

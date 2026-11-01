@@ -43,7 +43,7 @@
                     </span>
                     @if($report->status !== 'approved')
                         <div class="mt-8">
-                            <form method="POST" action="{{ route('guru.pkl.final-approval', $report->id) }}" onsubmit="return confirm('Sahkan kelulusan dan persetujuan final seluruh laporan PKL siswa ini?')">
+                            <form method="POST" action="{{ route('guru.pkl.final-approval', $report->id) }}" data-confirm="Sahkan kelulusan dan persetujuan final seluruh laporan PKL siswa ini?" data-confirm-title="Pengesahan Laporan PKL" data-confirm-btn="Ya, Sahkan!" data-confirm-icon="question">
                                 @csrf
                                 <button type="submit" class="btn btn-sm btn-success rounded-pill px-16 text-12">
                                     <i class="ph ph-seal-check me-4"></i> Sahkan Persetujuan Final Laporan
