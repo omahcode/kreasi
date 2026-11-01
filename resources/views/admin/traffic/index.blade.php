@@ -228,40 +228,48 @@
         </div>
     </div>
 
-    <!-- Storage Usage & Largest Files Section -->
+    <!-- Storage Usage & Detail Section -->
     <div class="row g-20 mb-24">
         <!-- Storage Breakdown by Category -->
-        <div class="col-xl-6">
+        <div class="col-xl-5">
             <div class="card border border-gray-100 rounded-16 bg-white p-24 h-100 shadow-none">
                 <div class="flex-between flex-wrap gap-12 mb-20">
                     <div>
-                        <h5 class="mb-4 text-16 fw-bold text-gray-800">Analisis Kapasitas Storage Disk</h5>
-                        <p class="text-gray-400 text-13 mb-0">Rincian ruang penyimpanan berdasarkan kategori berkas sistem.</p>
+                        <h5 class="mb-4 text-16 fw-bold text-gray-800">Total Penggunaan Storage Disk</h5>
+                        <p class="text-gray-400 text-13 mb-0">Total ruang penyimpanan dan rincian per kategori berkas.</p>
                     </div>
                     <span class="badge bg-main-50 text-main-600 border border-main-200 px-12 py-6 rounded-pill text-12 fw-semibold">
-                        {{ $storage['total_formatted'] }} Terpakai
+                        {{ $storage['total_formatted'] }}
                     </span>
                 </div>
 
-                <!-- Disk Meter Bar -->
-                <div class="p-16 rounded-12 bg-gray-50 border border-gray-100 mb-20">
-                    <div class="flex-between text-13 mb-6">
-                        <span class="text-gray-600 fw-medium">Alokasi Kuota Storage (5 GB Target)</span>
-                        <span class="fw-bold text-gray-800">{{ $storage['quota_percentage'] }}% ({{ $storage['total_formatted'] }} / {{ $storage['quota_formatted'] }})</span>
-                    </div>
-                    <div class="progress h-8 rounded-pill bg-gray-200">
-                        <div class="progress-bar bg-main-600 rounded-pill" role="progressbar" style="width: {{ max(1, $storage['quota_percentage']) }}%"></div>
-                    </div>
-                    <div class="flex-between text-11 text-gray-400 mt-6">
-                        <span>0 GB</span>
-                        <span>5.00 GB</span>
+                <!-- Total Storage Summary Card (Tanpa Alokasi Kuota Khusus) -->
+                <div class="p-20 rounded-16 bg-main-50 border border-main-100 mb-20">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-12">
+                        <div class="d-flex align-items-center gap-12">
+                            <div class="w-48 h-48 rounded-12 bg-main-600 text-white flex-center text-24 shadow-xs flex-shrink-0">
+                                <i class="ph ph-hard-drives"></i>
+                            </div>
+                            <div>
+                                <span class="text-12 text-main-700 fw-semibold d-block">Total Terpakai di Server</span>
+                                <h3 class="text-22 fw-bold text-gray-900 mb-0">{{ $storage['total_formatted'] }}</h3>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-white text-main-700 border border-main-200 px-12 py-6 rounded-pill text-12 fw-semibold">
+                                {{ $storage['total_files'] }} Berkas
+                            </span>
+                            <span class="d-block text-11 text-gray-500 mt-4">Direktori public storage</span>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Category Breakdown Rows -->
-                <div class="d-flex flex-column gap-16">
+                <div class="d-flex flex-column gap-12">
                     @foreach($storage['categories'] as $catKey => $cat)
-                        <div class="flex-between align-items-center gap-16 p-12 rounded-12 border border-gray-100 hover-bg-gray-50 transition-2">
+                        <div class="storage-category-card flex-between align-items-center gap-16 p-12 rounded-12 border border-gray-100 hover-bg-gray-50 transition-2 cursor-pointer" 
+                             data-category="{{ $catKey }}" 
+                             title="Klik untuk melihat berkas kategori ini">
                             <div class="flex-align gap-12">
                                 <div class="w-40 h-40 rounded-10 bg-{{ $cat['color'] }}-50 text-{{ $cat['color'] }}-600 flex-center flex-shrink-0 text-20">
                                     <i class="ph {{ $cat['icon'] }}"></i>
@@ -281,33 +289,63 @@
             </div>
         </div>
 
-        <!-- 10 Largest Files in Storage -->
-        <div class="col-xl-6">
-            <div class="card border border-gray-100 rounded-16 bg-white p-24 h-100 shadow-none">
-                <div class="flex-between flex-wrap gap-12 mb-20">
+        <!-- Detail Seluruh Berkas di Storage -->
+        <div class="col-xl-7">
+            <div class="card border border-gray-100 rounded-16 bg-white p-24 h-100 shadow-none d-flex flex-column">
+                <div class="flex-between flex-wrap gap-12 mb-16">
                     <div>
-                        <h5 class="mb-4 text-16 fw-bold text-gray-800">10 Berkas Terbesar di Server</h5>
-                        <p class="text-gray-400 text-13 mb-0">Pantau file dengan konsumsi storage terbesar untuk optimalisasi.</p>
+                        <h5 class="mb-4 text-16 fw-bold text-gray-800">Detail Seluruh Berkas di Storage</h5>
+                        <p class="text-gray-400 text-13 mb-0">Inspeksi, pratinjau, dan unduh seluruh berkas yang tersimpan.</p>
                     </div>
-                    <a href="{{ route('admin.student-progress.index') }}" class="text-13 text-main-600 hover-text-main-700 fw-semibold flex-align gap-4">
-                        <span>Lihat Semua Berkas</span>
-                        <i class="ph ph-arrow-right"></i>
-                    </a>
+                    <div class="d-flex align-items-center gap-8">
+                        <span id="storageFilteredCount" class="badge bg-gray-100 text-gray-700 text-12 px-12 py-6 rounded-pill fw-semibold">
+                            {{ $storage['total_files'] }} Berkas
+                        </span>
+                        <a href="{{ route('admin.student-progress.index') }}" class="text-13 text-main-600 hover-text-main-700 fw-semibold flex-align gap-4">
+                            <span>Hub Berkas Siswa</span>
+                            <i class="ph ph-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
 
-                @if(count($storage['largest_files']) > 0)
-                    <div class="table-responsive">
+                <!-- Filter Pills & Search -->
+                <div class="row g-2 mb-16 align-items-center">
+                    <div class="col-md-7">
+                        <div class="d-flex gap-4 flex-wrap">
+                            <button type="button" class="btn btn-sm btn-main storage-filter-btn rounded-pill px-12 py-4 text-11" data-filter="all">Semua</button>
+                            <button type="button" class="btn btn-sm btn-outline-gray storage-filter-btn rounded-pill px-12 py-4 text-11" data-filter="pkl_chapters">PKL</button>
+                            <button type="button" class="btn btn-sm btn-outline-gray storage-filter-btn rounded-pill px-12 py-4 text-11" data-filter="avatars">Foto Profil</button>
+                            <button type="button" class="btn btn-sm btn-outline-gray storage-filter-btn rounded-pill px-12 py-4 text-11" data-filter="project_submissions">Submisi</button>
+                            <button type="button" class="btn btn-sm btn-outline-gray storage-filter-btn rounded-pill px-12 py-4 text-11" data-filter="project_attachments">Lampiran</button>
+                            <button type="button" class="btn btn-sm btn-outline-gray storage-filter-btn rounded-pill px-12 py-4 text-11" data-filter="other">Lainnya</button>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="position-relative">
+                            <input type="text" id="storageFileSearch" class="form-control form-control-sm border-gray-100 rounded-pill ps-32 text-12" placeholder="Cari nama / path berkas...">
+                            <span class="position-absolute top-50 translate-middle-y ms-12 text-gray-400 d-flex pointer-event-none">
+                                <i class="ph ph-magnifying-glass"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                @if(count($storage['all_files']) > 0)
+                    <div class="table-responsive flex-grow-1" style="max-height: 480px; overflow-y: auto;">
                         <table class="table table-borderless align-middle mb-0">
-                            <thead>
-                                <tr class="border-bottom border-gray-100 text-gray-400 text-12 text-uppercase">
-                                    <th class="ps-0 py-8">Nama Berkas</th>
+                            <thead class="sticky-top bg-white border-bottom border-gray-100 text-gray-400 text-12 text-uppercase">
+                                <tr>
+                                    <th class="ps-0 py-8">Nama & Path Berkas</th>
                                     <th class="py-8">Kategori</th>
-                                    <th class="py-8 text-end pe-0">Ukuran</th>
+                                    <th class="py-8 text-end">Ukuran</th>
+                                    <th class="py-8 text-end pe-0">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @foreach($storage['largest_files'] as $f)
-                                    <tr class="border-bottom border-gray-50 hover-bg-gray-50 transition-1">
+                            <tbody id="storageFileListBody">
+                                @foreach($storage['all_files'] as $idx => $f)
+                                    <tr class="storage-file-row border-bottom border-gray-50 hover-bg-gray-50 transition-1"
+                                        data-category="{{ $f['category_key'] }}"
+                                        data-search="{{ strtolower($f['name'] . ' ' . $f['relative_path'] . ' ' . $f['category']) }}">
                                         <td class="ps-0 py-10">
                                             <div class="flex-align gap-10">
                                                 <div class="w-32 h-32 rounded-8 bg-gray-100 text-gray-600 flex-center flex-shrink-0 text-16">
@@ -317,33 +355,117 @@
                                                         <i class="ph ph-archive text-warning-600"></i>
                                                     @elseif(in_array($f['extension'], ['jpg', 'jpeg', 'png', 'webp']))
                                                         <i class="ph ph-image text-info-600"></i>
+                                                    @elseif(in_array($f['extension'], ['doc', 'docx']))
+                                                        <i class="ph ph-file-doc text-primary-600"></i>
                                                     @else
                                                         <i class="ph ph-file text-gray-600"></i>
                                                     @endif
                                                 </div>
-                                                <div style="max-width: 200px;">
+                                                <div style="max-width: 210px;">
                                                     <span class="d-block text-13 fw-semibold text-gray-800 text-truncate" title="{{ $f['name'] }}">
                                                         {{ $f['name'] }}
                                                     </span>
-                                                    <span class="text-gray-400 text-11">{{ $f['modified_at']->format('d M Y, H:i') }}</span>
+                                                    <span class="text-gray-400 text-11 text-truncate d-block" title="{{ $f['relative_path'] }}">
+                                                        {{ $f['relative_path'] }}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="py-10">
                                             <span class="badge bg-{{ $f['color'] }}-50 text-{{ $f['color'] }}-700 border border-{{ $f['color'] }}-200 px-8 py-3 rounded-pill text-11 fw-medium">
-                                                {{ Str::limit($f['category'], 18) }}
+                                                {{ Str::limit($f['category'], 16) }}
                                             </span>
                                         </td>
-                                        <td class="py-10 text-end pe-0">
-                                            <span class="text-13 fw-bold text-gray-800">{{ $f['size_formatted'] }}</span>
+                                        <td class="py-10 text-end">
+                                            <span class="text-12 fw-bold text-gray-800 d-block">{{ $f['size_formatted'] }}</span>
+                                            <span class="text-10 text-gray-400">{{ $f['modified_at']->format('d/m/y H:i') }}</span>
+                                        </td>
+                                        <td class="py-10 text-end pe-0 text-nowrap">
+                                            <div class="d-inline-flex gap-4">
+                                                <a href="{{ $f['url'] }}" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-8 py-2 text-11" title="Lihat / Buka Berkas">
+                                                    <i class="ph ph-eye me-2"></i> Lihat
+                                                </a>
+                                                <a href="{{ $f['url'] }}" download class="btn btn-sm btn-outline-secondary rounded-pill px-8 py-2 text-11" title="Unduh Berkas">
+                                                    <i class="ph ph-download-simple"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-sm btn-light border rounded-pill px-8 py-2 text-11" data-bs-toggle="modal" data-bs-target="#fileModal{{ $idx }}" title="Detail Info">
+                                                    <i class="ph ph-info"></i>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
+
+                                    <!-- Modal Detail Berkas -->
+                                    <div class="modal fade" id="fileModal{{ $idx }}" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content rounded-16 border-0 shadow-lg">
+                                                <div class="modal-header border-bottom border-gray-100 py-16 px-24">
+                                                    <div class="d-flex align-items-center gap-10">
+                                                        <span class="w-36 h-36 rounded-circle bg-main-50 text-main-600 flex-center text-18">
+                                                            <i class="ph ph-file-text"></i>
+                                                        </span>
+                                                        <div>
+                                                            <h5 class="modal-title fw-bold text-16 mb-0">Detail Berkas Storage</h5>
+                                                            <span class="text-12 text-gray-400">Informasi berkas pada direktori server</span>
+                                                        </div>
+                                                    </div>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body p-24">
+                                                    <div class="p-16 rounded-12 bg-gray-50 border border-gray-100 mb-16">
+                                                        <label class="text-11 text-gray-400 text-uppercase fw-bold d-block mb-4">Nama Berkas</label>
+                                                        <div class="text-14 fw-bold text-gray-900 text-break">{{ $f['name'] }}</div>
+                                                    </div>
+
+                                                    <div class="row g-3">
+                                                        <div class="col-6">
+                                                            <label class="text-11 text-gray-400 text-uppercase fw-bold d-block mb-2">Kategori</label>
+                                                            <span class="badge bg-{{ $f['color'] }}-50 text-{{ $f['color'] }}-700 border border-{{ $f['color'] }}-200 px-10 py-4 rounded-pill text-12">
+                                                                {{ $f['category'] }}
+                                                            </span>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label class="text-11 text-gray-400 text-uppercase fw-bold d-block mb-2">Format / Ekstensi</label>
+                                                            <span class="text-13 fw-semibold text-gray-800">.{{ strtoupper($f['extension']) ?: '-' }}</span>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label class="text-11 text-gray-400 text-uppercase fw-bold d-block mb-2">Ukuran Berkas</label>
+                                                            <div class="text-13 fw-bold text-gray-900">{{ $f['size_formatted'] }} <small class="text-gray-400 font-monospace">({{ number_format($f['size']) }} bytes)</small></div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label class="text-11 text-gray-400 text-uppercase fw-bold d-block mb-2">Terakhir Diubah</label>
+                                                            <div class="text-13 text-gray-800">{{ $f['modified_at']->isoFormat('D MMMM Y, HH:mm') }}</div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <label class="text-11 text-gray-400 text-uppercase fw-bold d-block mb-2">Path Lengkap Storage</label>
+                                                            <code class="d-block p-10 rounded-8 bg-gray-100 text-12 text-break font-monospace">storage/app/public/{{ $f['relative_path'] }}</code>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer border-top border-gray-100 py-12 px-24 flex-between">
+                                                    <a href="{{ $f['url'] }}" download class="btn btn-outline-secondary rounded-pill px-16 text-12">
+                                                        <i class="ph ph-download-simple me-2"></i> Unduh
+                                                    </a>
+                                                    <div class="d-flex gap-8">
+                                                        <button type="button" class="btn btn-outline-gray rounded-pill px-16 text-12" data-bs-dismiss="modal">Tutup</button>
+                                                        <a href="{{ $f['url'] }}" target="_blank" class="btn btn-main rounded-pill px-18 text-12">
+                                                            <i class="ph ph-arrow-square-out me-2"></i> Buka / Pratinjau
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endforeach
                             </tbody>
                         </table>
+                        <div id="storageEmptySearch" class="text-center py-32 d-none">
+                            <i class="ph ph-magnifying-glass text-32 text-gray-300 mb-8 d-block"></i>
+                            <span class="text-gray-500 text-13">Tidak ada berkas yang sesuai dengan kata kunci pencarian atau filter.</span>
+                        </div>
                     </div>
                 @else
-                    <div class="text-center py-40">
+                    <div class="text-center py-40 my-auto">
                         <i class="ph ph-folder-dashed text-48 text-gray-300 mb-8 d-block"></i>
                         <span class="text-gray-500 text-14">Belum ada berkas yang diunggah ke storage sistem.</span>
                     </div>
@@ -505,6 +627,73 @@
 
         const chart = new ApexCharts(document.querySelector("#trafficDailyChart"), options);
         chart.render();
+
+        // Storage files live search and category filter
+        const searchInput = document.getElementById('storageFileSearch');
+        const filterButtons = document.querySelectorAll('.storage-filter-btn');
+        const categoryCards = document.querySelectorAll('.storage-category-card');
+        const fileRows = document.querySelectorAll('.storage-file-row');
+        const emptyRow = document.getElementById('storageEmptySearch');
+        const countBadge = document.getElementById('storageFilteredCount');
+
+        let currentCategory = 'all';
+        let currentSearch = '';
+
+        function filterFiles() {
+            let visibleCount = 0;
+            fileRows.forEach(row => {
+                const rowCat = row.getAttribute('data-category');
+                const rowText = row.getAttribute('data-search') ? row.getAttribute('data-search').toLowerCase() : '';
+
+                const matchCat = (currentCategory === 'all' || rowCat === currentCategory);
+                const matchSearch = (!currentSearch || rowText.includes(currentSearch));
+
+                if (matchCat && matchSearch) {
+                    row.classList.remove('d-none');
+                    visibleCount++;
+                } else {
+                    row.classList.add('d-none');
+                }
+            });
+
+            if (emptyRow) {
+                emptyRow.classList.toggle('d-none', visibleCount > 0);
+            }
+            if (countBadge) {
+                countBadge.textContent = visibleCount + ' Berkas';
+            }
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                currentSearch = this.value.trim().toLowerCase();
+                filterFiles();
+            });
+        }
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterButtons.forEach(b => {
+                    b.classList.remove('btn-main');
+                    b.classList.add('btn-outline-gray');
+                });
+                this.classList.remove('btn-outline-gray');
+                this.classList.add('btn-main');
+
+                currentCategory = this.getAttribute('data-filter');
+                filterFiles();
+            });
+        });
+
+        categoryCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const cat = this.getAttribute('data-category');
+                const targetBtn = document.querySelector(`.storage-filter-btn[data-filter="${cat}"]`);
+                if (targetBtn) {
+                    targetBtn.click();
+                }
+            });
+        });
     });
 </script>
 @endpush

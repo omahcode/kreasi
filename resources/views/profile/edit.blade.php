@@ -247,10 +247,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     showConfirmButton: false,
                     timer: 3500,
                     timerProgressBar: true,
+                    width: 'auto',
+                    customClass: {
+                        popup: 'rounded-16 shadow-lg border border-gray-100 py-12 px-18',
+                        title: 'text-14 fw-semibold text-gray-800'
+                    }
                 });
                 Toast.fire({
                     icon: 'success',
-                    title: `Foto berhasil dikompres ke ${compressedKb} KB!`
+                    title: `Foto berhasil dikompres (${compressedKb} KB)`
                 });
             });
         } else {

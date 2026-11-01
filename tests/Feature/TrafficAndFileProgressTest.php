@@ -45,8 +45,8 @@ class TrafficAndFileProgressTest extends TestCase
         $response = $this->get('/admin/traffic');
         $response->assertStatus(200);
         $response->assertSee('Total Akses Hari Ini');
-        $response->assertSee('Analisis Kapasitas Storage Disk');
-        $response->assertSee('10 Berkas Terbesar di Server');
+        $response->assertSee('Total Penggunaan Storage Disk');
+        $response->assertSee('Detail Seluruh Berkas di Storage');
     }
 
     public function test_admin_can_clear_old_traffic_logs(): void

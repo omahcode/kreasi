@@ -189,8 +189,10 @@ class TrafficMonitoringController extends Controller
                 $allFilesList[] = [
                     'name' => $file->getFilename(),
                     'relative_path' => $relPath,
+                    'url' => asset('storage/'.$relPath),
                     'size' => $size,
                     'size_formatted' => $this->formatBytes($size),
+                    'category_key' => $catKey,
                     'category' => $categories[$catKey]['label'],
                     'color' => $categories[$catKey]['color'],
                     'extension' => strtolower($file->getExtension()),
@@ -201,7 +203,7 @@ class TrafficMonitoringController extends Controller
             // fallback
         }
 
-        // Sort largest 10 files
+        // Sort largest to smallest
         usort($allFilesList, fn ($a, $b) => $b['size'] <=> $a['size']);
         $largestFiles = array_slice($allFilesList, 0, 10);
 
@@ -211,19 +213,13 @@ class TrafficMonitoringController extends Controller
             $cat['percentage'] = $totalBytes > 0 ? round(($cat['bytes'] / $totalBytes) * 100, 1) : 0;
         }
 
-        // Disk Capacity Check (Simulated or Real)
-        $quotaBytes = 5 * 1024 * 1024 * 1024; // 5 GB default application storage quota
-        $quotaPercentage = min(100, round(($totalBytes / $quotaBytes) * 100, 2));
-
         return [
             'total_bytes' => $totalBytes,
             'total_formatted' => $this->formatBytes($totalBytes),
             'total_files' => $totalFiles,
             'categories' => $categories,
+            'all_files' => $allFilesList,
             'largest_files' => $largestFiles,
-            'quota_bytes' => $quotaBytes,
-            'quota_formatted' => $this->formatBytes($quotaBytes),
-            'quota_percentage' => $quotaPercentage,
         ];
     }
 

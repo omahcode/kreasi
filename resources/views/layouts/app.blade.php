@@ -236,6 +236,23 @@
             justify-content: center !important;
             font-size: 14px !important;
         }
+
+        /* Clean SweetAlert Toast Styling (Prevents awkward single-word wrapping) */
+        .swal2-toast {
+            width: auto !important;
+            min-width: 320px !important;
+            max-width: 500px !important;
+            padding: 12px 18px !important;
+            border-radius: 14px !important;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+        }
+        .swal2-toast .swal2-title {
+            white-space: nowrap !important;
+            font-size: 13.5px !important;
+            font-weight: 600 !important;
+            margin: 0 !important;
+            padding: 0 8px !important;
+        }
         /* Mobile Bottom Navigation */
         @media (max-width: 991.98px) {
             .mobile-bottom-nav {
@@ -677,6 +694,11 @@
                 showConfirmButton: false,
                 timer: 3500,
                 timerProgressBar: true,
+                width: 'auto',
+                customClass: {
+                    popup: 'rounded-16 shadow-lg border border-gray-100 py-12 px-18',
+                    title: 'text-13 fw-semibold text-gray-800'
+                },
                 didOpen: (toast) => {
                     toast.addEventListener('mouseenter', Swal.stopTimer);
                     toast.addEventListener('mouseleave', Swal.resumeTimer);
