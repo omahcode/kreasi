@@ -16,7 +16,7 @@ class LogbookController extends Controller
         $user = Auth::user();
         $student = $user->student;
 
-        if (!$student) {
+        if (! $student) {
             return view('siswa.logbook.index', ['logs' => collect(), 'myProjects' => collect()]);
         }
 
@@ -35,7 +35,7 @@ class LogbookController extends Controller
         $user = Auth::user();
         $student = $user->student;
 
-        if (!$student) {
+        if (! $student) {
             return redirect()->route('siswa.dashboard')->with('error', 'Profil siswa Anda belum terhubung.');
         }
 
@@ -53,7 +53,7 @@ class LogbookController extends Controller
         $user = Auth::user();
         $student = $user->student;
 
-        if (!$student) {
+        if (! $student) {
             abort(403, 'Akses tidak diizinkan.');
         }
 
@@ -70,7 +70,7 @@ class LogbookController extends Controller
 
         // Check if student belongs to project
         $isMember = $student->projects()->where('projects.id', $request->project_id)->exists();
-        if (!$isMember) {
+        if (! $isMember) {
             return back()->withInput()->with('error', 'Anda bukan anggota dari proyek ini.');
         }
 

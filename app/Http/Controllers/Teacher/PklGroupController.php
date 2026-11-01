@@ -27,8 +27,8 @@ class PklGroupController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhereHas('company', fn($cq) => $cq->where('name', 'like', "%{$search}%"))
-                  ->orWhereHas('students.user', fn($sq) => $sq->where('name', 'like', "%{$search}%"));
+                    ->orWhereHas('company', fn ($cq) => $cq->where('name', 'like', "%{$search}%"))
+                    ->orWhereHas('students.user', fn ($sq) => $sq->where('name', 'like', "%{$search}%"));
             });
         }
 
@@ -92,7 +92,7 @@ class PklGroupController extends Controller
                     Notification::create([
                         'user_id' => $student->user->id,
                         'title' => 'Ploting Kelompok PKL',
-                        'message' => "Guru Pembimbing " . Auth::user()->name . " telah memplot Anda ke kelompok {$group->name}.",
+                        'message' => 'Guru Pembimbing '.Auth::user()->name." telah memplot Anda ke kelompok {$group->name}.",
                         'type' => 'pkl',
                         'link' => route('siswa.pkl.index'),
                     ]);

@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\AcademicYear;
+use App\Models\Company;
+use App\Models\PklGroup;
+use App\Models\PklGroupMember;
 use App\Models\SchoolClass;
 use App\Models\Student;
 use App\Models\Teacher;
@@ -122,7 +125,7 @@ class KreasiInitialSeeder extends Seeder
         );
 
         // 7. Mitra Industri DU/DI (dimasukkan oleh Admin)
-        $company1 = \App\Models\Company::firstOrCreate(
+        $company1 = Company::firstOrCreate(
             ['name' => 'PT. Solusi Teknologi Nusantara'],
             [
                 'sector' => 'Software House & Cloud Services',
@@ -135,7 +138,7 @@ class KreasiInitialSeeder extends Seeder
             ]
         );
 
-        $company2 = \App\Models\Company::firstOrCreate(
+        $company2 = Company::firstOrCreate(
             ['name' => 'PT. Telkom Akses Digital'],
             [
                 'sector' => 'Infrastruktur Jaringan & Telekomunikasi',
@@ -148,7 +151,7 @@ class KreasiInitialSeeder extends Seeder
             ]
         );
 
-        $company3 = \App\Models\Company::firstOrCreate(
+        $company3 = Company::firstOrCreate(
             ['name' => 'CV. Kreasi Inovasi Media'],
             [
                 'sector' => 'Digital Agency & Web Development',
@@ -164,7 +167,7 @@ class KreasiInitialSeeder extends Seeder
         // 8. Ploting Kelompok PKL Siswa
         $student1 = Student::where('user_id', $ketuaUser->id)->first();
         if ($student1 && $company1) {
-            $pklGroup = \App\Models\PklGroup::firstOrCreate(
+            $pklGroup = PklGroup::firstOrCreate(
                 ['name' => 'Kelompok PKL Web Dev - PT Solusi Teknologi Nusantara'],
                 [
                     'company_id' => $company1->id,
@@ -178,7 +181,7 @@ class KreasiInitialSeeder extends Seeder
             );
 
             // Assign members: Ketua (leader) & Siswa
-            \App\Models\PklGroupMember::firstOrCreate(
+            PklGroupMember::firstOrCreate(
                 [
                     'pkl_group_id' => $pklGroup->id,
                     'student_id' => $student1->id,

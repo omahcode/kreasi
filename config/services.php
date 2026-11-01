@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'wargarpl' => [
+        'base_url' => env('WARGARPL_BASE_URL', 'https://wargarpl.neperone.id'),
+        'token' => env('WARGARPL_API_TOKEN', 'wgr_live_ElQjmkVoe57e9EmV306v9RHktS7OeHjSoKsyDpcQ'),
+        'student_email_domain' => env('WARGARPL_STUDENT_EMAIL_DOMAIN', 'siswa.kreasi.test'),
+    ],
+
 ];

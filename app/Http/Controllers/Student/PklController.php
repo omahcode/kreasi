@@ -20,7 +20,7 @@ class PklController extends Controller
         $user = Auth::user();
         $student = $user->student;
 
-        if (!$student) {
+        if (! $student) {
             abort(403, 'Profil siswa Anda belum terhubung.');
         }
 
@@ -51,7 +51,7 @@ class PklController extends Controller
         $user = Auth::user();
         $student = $user->student;
 
-        if (!$student) {
+        if (! $student) {
             abort(403, 'Akses tidak diizinkan.');
         }
 
@@ -186,7 +186,7 @@ class PklController extends Controller
             'file' => ['required', 'file', 'mimes:pdf,doc,docx', 'max:20480'],
             'notes' => ['nullable', 'string', 'max:500'],
         ], [
-            'file.required' => 'Silakan pilih berkas dokumen Bab ' . $chapterNumber . ' yang akan diunggah.',
+            'file.required' => 'Silakan pilih berkas dokumen Bab '.$chapterNumber.' yang akan diunggah.',
             'file.mimes' => 'Format file harus berupa PDF atau Word (.doc, .docx).',
             'file.max' => 'Ukuran file maksimal adalah 20MB.',
         ]);

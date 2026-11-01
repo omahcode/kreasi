@@ -84,7 +84,7 @@ class SubmissionReviewController extends Controller
             Notification::create([
                 'user_id' => $submission->student->user_id,
                 'title' => "Hasil Review Tugas: {$submission->project->title}",
-                'message' => "Guru " . Auth::user()->name . " telah memberikan ulasan status '{$statusLabel}' dengan nilai: " . ($request->score ?: '-'),
+                'message' => 'Guru '.Auth::user()->name." telah memberikan ulasan status '{$statusLabel}' dengan nilai: ".($request->score ?: '-'),
                 'link' => route('siswa.projects.show', $submission->project_id),
             ]);
         }

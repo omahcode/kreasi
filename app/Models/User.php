@@ -11,7 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, HasRoles, Notifiable;
 
     protected $fillable = [
         'name',
@@ -88,9 +88,10 @@ class User extends Authenticatable
 
     public function getAvatarUrlAttribute(): string
     {
-        if ($this->avatar && file_exists(public_path('storage/' . $this->avatar))) {
-            return asset('storage/' . $this->avatar);
+        if ($this->avatar && file_exists(public_path('storage/'.$this->avatar))) {
+            return asset('storage/'.$this->avatar);
         }
-        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=064A8E&color=FFFFFF&bold=true';
+
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&background=064A8E&color=FFFFFF&bold=true';
     }
 }

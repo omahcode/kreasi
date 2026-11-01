@@ -51,8 +51,8 @@ class PklGroup extends Model
     public function students()
     {
         return $this->belongsToMany(Student::class, 'pkl_group_members', 'pkl_group_id', 'student_id')
-                    ->withPivot('is_leader')
-                    ->withTimestamps();
+            ->withPivot('is_leader')
+            ->withTimestamps();
     }
 
     public function leader()

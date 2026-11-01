@@ -15,6 +15,9 @@
                 </ul>
             </div>
             <div class="flex-align gap-8 flex-wrap">
+                <a href="{{ route('admin.students.sync') }}" class="btn btn-primary rounded-pill px-16 text-13 shadow-sm">
+                    <i class="ph ph-arrows-clockwise me-4"></i> Sinkronkan WargaRPL
+                </a>
                 <a href="{{ route('admin.students.import') }}" class="btn btn-outline-primary rounded-pill px-16 text-13">
                     <i class="ph ph-file-arrow-up me-4"></i> Import Siswa Excel
                 </a>

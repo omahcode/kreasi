@@ -15,6 +15,7 @@ class PklTest extends TestCase
     use RefreshDatabase;
 
     protected $guru;
+
     protected $siswa;
 
     protected function setUp(): void

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Student;
 use App\Http\Controllers\Controller;
 use App\Models\AuditLog;
 use App\Models\Notification;
-use App\Models\Project;
 use App\Models\Submission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +16,7 @@ class ProjectController extends Controller
         $user = Auth::user();
         $student = $user->student;
 
-        if (!$student) {
+        if (! $student) {
             return view('siswa.projects.index', ['projects' => collect()]);
         }
 
@@ -35,7 +34,7 @@ class ProjectController extends Controller
         $user = Auth::user();
         $student = $user->student;
 
-        if (!$student) {
+        if (! $student) {
             abort(403, 'Profil siswa Anda belum terhubung.');
         }
 
@@ -60,7 +59,7 @@ class ProjectController extends Controller
         $user = Auth::user();
         $student = $user->student;
 
-        if (!$student) {
+        if (! $student) {
             abort(403, 'Akses tidak diizinkan.');
         }
 

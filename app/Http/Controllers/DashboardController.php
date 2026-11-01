@@ -9,8 +9,6 @@ use App\Models\SchoolClass;
 use App\Models\Student;
 use App\Models\Submission;
 use App\Models\Teacher;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -53,7 +51,7 @@ class DashboardController extends Controller
     public function guru()
     {
         $user = Auth::user();
-        
+
         $activeProjects = Project::where('created_by', $user->id)
             ->where('status', 'active')
             ->count();
@@ -108,11 +106,12 @@ class DashboardController extends Controller
             $pklReport = null;
             $recentSubmissions = collect();
             $recentLogs = collect();
+
             return view('dashboards.siswa', compact('myProjects', 'upcomingDeadlines', 'pklReport', 'recentSubmissions', 'recentLogs'));
         }
 
         $myProjects = $student->projects()->with(['creator', 'members'])->get();
-        
+
         $upcomingDeadlines = $student->projects()
             ->where('deadline', '>=', now())
             ->orderBy('deadline', 'asc')

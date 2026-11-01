@@ -4,131 +4,176 @@
 
 @section('content')
 <div class="row gy-4">
-    <!-- Student Header Banner -->
+    <!-- Student Header Banner (Clean, Jelas, Rapi & Elegan) -->
     <div class="col-12">
-        <div class="card bg-main-50 border-0 p-24 rounded-16">
-            <div class="d-flex flex-wrap justify-content-between align-items-center gap-16">
-                <div>
-                    <div class="d-flex align-items-center gap-8 mb-6">
-                        <h3 class="mb-0 text-main-600 fw-bold">Hai, {{ Auth::user()->name }}! &#128075;</h3>
+        <div class="card border-0 rounded-20 position-relative overflow-hidden p-24 text-white" 
+             style="background: linear-gradient(135deg, #064A8E 0%, #0861B5 60%, #13B8B0 100%) !important; box-shadow: 0 10px 25px -5px rgba(6, 74, 142, 0.22);">
+            
+            <img src="{{ asset('assets/images/bg/grettings-pattern.png') }}" alt="" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover pointer-events-none" style="opacity: 0.15; mix-blend-mode: overlay;">
+
+            <div class="row align-items-center g-20 position-relative z-1">
+                <div class="col-lg-8">
+                    <div class="d-inline-flex align-items-center gap-8 rounded-pill px-14 py-6 text-12 fw-semibold mb-12 shadow-xs" 
+                         style="background: rgba(255, 255, 255, 0.2); color: #ffffff; backdrop-filter: blur(4px);">
+                        <span class="text-16">👋</span>
+                        <span>Hai, {{ Auth::user()->name }}!</span>
                         @if(Auth::user()->isGroupLeader())
-                            <span class="badge bg-warning text-dark rounded-pill px-10 py-4 text-12">
-                                <i class="ph ph-crown me-2"></i> Ketua Kelompok
-                            </span>
+                            <span class="badge rounded-pill px-8 py-2 text-11 fw-bold" style="background: #FFB703; color: #0f172a;">⭐ Ketua Kelompok</span>
                         @else
-                            <span class="badge bg-info-100 text-info-700 rounded-pill px-10 py-4 text-12">
-                                <i class="ph ph-student me-2"></i> Siswa RPL
-                            </span>
+                            <span class="badge rounded-pill px-8 py-2 text-11 fw-bold" style="background: #38bdf8; color: #0f172a;">🚀 Siswa RPL</span>
                         @endif
                     </div>
-                    <p class="text-gray-600 text-15 mb-0">
+                    <h3 class="text-white fw-bold mb-8 text-24">
+                        Rumah Karya & Bimbingan Digital RPL ✨
+                    </h3>
+                    <p class="text-white text-14 mb-20" style="opacity: 0.9; max-width: 560px; line-height: 1.55;">
                         NIS: <strong>{{ Auth::user()->student->nis ?? '-' }}</strong> &bull; 
-                        Kelas: <strong>{{ Auth::user()->student->schoolClass->name ?? 'XII RPL 1' }}</strong> &bull;
-                        Rumah digital kreativitas, proyek inovatif, dan bimbingan PKL Anda.
+                        Kelas: <strong>{{ Auth::user()->student->schoolClass->name ?? 'XII RPL' }}</strong> &bull;
+                        Terus berinovasi dalam tugas proyek PjBL dan susun laporan PKL terbaikmu dengan semangat!
                     </p>
+                    
+                    <div class="d-flex flex-wrap gap-10">
+                        <a href="{{ route('siswa.logbook.create') }}" 
+                           class="btn rounded-pill px-16 py-8 text-13 fw-bold flex-align gap-6 shadow-sm"
+                           style="background-color: #ffffff !important; color: #064A8E !important; border: 0 !important;">
+                            <i class="ph ph-plus-circle text-16" style="color: #064A8E !important;"></i>
+                            <span style="color: #064A8E !important;">Catat Jurnal Logbook</span>
+                        </a>
+                        <a href="{{ route('siswa.projects.index') }}" 
+                           class="btn rounded-pill px-16 py-8 text-13 fw-semibold flex-align gap-6"
+                           style="background: rgba(255, 255, 255, 0.18) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.35) !important;">
+                            <i class="ph ph-folder-open text-16 text-white"></i>
+                            <span class="text-white">Proyek Saya</span>
+                        </a>
+                        <a href="{{ route('siswa.pkl.index') }}" 
+                           class="btn rounded-pill px-16 py-8 text-13 fw-semibold flex-align gap-6"
+                           style="background: rgba(255, 255, 255, 0.18) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.35) !important;">
+                            <i class="ph ph-file-text text-16 text-white"></i>
+                            <span class="text-white">Laporan Bab PKL</span>
+                        </a>
+                    </div>
                 </div>
-                <div class="d-flex gap-8 flex-wrap">
-                    <a href="{{ route('siswa.logbook.create') }}" class="btn btn-main rounded-pill px-16">
-                        <i class="ph ph-plus-circle me-4"></i> Catat Logbook
-                    </a>
-                    <a href="{{ route('siswa.pkl.index') }}" class="btn btn-outline-primary rounded-pill px-16">
-                        <i class="ph ph-file-text me-4"></i> Bimbingan PKL
-                    </a>
+
+                <div class="col-lg-4 text-center d-none d-lg-flex justify-content-center align-items-center position-relative">
+                    <div class="position-relative d-inline-block">
+                        <img src="{{ asset('assets/images/thumbs/panda.png') }}" 
+                             alt="Panda Maskot" 
+                             style="width: 145px; height: 145px; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.18));">
+                        <div class="bg-white rounded-pill px-12 py-4 shadow-sm position-absolute top-0 end-0 translate-middle-y text-11 fw-bold text-gray-800 flex-align gap-4" style="border: 1px solid #e2e8f0;">
+                            <span>Kreatif Tanpa Batas! 💻</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Stat Widgets -->
+    <!-- 4 Cute Candy Stat Cards -->
     <div class="col-xxl-3 col-sm-6">
-        <div class="card border border-gray-100 rounded-16 h-100">
-            <div class="card-body p-24">
-                <span class="text-gray-500 text-14 fw-medium">Proyek PjBL Diikuti</span>
-                <div class="flex-between gap-8 mt-12">
-                    <h2 class="mb-0 fw-bold text-gray-900">{{ $myProjects->count() }}</h2>
-                    <span class="flex-shrink-0 w-48 h-48 flex-center rounded-circle bg-main-50 text-main-600 text-2xl">
-                        <i class="ph-fill ph-folder-notch-open"></i>
+        <div class="card card-cute card-hover-cute candy-sky p-20 h-100 shadow-none">
+            <div class="flex-between align-items-start gap-12 mb-16">
+                <div>
+                    <span class="text-sky-700 text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1">
+                        🎨 Proyek PjBL Diikuti
                     </span>
+                    <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $myProjects->count() }}</h2>
                 </div>
-                <div class="mt-16 text-13 text-gray-500">
-                    <span class="text-main-600 fw-semibold">Aktif</span> dikerjakan semester ini
+                <div class="w-52 h-52 rounded-20 bg-white text-main-600 flex-center flex-shrink-0 text-26 shadow-sm">
+                    <i class="ph-fill ph-folder-notch-open"></i>
                 </div>
+            </div>
+            <div class="pt-12 border-top border-sky-200 border-opacity-60 flex-between text-12">
+                <span class="badge bg-white text-sky-800 rounded-pill px-10 py-4 fw-semibold shadow-xs">
+                    Aktif Semester Ini
+                </span>
+                <span class="text-sky-700 fw-medium">Tugas Tim</span>
             </div>
         </div>
     </div>
 
     <div class="col-xxl-3 col-sm-6">
-        <div class="card border border-gray-100 rounded-16 h-100">
-            <div class="card-body p-24">
-                <span class="text-gray-500 text-14 fw-medium">Deadline Mendatang</span>
-                <div class="flex-between gap-8 mt-12">
-                    <h2 class="mb-0 fw-bold text-warning-600">{{ $upcomingDeadlines->count() }}</h2>
-                    <span class="flex-shrink-0 w-48 h-48 flex-center rounded-circle bg-warning-50 text-warning-600 text-2xl">
-                        <i class="ph-fill ph-calendar-check"></i>
+        <div class="card card-cute card-hover-cute candy-peach p-20 h-100 shadow-none">
+            <div class="flex-between align-items-start gap-12 mb-16">
+                <div>
+                    <span class="text-orange-800 text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1">
+                        ⏰ Deadline Mendatang
                     </span>
+                    <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $upcomingDeadlines->count() }}</h2>
                 </div>
-                <div class="mt-16 text-13 text-gray-500">
-                    <span class="text-warning-600 fw-semibold">Perhatikan</span> tanggal pengumpulan
+                <div class="w-52 h-52 rounded-20 bg-white text-orange-600 flex-center flex-shrink-0 text-26 shadow-sm">
+                    <i class="ph-fill ph-calendar-check"></i>
                 </div>
+            </div>
+            <div class="pt-12 border-top border-orange-200 border-opacity-60 flex-between text-12">
+                <span class="badge bg-white text-orange-800 rounded-pill px-10 py-4 fw-semibold shadow-xs">
+                    Perhatikan Waktu
+                </span>
+                <span class="text-orange-700 fw-medium">Target Tugas</span>
             </div>
         </div>
     </div>
 
     <div class="col-xxl-3 col-sm-6">
-        <div class="card border border-gray-100 rounded-16 h-100">
-            <div class="card-body p-24">
-                <span class="text-gray-500 text-14 fw-medium">Catatan Logbook</span>
-                <div class="flex-between gap-8 mt-12">
-                    <h2 class="mb-0 fw-bold text-primary-600">{{ $recentLogs->count() }}</h2>
-                    <span class="flex-shrink-0 w-48 h-48 flex-center rounded-circle bg-primary-50 text-primary-600 text-2xl">
-                        <i class="ph-fill ph-notepad"></i>
+        <div class="card card-cute card-hover-cute candy-mint p-20 h-100 shadow-none">
+            <div class="flex-between align-items-start gap-12 mb-16">
+                <div>
+                    <span class="text-success-800 text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1">
+                        📖 Catatan Logbook
                     </span>
+                    <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $recentLogs->count() }}</h2>
                 </div>
-                <div class="mt-16 text-13 text-gray-500">
-                    <span class="text-primary-600 fw-semibold">Dokumentasi</span> aktivitas harian
+                <div class="w-52 h-52 rounded-20 bg-white text-success-600 flex-center flex-shrink-0 text-26 shadow-sm">
+                    <i class="ph-fill ph-notepad"></i>
                 </div>
+            </div>
+            <div class="pt-12 border-top border-success-200 border-opacity-60 flex-between text-12">
+                <span class="badge bg-white text-success-800 rounded-pill px-10 py-4 fw-semibold shadow-xs">
+                    Jurnal Terisi
+                </span>
+                <span class="text-success-700 fw-medium">Aktivitas Harian</span>
             </div>
         </div>
     </div>
 
     <div class="col-xxl-3 col-sm-6">
-        <div class="card border border-gray-100 rounded-16 h-100">
-            <div class="card-body p-24">
-                <span class="text-gray-500 text-14 fw-medium">Status Laporan PKL</span>
-                <div class="flex-between gap-8 mt-12">
-                    <h4 class="mb-0 fw-bold text-gray-900 text-capitalize">
+        <div class="card card-cute card-hover-cute candy-berry p-20 h-100 shadow-none">
+            <div class="flex-between align-items-start gap-12 mb-16">
+                <div>
+                    <span class="text-purple-800 text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1">
+                        💼 Status Laporan PKL
+                    </span>
+                    <h4 class="mb-0 fw-bold text-gray-900 text-capitalize mt-4">
                         {{ $pklReport->status ?? 'Belum Ada' }}
                     </h4>
-                    <span class="flex-shrink-0 w-48 h-48 flex-center rounded-circle bg-success-50 text-success-600 text-2xl">
-                        <i class="ph-fill ph-briefcase"></i>
-                    </span>
                 </div>
-                <div class="mt-16 text-13 text-gray-500">
-                    @if($pklReport)
-                        {{ $pklReport->company_name ?? 'DUDI' }}
-                    @else
-                        Ajukan judul laporan PKL Anda
-                    @endif
+                <div class="w-52 h-52 rounded-20 bg-white text-purple-600 flex-center flex-shrink-0 text-26 shadow-sm">
+                    <i class="ph-fill ph-briefcase"></i>
                 </div>
+            </div>
+            <div class="pt-12 border-top border-purple-200 border-opacity-60 flex-between text-12">
+                <span class="badge bg-white text-purple-800 rounded-pill px-10 py-4 fw-semibold shadow-xs">
+                    {{ $pklReport ? Str::limit($pklReport->company_name, 16) : 'Belum Ajukan' }}
+                </span>
+                <span class="text-purple-700 fw-medium">Mitra DU/DI</span>
             </div>
         </div>
     </div>
 
     <!-- Card Penempatan & Rekan Kelompok PKL -->
     <div class="col-12">
-        <div class="card border border-gray-100 rounded-16 shadow-xs overflow-hidden">
+        <div class="card card-cute border border-gray-100 bg-white shadow-none overflow-hidden">
             <div class="card-header bg-main-50 py-16 px-24 border-bottom border-gray-100 flex-between flex-wrap gap-12">
                 <div class="d-flex align-items-center gap-12">
-                    <span class="w-36 h-36 rounded-circle bg-white text-main-600 flex-center text-18 shadow-xs">
+                    <span class="w-40 h-40 rounded-12 bg-white text-main-600 flex-center text-20 shadow-xs">
                         <i class="ph ph-buildings"></i>
                     </span>
                     <div>
                         <h5 class="mb-0 text-16 fw-bold text-gray-900">Penempatan & Rekan Kelompok PKL</h5>
-                        <span class="text-12 text-gray-500">Informasi resmi ploting Praktik Kerja Lapangan (DU/DI) Kelas XII</span>
+                        <span class="text-12 text-gray-500">Informasi resmi penempatan Praktik Kerja Lapangan (DU/DI) Kelas XII</span>
                     </div>
                 </div>
                 <div>
-                    <a href="{{ route('siswa.pkl.index') }}" class="btn btn-sm btn-main rounded-pill px-16 text-12">
+                    <a href="{{ route('siswa.pkl.index') }}" class="btn btn-sm btn-main rounded-pill px-18 py-6 text-12 fw-semibold">
                         <i class="ph ph-file-text me-4"></i> Kelola Laporan PKL
                     </a>
                 </div>
@@ -139,9 +184,9 @@
                         <!-- Left Info: Industri & Guru -->
                         <div class="col-lg-5 border-end-lg border-gray-100 pe-lg-24">
                             <div class="mb-16">
-                                <span class="text-12 text-gray-500 text-uppercase fw-semibold d-block mb-4">Nama Kelompok & Industri</span>
+                                <span class="text-12 text-gray-400 text-uppercase fw-bold d-block mb-4">Nama Kelompok & Industri</span>
                                 <h5 class="text-16 fw-bold text-gray-900 mb-4">{{ $pklGroup->name }}</h5>
-                                <div class="d-flex align-items-center gap-8 text-13 text-main-600 fw-semibold">
+                                <div class="d-flex align-items-center gap-8 text-13 text-main-600 fw-bold">
                                     <i class="ph ph-buildings text-16"></i>
                                     {{ $pklGroup->company->name ?? '-' }}
                                 </div>
@@ -151,8 +196,8 @@
                                 </p>
                             </div>
 
-                            <div class="pt-12 border-top border-gray-100 mb-16">
-                                <span class="text-12 text-gray-500 text-uppercase fw-semibold d-block mb-4">Guru Pembimbing Sekolah</span>
+                            <div class="pt-14 border-top border-gray-100 mb-16">
+                                <span class="text-12 text-gray-400 text-uppercase fw-bold d-block mb-4">Guru Pembimbing Sekolah</span>
                                 <div class="d-flex align-items-center gap-12">
                                     <div class="w-40 h-40 rounded-circle bg-primary-50 text-primary-600 flex-center text-18 fw-bold">
                                         <i class="ph ph-chalkboard-teacher"></i>
@@ -166,9 +211,9 @@
                                 </div>
                             </div>
 
-                            <div class="pt-12 border-top border-gray-100">
-                                <span class="text-12 text-gray-500 text-uppercase fw-semibold d-block mb-4">Periode Pelaksanaan</span>
-                                <div class="text-13 text-gray-800 fw-medium">
+                            <div class="pt-14 border-top border-gray-100">
+                                <span class="text-12 text-gray-400 text-uppercase fw-bold d-block mb-4">Periode Pelaksanaan</span>
+                                <div class="text-13 text-gray-800 fw-semibold">
                                     <i class="ph ph-calendar text-main-600 me-4"></i>
                                     {{ $pklGroup->start_date ? $pklGroup->start_date->format('d F Y') : 'TBA' }} s/d 
                                     {{ $pklGroup->end_date ? $pklGroup->end_date->format('d F Y') : 'TBA' }}
@@ -178,22 +223,22 @@
 
                         <!-- Right Info: Anggota Kelompok -->
                         <div class="col-lg-7 ps-lg-24">
-                            <div class="flex-between mb-12">
-                                <span class="text-12 text-gray-500 text-uppercase fw-semibold">
+                            <div class="flex-between mb-14">
+                                <span class="text-12 text-gray-400 text-uppercase fw-bold">
                                     Daftar Teman Satu Kelompok ({{ $pklGroup->students->count() }} Siswa)
                                 </span>
-                                <span class="badge bg-main-50 text-main-600 text-11 rounded-pill px-10 py-4">
-                                    Tim Magang
+                                <span class="badge bg-main-50 text-main-700 text-11 rounded-pill px-10 py-4 fw-semibold">
+                                    Tim Magang 🤝
                                 </span>
                             </div>
 
                             <div class="row g-12">
                                 @foreach($pklGroup->students as $member)
                                     <div class="col-sm-6">
-                                        <div class="p-12 rounded-12 border {{ $member->user_id === Auth::id() ? 'border-primary-600 bg-main-50' : 'border-gray-100 bg-white' }} h-100 flex-between">
+                                        <div class="p-14 rounded-16 border {{ $member->user_id === Auth::id() ? 'border-primary-600 bg-main-50' : 'border-gray-100 bg-white' }} h-100 flex-between">
                                             <div class="d-flex align-items-center gap-10">
                                                 <div class="w-36 h-36 rounded-circle bg-gray-100 text-gray-700 flex-center text-13 fw-bold flex-shrink-0">
-                                                    {{ substr($member->user->name, 0, 1) }}
+                                                    {{ strtoupper(substr($member->user->name, 0, 1)) }}
                                                 </div>
                                                 <div>
                                                     <h6 class="text-13 fw-bold text-gray-900 mb-2">
@@ -207,7 +252,7 @@
                                             </div>
                                             <div>
                                                 @if($member->pivot->is_leader)
-                                                    <span class="badge bg-warning-50 text-warning-700 rounded-pill px-8 py-4 text-11 border border-warning-200">
+                                                    <span class="badge bg-warning-50 text-warning-700 rounded-pill px-8 py-4 text-11 border border-warning-200 fw-bold">
                                                         <i class="ph ph-crown me-2"></i> Ketua
                                                     </span>
                                                 @else
@@ -222,15 +267,15 @@
                             </div>
 
                             @if($pklGroup->notes)
-                                <div class="mt-16 p-12 rounded-8 bg-gray-50 border border-gray-100">
-                                    <span class="text-11 text-gray-500 fw-bold d-block mb-2">Catatan Penempatan:</span>
+                                <div class="mt-16 p-12 rounded-12 bg-gray-50 border border-gray-100">
+                                    <span class="text-11 text-gray-400 fw-bold d-block mb-2 text-uppercase">Catatan Penempatan:</span>
                                     <p class="text-12 text-gray-700 mb-0">{{ $pklGroup->notes }}</p>
                                 </div>
                             @endif
                         </div>
                     </div>
                 @else
-                    <div class="text-center py-24 text-gray-400">
+                    <div class="text-center py-32 text-gray-400">
                         <span class="w-56 h-56 rounded-circle bg-gray-100 text-gray-500 flex-center mx-auto text-28 mb-12">
                             <i class="ph ph-users-three"></i>
                         </span>
@@ -246,118 +291,130 @@
 
     <!-- My Projects Section -->
     <div class="col-lg-8">
-        <div class="card border border-gray-100 rounded-16 h-100">
-            <div class="card-body p-24">
-                <div class="flex-between mb-20">
-                    <h5 class="mb-0 fw-bold text-gray-900">Proyek PjBL Saya</h5>
-                    <a href="{{ route('siswa.projects.index') }}" class="text-main-600 text-13 fw-semibold hover-text-decoration-underline">
-                        Lihat Detail &rarr;
-                    </a>
+        <div class="card card-cute border border-gray-100 bg-white p-24 h-100 shadow-none">
+            <div class="flex-between flex-wrap gap-12 mb-20">
+                <div>
+                    <h5 class="mb-4 text-16 fw-bold text-gray-900 flex-align gap-8">
+                        <span class="w-32 h-32 rounded-10 bg-main-50 text-main-600 flex-center text-18">
+                            <i class="ph ph-folder-notch-open"></i>
+                        </span>
+                        <span>Proyek PjBL Saya</span>
+                    </h5>
+                    <p class="text-gray-400 text-13 mb-0">Tantangan proyek yang sedang Anda kerjakan.</p>
                 </div>
+                <a href="{{ route('siswa.projects.index') }}" class="badge bg-gray-50 text-gray-600 border border-gray-200 px-12 py-6 rounded-pill text-12 fw-semibold hover-bg-gray-100 transition-2">
+                    Lihat Detail &rarr;
+                </a>
+            </div>
 
-                <div class="d-flex flex-column gap-16">
-                    @forelse($myProjects as $project)
-                        <div class="p-20 rounded-12 border border-gray-100 hover-border-main-600 transition-2 bg-white">
-                            <div class="d-flex flex-wrap justify-content-between align-items-start gap-12 mb-12">
-                                <div>
-                                    <h5 class="mb-4 text-16 fw-bold text-gray-900">{{ $project->title }}</h5>
-                                    <span class="text-gray-500 text-13">
-                                        Guru Pembimbing: <strong>{{ $project->creator->name ?? 'Guru RPL' }}</strong>
-                                    </span>
-                                </div>
-                                <span class="badge bg-main-50 text-main-600 text-12 text-uppercase">
-                                    {{ $project->pivot->role ?? 'member' }}
+            <div class="d-flex flex-column gap-16">
+                @forelse($myProjects as $project)
+                    <div class="p-20 rounded-16 border border-gray-100 hover-border-main-600 hover-bg-gray-50 transition-2 bg-white">
+                        <div class="d-flex flex-wrap justify-content-between align-items-start gap-12 mb-12">
+                            <div>
+                                <h5 class="mb-4 text-16 fw-bold text-gray-900">{{ $project->title }}</h5>
+                                <span class="text-gray-500 text-13">
+                                    Guru Pembimbing: <strong class="text-main-600">{{ $project->creator->name ?? 'Guru RPL' }}</strong>
                                 </span>
                             </div>
+                            <span class="badge bg-main-50 text-main-700 rounded-pill px-10 py-4 text-11 fw-bold text-uppercase">
+                                {{ $project->pivot->role ?? 'member' }}
+                            </span>
+                        </div>
 
-                            <p class="text-gray-600 text-14 mb-16">{{ Str::limit($project->description, 120) }}</p>
+                        <p class="text-gray-600 text-13 mb-16">{{ Str::limit($project->description, 120) }}</p>
 
-                            <div class="flex-between flex-wrap gap-12 pt-12 border-top border-gray-100">
-                                <div class="d-flex align-items-center gap-16 text-13 text-gray-500">
-                                    <span>
-                                        <i class="ph ph-calendar text-main-600 me-4"></i> 
-                                        Deadline: {{ $project->deadline ? $project->deadline->format('d M Y') : '-' }}
-                                    </span>
-                                    <span>
-                                        <i class="ph ph-users text-main-600 me-4"></i> 
-                                        {{ $project->students->count() }} Anggota
-                                    </span>
-                                </div>
-                                <a href="{{ route('siswa.projects.show', $project->id) }}" class="btn btn-sm btn-main rounded-pill px-16">
-                                    Buka Proyek
-                                </a>
+                        <div class="flex-between flex-wrap gap-12 pt-12 border-top border-gray-100">
+                            <div class="d-flex align-items-center gap-16 text-12 text-gray-500">
+                                <span>
+                                    <i class="ph ph-calendar text-main-600 me-4"></i> 
+                                    Deadline: {{ $project->deadline ? $project->deadline->format('d M Y') : '-' }}
+                                </span>
+                                <span>
+                                    <i class="ph ph-users text-main-600 me-4"></i> 
+                                    {{ $project->students->count() }} Anggota
+                                </span>
                             </div>
+                            <a href="{{ route('siswa.projects.show', $project->id) }}" class="btn btn-sm btn-main rounded-pill px-16 py-6 text-12 fw-semibold">
+                                Buka Proyek &rarr;
+                            </a>
                         </div>
-                    @empty
-                        <div class="text-center py-40 text-gray-400">
-                            <i class="ph ph-folder-open text-40 mb-12 d-block"></i>
-                            Anda belum terdaftar dalam proyek PjBL apapun.
-                        </div>
-                    @endforelse
-                </div>
+                    </div>
+                @empty
+                    <div class="text-center py-40 text-gray-400">
+                        <i class="ph ph-folder-open text-40 mb-12 d-block text-gray-300"></i>
+                        <span class="text-13">Anda belum terdaftar dalam proyek PjBL apapun.</span>
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>
 
     <!-- PKL Chapter Tracker -->
     <div class="col-lg-4">
-        <div class="card border border-gray-100 rounded-16 h-100">
-            <div class="card-body p-24">
-                <div class="flex-between mb-20">
-                    <h5 class="mb-0 fw-bold text-gray-900">Bimbingan PKL (Bab I - V)</h5>
-                    <a href="{{ route('siswa.pkl.index') }}" class="text-main-600 text-13 fw-semibold hover-text-decoration-underline">
-                        Kelola &rarr;
-                    </a>
+        <div class="card card-cute border border-gray-100 bg-white p-24 h-100 shadow-none">
+            <div class="flex-between flex-wrap gap-12 mb-20">
+                <div>
+                    <h5 class="mb-4 text-16 fw-bold text-gray-900 flex-align gap-8">
+                        <span class="w-32 h-32 rounded-10 bg-success-50 text-success-600 flex-center text-18">
+                            <i class="ph ph-file-text"></i>
+                        </span>
+                        <span>Bab Laporan PKL</span>
+                    </h5>
+                    <p class="text-gray-400 text-13 mb-0">Capaian Bab 1 s.d. Bab 5.</p>
+                </div>
+                <a href="{{ route('siswa.pkl.index') }}" class="badge bg-gray-50 text-gray-600 border border-gray-200 px-12 py-6 rounded-pill text-12 fw-semibold hover-bg-gray-100 transition-2">
+                    Kelola &rarr;
+                </a>
+            </div>
+
+            @if($pklReport)
+                <div class="p-16 rounded-16 candy-sky mb-20">
+                    <h6 class="mb-4 text-14 fw-bold text-sky-900">{{ $pklReport->title }}</h6>
+                    <span class="text-12 text-sky-700 d-block">{{ $pklReport->company_name }}</span>
+                    <div class="mt-8">
+                        <span class="badge bg-white text-sky-800 rounded-pill px-10 py-4 text-11 fw-bold shadow-xs">
+                            Status: {{ strtoupper($pklReport->status) }}
+                        </span>
+                    </div>
                 </div>
 
-                @if($pklReport)
-                    <div class="p-16 rounded-12 bg-main-50 mb-20">
-                        <h6 class="mb-4 text-14 fw-bold text-main-600">{{ $pklReport->title }}</h6>
-                        <span class="text-12 text-gray-600 d-block">{{ $pklReport->company_name }}</span>
-                        <div class="mt-8">
-                            <span class="badge bg-white text-main-600 text-11 border border-main-200">
-                                Status: {{ strtoupper($pklReport->status) }}
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Chapters list -->
-                    <div class="d-flex flex-column gap-10">
-                        @for($i = 1; $i <= 5; $i++)
-                            @php
-                                $chapter = $pklReport->chapters->firstWhere('chapter_number', $i);
-                            @endphp
-                            <div class="p-12 rounded-8 border border-gray-100 flex-between">
-                                <div class="d-flex align-items-center gap-8">
-                                    <span class="w-28 h-28 rounded-circle bg-gray-100 text-gray-700 flex-center text-12 fw-bold">
-                                        {{ $i }}
-                                    </span>
-                                    <span class="text-13 fw-medium text-gray-800">Bab {{ $i }}</span>
-                                </div>
-                                <div>
-                                    @if($chapter && $chapter->status === 'approved')
-                                        <span class="badge bg-success-50 text-success-700 text-11">Disetujui</span>
-                                    @elseif($chapter && $chapter->status === 'submitted')
-                                        <span class="badge bg-primary-50 text-primary-700 text-11">Review</span>
-                                    @elseif($chapter && $chapter->status === 'revision_required')
-                                        <span class="badge bg-warning-50 text-warning-700 text-11">Revisi</span>
-                                    @else
-                                        <span class="badge bg-gray-50 text-gray-400 text-11">Belum Upload</span>
-                                    @endif
-                                </div>
+                <!-- Chapters list -->
+                <div class="d-flex flex-column gap-10">
+                    @for($i = 1; $i <= 5; $i++)
+                        @php
+                            $chapter = $pklReport->chapters->firstWhere('chapter_number', $i);
+                        @endphp
+                        <div class="p-12 rounded-12 border border-gray-100 flex-between hover-bg-gray-50 transition-1">
+                            <div class="d-flex align-items-center gap-10">
+                                <span class="w-28 h-28 rounded-circle bg-main-100 text-main-700 flex-center text-12 fw-bold">
+                                    {{ $i }}
+                                </span>
+                                <span class="text-13 fw-semibold text-gray-800">Bab {{ $i }}</span>
                             </div>
-                        @endfor
-                    </div>
-                @else
-                    <div class="text-center py-32 text-gray-400">
-                        <i class="ph ph-file-dashed text-36 mb-12 d-block"></i>
-                        <p class="text-13 mb-16">Anda belum mengajukan judul laporan PKL.</p>
-                        <a href="{{ route('siswa.pkl.index') }}" class="btn btn-sm btn-main rounded-pill px-16">
-                            + Ajukan Judul PKL
-                        </a>
-                    </div>
-                @endif
-            </div>
+                            <div>
+                                @if($chapter && $chapter->status === 'approved')
+                                    <span class="badge bg-success-50 text-success-700 rounded-pill px-8 py-3 text-11 fw-semibold">✅ Disetujui</span>
+                                @elseif($chapter && $chapter->status === 'submitted')
+                                    <span class="badge bg-primary-50 text-primary-700 rounded-pill px-8 py-3 text-11 fw-semibold">📬 Review</span>
+                                @elseif($chapter && $chapter->status === 'revision_required')
+                                    <span class="badge bg-warning-50 text-warning-700 rounded-pill px-8 py-3 text-11 fw-semibold">✏️ Revisi</span>
+                                @else
+                                    <span class="badge bg-gray-50 text-gray-400 rounded-pill px-8 py-3 text-11 fw-medium">Belum Upload</span>
+                                @endif
+                            </div>
+                        </div>
+                    @endfor
+                </div>
+            @else
+                <div class="text-center py-36 text-gray-400">
+                    <i class="ph ph-file-dashed text-36 mb-12 d-block text-gray-300"></i>
+                    <p class="text-13 mb-16 text-gray-500">Anda belum mengajukan judul laporan PKL.</p>
+                    <a href="{{ route('siswa.pkl.index') }}" class="btn btn-sm btn-main rounded-pill px-18 py-8 text-12 fw-semibold">
+                        + Ajukan Judul PKL
+                    </a>
+                </div>
+            @endif
         </div>
     </div>
 </div>

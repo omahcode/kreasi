@@ -17,6 +17,9 @@
                 </ul>
             </div>
             <div class="flex-align gap-8 flex-wrap">
+                <a href="{{ route('admin.students.sync') }}" class="btn btn-main rounded-pill px-16 text-13 shadow-sm">
+                    <i class="ph ph-arrows-clockwise me-4"></i> Sinkronkan via API WargaRPL
+                </a>
                 <a href="{{ route('admin.students.import.template', ['format' => 'xlsx']) }}" class="btn btn-success rounded-pill px-16 text-13 shadow-sm">
                     <i class="ph ph-file-xls me-4"></i> Unduh Template Excel (.xlsx)
                 </a>

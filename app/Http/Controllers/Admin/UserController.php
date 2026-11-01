@@ -29,13 +29,13 @@ class UserController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhereHas('student', function ($sq) use ($search) {
-                      $sq->where('nis', 'like', "%{$search}%");
-                  })
-                  ->orWhereHas('teacher', function ($tq) use ($search) {
-                      $tq->where('teacher_number', 'like', "%{$search}%");
-                  });
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhereHas('student', function ($sq) use ($search) {
+                        $sq->where('nis', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('teacher', function ($tq) use ($search) {
+                        $tq->where('teacher_number', 'like', "%{$search}%");
+                    });
             });
         }
 
@@ -130,14 +130,24 @@ class UserController extends Controller
         // Update profile student/teacher
         if (in_array($request->role, ['siswa', 'ketua_kelompok'])) {
             $student = $user->student ?: new Student(['user_id' => $user->id]);
-            if ($request->filled('nis')) $student->nis = $request->nis;
-            if ($request->filled('class_id')) $student->class_id = $request->class_id;
-            if ($request->filled('gender')) $student->gender = $request->gender;
+            if ($request->filled('nis')) {
+                $student->nis = $request->nis;
+            }
+            if ($request->filled('class_id')) {
+                $student->class_id = $request->class_id;
+            }
+            if ($request->filled('gender')) {
+                $student->gender = $request->gender;
+            }
             $student->save();
         } elseif ($request->role === 'guru') {
             $teacher = $user->teacher ?: new Teacher(['user_id' => $user->id]);
-            if ($request->filled('teacher_number')) $teacher->teacher_number = $request->teacher_number;
-            if ($request->filled('specialization')) $teacher->specialization = $request->specialization;
+            if ($request->filled('teacher_number')) {
+                $teacher->teacher_number = $request->teacher_number;
+            }
+            if ($request->filled('specialization')) {
+                $teacher->specialization = $request->specialization;
+            }
             $teacher->save();
         }
 

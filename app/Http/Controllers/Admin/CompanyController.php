@@ -18,9 +18,9 @@ class CompanyController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('sector', 'like', "%{$search}%")
-                  ->orWhere('city', 'like', "%{$search}%")
-                  ->orWhere('contact_person', 'like', "%{$search}%");
+                    ->orWhere('sector', 'like', "%{$search}%")
+                    ->orWhere('city', 'like', "%{$search}%")
+                    ->orWhere('contact_person', 'like', "%{$search}%");
             });
         }
 
@@ -118,7 +118,7 @@ class CompanyController extends Controller
     public function toggleStatus(Request $request, $id)
     {
         $company = Company::findOrFail($id);
-        $company->update(['is_active' => !$company->is_active]);
+        $company->update(['is_active' => ! $company->is_active]);
 
         $statusStr = $company->is_active ? 'diaktifkan' : 'dinonaktifkan';
 

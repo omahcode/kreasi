@@ -52,8 +52,15 @@ class LoginController extends Controller
             if ($student) {
                 $user = $student->user;
             } else {
-                // Check teacher number
-                $teacher = Teacher::where('teacher_number', $loginInput)->first();
+                // Check teacher number (NIP / NUPTK / Code)
+                $cleanInput = preg_replace('/\s+/', '', $loginInput);
+                $cleanDigits = preg_replace('/\D/', '', $loginInput);
+                $teacher = Teacher::where('teacher_number', $loginInput)
+                    ->orWhere('teacher_number', $cleanInput)
+                    ->when(! empty($cleanDigits), function ($q) use ($cleanDigits) {
+                        return $q->orWhere('teacher_number', $cleanDigits);
+                    })
+                    ->first();
                 if ($teacher) {
                     $user = $teacher->user;
                 }
@@ -71,7 +78,7 @@ class LoginController extends Controller
             }
 
             // Record audit log
-            AuditLog::record($user->id, 'login', 'Pengguna berhasil masuk ke sistem (' . $user->role . ')');
+            AuditLog::record($user->id, 'login', 'Pengguna berhasil masuk ke sistem ('.$user->role.')');
 
             return $this->redirectBasedOnRole($user);
         }

@@ -21,7 +21,7 @@ class PklController extends Controller
             ->where(function ($q) {
                 // Either assigned to this teacher or unassigned
                 $q->where('mentor_teacher_id', Auth::id())
-                  ->orWhereNull('mentor_teacher_id');
+                    ->orWhereNull('mentor_teacher_id');
             })
             ->latest();
 
@@ -32,11 +32,11 @@ class PklController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('company_name', 'like', "%{$search}%")
-                  ->orWhereHas('student.user', function ($sq) use ($search) {
-                      $sq->where('name', 'like', "%{$search}%")
-                         ->orWhere('email', 'like', "%{$search}%");
-                  });
+                    ->orWhere('company_name', 'like', "%{$search}%")
+                    ->orWhereHas('student.user', function ($sq) use ($search) {
+                        $sq->where('name', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%");
+                    });
             });
         }
 
@@ -79,7 +79,7 @@ class PklController extends Controller
 
         $report->status = $request->status;
         $report->rejection_note = $request->rejection_note;
-        if (!$report->mentor_teacher_id) {
+        if (! $report->mentor_teacher_id) {
             $report->mentor_teacher_id = Auth::id();
         }
         $report->save();
@@ -107,7 +107,7 @@ class PklController extends Controller
         Notification::create([
             'user_id' => $report->student->user_id,
             'title' => "Status Judul Laporan PKL: {$statusLabel}",
-            'message' => "Guru pembimbing " . Auth::user()->name . " telah menetapkan status judul PKL Anda: {$statusLabel}. " . ($request->rejection_note ? "Catatan: {$request->rejection_note}" : ''),
+            'message' => 'Guru pembimbing '.Auth::user()->name." telah menetapkan status judul PKL Anda: {$statusLabel}. ".($request->rejection_note ? "Catatan: {$request->rejection_note}" : ''),
             'link' => route('siswa.pkl.index'),
         ]);
 
@@ -137,7 +137,7 @@ class PklController extends Controller
         Notification::create([
             'user_id' => $chapter->report->student->user_id,
             'title' => "Bimbingan PKL Bab {$chapter->chapter_number}: {$statusLabel}",
-            'message' => "Guru pembimbing " . Auth::user()->name . " telah memeriksa Bab {$chapter->chapter_number}: {$statusLabel}. Catatan: {$request->feedback}",
+            'message' => 'Guru pembimbing '.Auth::user()->name." telah memeriksa Bab {$chapter->chapter_number}: {$statusLabel}. Catatan: {$request->feedback}",
             'link' => route('siswa.pkl.index'),
         ]);
 
@@ -167,6 +167,6 @@ class PklController extends Controller
 
         AuditLog::record(Auth::id(), 'final_approval_pkl', "Memberikan persetujuan akhir (Final Approval) laporan PKL siswa {$report->student->user->name}");
 
-        return back()->with('success', "Persetujuan final berhasil disahkan. Laporan PKL siswa dinyatakan tuntas.");
+        return back()->with('success', 'Persetujuan final berhasil disahkan. Laporan PKL siswa dinyatakan tuntas.');
     }
 }

@@ -27,9 +27,9 @@ class PklGroupController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhereHas('company', fn($cq) => $cq->where('name', 'like', "%{$search}%"))
-                  ->orWhereHas('mentorTeacher', fn($tq) => $tq->where('name', 'like', "%{$search}%"))
-                  ->orWhereHas('students.user', fn($sq) => $sq->where('name', 'like', "%{$search}%"));
+                    ->orWhereHas('company', fn ($cq) => $cq->where('name', 'like', "%{$search}%"))
+                    ->orWhereHas('mentorTeacher', fn ($tq) => $tq->where('name', 'like', "%{$search}%"))
+                    ->orWhereHas('students.user', fn ($sq) => $sq->where('name', 'like', "%{$search}%"));
             });
         }
 
@@ -106,7 +106,7 @@ class PklGroupController extends Controller
             AuditLog::create([
                 'user_id' => Auth::id(),
                 'action' => 'CREATE_PKL_GROUP',
-                'details' => "Membuat ploting kelompok PKL: {$group->name} dengan " . count($request->student_ids) . " siswa.",
+                'details' => "Membuat ploting kelompok PKL: {$group->name} dengan ".count($request->student_ids).' siswa.',
                 'ip_address' => $request->ip(),
             ]);
         });

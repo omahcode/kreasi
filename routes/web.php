@@ -4,7 +4,10 @@ use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\ClassController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\PklGroupController;
+use App\Http\Controllers\Admin\StudentFileProgressController;
 use App\Http\Controllers\Admin\StudentImportController;
+use App\Http\Controllers\Admin\StudentSyncController;
+use App\Http\Controllers\Admin\TrafficMonitoringController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
@@ -88,7 +91,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/academic-years', [ClassController::class, 'storeAcademicYear'])->name('academic-years.store');
         Route::post('/academic-years/{id}/activate', [ClassController::class, 'setActiveYear'])->name('academic-years.activate');
 
-        // 3. Student Excel Import
+        // 3. Student Excel Import & WargaRPL API Sync (Siswa & Guru)
+        Route::get('/students/sync', [StudentSyncController::class, 'index'])->name('students.sync');
+        Route::post('/students/sync/test', [StudentSyncController::class, 'testConnection'])->name('students.sync.test');
+        Route::post('/students/sync/preview', [StudentSyncController::class, 'preview'])->name('students.sync.preview');
+        Route::post('/students/sync/process', [StudentSyncController::class, 'sync'])->name('students.sync.process');
+        Route::post('/students/sync/teachers/preview', [StudentSyncController::class, 'previewTeachers'])->name('students.sync.teachers.preview');
+        Route::post('/students/sync/teachers/process', [StudentSyncController::class, 'syncTeachers'])->name('students.sync.teachers.process');
+
         Route::get('/students/import', [StudentImportController::class, 'index'])->name('students.import');
         Route::get('/students/import/template', [StudentImportController::class, 'downloadTemplate'])->name('students.import.template');
         Route::post('/students/import/preview', [StudentImportController::class, 'preview'])->name('students.import.preview');
@@ -106,6 +116,18 @@ Route::middleware('auth')->group(function () {
 
         // 6. Ploting Kelompok PKL
         Route::resource('/pkl-groups', PklGroupController::class);
+
+        // 7. Monitoring Trafik & Storage
+        Route::get('/traffic', [TrafficMonitoringController::class, 'index'])->name('traffic.index');
+        Route::post('/traffic/clear', [TrafficMonitoringController::class, 'clearOldLogs'])->name('traffic.clear');
+
+        // 8. Progres Siswa & Kelola Berkas (CRUD File Siswa)
+        Route::get('/student-progress', [StudentFileProgressController::class, 'index'])->name('student-progress.index');
+        Route::get('/student-progress/matrix', [StudentFileProgressController::class, 'progressMatrix'])->name('student-progress.matrix');
+        Route::get('/student-progress/download/{type}/{id}', [StudentFileProgressController::class, 'download'])->name('student-progress.download');
+        Route::post('/student-progress/file', [StudentFileProgressController::class, 'storeFile'])->name('student-progress.store');
+        Route::put('/student-progress/file/{type}/{id}', [StudentFileProgressController::class, 'updateFile'])->name('student-progress.update');
+        Route::delete('/student-progress/file/{type}/{id}', [StudentFileProgressController::class, 'destroyFile'])->name('student-progress.destroy');
     });
 
     /*

@@ -29,9 +29,104 @@
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}?v=1.0.1">
     <!-- KREASI RPL Custom Branding -->
-    <link rel="stylesheet" href="{{ asset('assets/css/kreasi-custom.css') }}?v=1.0.1">
+    <link rel="stylesheet" href="{{ asset('assets/css/kreasi-custom.css') }}?v=2.2.0">
     
     <style>
+        /* ========================================================
+           MINIMALIST & CLEAN MODERN SIDEBAR
+           ======================================================== */
+        .sidebar {
+            background-color: #ffffff !important;
+            border-right: 1px solid #edf2f7 !important;
+            box-shadow: none !important;
+        }
+        .sidebar__logo {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            padding: 16px 20px !important;
+            border-bottom: 1px solid #f1f5f9 !important;
+            background: #ffffff !important;
+        }
+        .kreasi-logo-img {
+            max-height: 36px !important;
+            width: auto !important;
+            object-fit: contain !important;
+        }
+        .sidebar-menu-wrapper {
+            padding: 8px 6px 24px 6px !important;
+        }
+        .sidebar-menu {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 2px !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            list-style: none !important;
+        }
+        .sidebar-category-title {
+            display: block !important;
+            font-size: 10px !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.08em !important;
+            text-transform: uppercase !important;
+            color: #94a3b8 !important;
+            padding: 14px 12px 4px 12px !important;
+            margin: 0 !important;
+            user-select: none !important;
+        }
+        .sidebar-menu__link {
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            padding: 8px 12px !important;
+            border-radius: 8px !important;
+            color: #475569 !important;
+            font-size: 13.5px !important;
+            font-weight: 500 !important;
+            text-decoration: none !important;
+            white-space: nowrap !important;
+            border: none !important;
+            background: transparent !important;
+            margin-bottom: 1px !important;
+            transition: all 0.15s ease !important;
+        }
+        .sidebar-menu__link .icon {
+            font-size: 19px !important;
+            line-height: 1 !important;
+            width: 20px !important;
+            height: 20px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: #94a3b8 !important;
+            flex-shrink: 0 !important;
+            transition: color 0.15s ease !important;
+        }
+        .sidebar-menu__link .text {
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            display: inline-block !important;
+        }
+        .sidebar-menu__link:hover {
+            background-color: #f8fafc !important;
+            color: #0f172a !important;
+        }
+        .sidebar-menu__link:hover .icon {
+            color: #064A8E !important;
+        }
+        .sidebar-menu__link.activePage {
+            background-color: #eff6ff !important;
+            color: #064A8E !important;
+            font-weight: 600 !important;
+            border: none !important;
+        }
+        .sidebar-menu__link.activePage .icon {
+            color: #064A8E !important;
+            font-weight: 600 !important;
+        }
+
         /* Force button visibility across entire application regardless of browser cache */
         .btn-outline-main,
         .btn-outline-primary {
@@ -202,12 +297,12 @@
         </button>
         
         <!-- Sidebar Brand Logo -->
-        <a href="{{ url('/') }}" class="sidebar__logo text-center p-20 position-sticky inset-block-start-0 bg-white w-100 z-1 pb-10 d-block">
+        <a href="{{ url('/') }}" class="sidebar__logo d-flex align-items-center px-20 py-18 position-sticky inset-block-start-0 bg-white w-100 z-1 border-bottom border-gray-100">
             <img src="{{ asset('assets/images/logo/kreasi-logo.png') }}" alt="KREASI RPL Logo" class="kreasi-logo-img">
         </a>
 
         <div class="sidebar-menu-wrapper overflow-y-auto scroll-sm">
-            <div class="p-20 pt-10">
+            <div class="p-12 pt-8">
                 <ul class="sidebar-menu">
                     @php
                         $user = Auth::user();
@@ -225,8 +320,8 @@
 
                     @if($role === 'admin')
                         <!-- ADMIN MENU -->
-                        <li class="sidebar-menu__item">
-                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase text-nowrap">Manajemen Akademik</span>
+                        <li class="sidebar-menu__category">
+                            <span class="sidebar-category-title">Akademik</span>
                         </li>
                         <li class="sidebar-menu__item">
                             <a href="{{ route('admin.users.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('admin.users.*') ? 'activePage' : '' }}">
@@ -241,13 +336,20 @@
                             </a>
                         </li>
                         <li class="sidebar-menu__item">
+                            <a href="{{ route('admin.students.sync') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('admin.students.sync*') ? 'activePage' : '' }}">
+                                <span class="icon"><i class="ph ph-arrows-clockwise"></i></span>
+                                <span class="text text-nowrap">Sinkronkan API</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu__item">
                             <a href="{{ route('admin.students.import') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('admin.students.import') ? 'activePage' : '' }}">
                                 <span class="icon"><i class="ph ph-file-arrow-up"></i></span>
                                 <span class="text text-nowrap">Import Siswa</span>
                             </a>
                         </li>
-                        <li class="sidebar-menu__item">
-                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase text-nowrap">PKL & Industri</span>
+
+                        <li class="sidebar-menu__category">
+                            <span class="sidebar-category-title">PKL & Industri</span>
                         </li>
                         <li class="sidebar-menu__item">
                             <a href="{{ route('admin.companies.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('admin.companies.*') ? 'activePage' : '' }}">
@@ -261,20 +363,33 @@
                                 <span class="text text-nowrap">Kelompok PKL</span>
                             </a>
                         </li>
+
+                        <li class="sidebar-menu__category">
+                            <span class="sidebar-category-title">Monitoring</span>
+                        </li>
                         <li class="sidebar-menu__item">
-                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase text-nowrap">Monitoring</span>
+                            <a href="{{ route('admin.traffic.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('admin.traffic.*') ? 'activePage' : '' }}">
+                                <span class="icon"><i class="ph ph-chart-line-up"></i></span>
+                                <span class="text text-nowrap">Trafik & Storage</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu__item">
+                            <a href="{{ route('admin.student-progress.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('admin.student-progress.*') ? 'activePage' : '' }}">
+                                <span class="icon"><i class="ph ph-folder-open"></i></span>
+                                <span class="text text-nowrap">Progres & File Siswa</span>
+                            </a>
                         </li>
                         <li class="sidebar-menu__item">
                             <a href="{{ route('admin.audit-logs') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('admin.audit-logs') ? 'activePage' : '' }}">
-                                <span class="icon"><i class="ph ph-activity"></i></span>
+                                <span class="icon"><i class="ph ph-shield-check"></i></span>
                                 <span class="text text-nowrap">Audit Log</span>
                             </a>
                         </li>
 
                     @elseif($role === 'guru')
                         <!-- GURU MENU -->
-                        <li class="sidebar-menu__item">
-                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase text-nowrap">Proyek PjBL</span>
+                        <li class="sidebar-menu__category">
+                            <span class="sidebar-category-title">Pembelajaran PjBL</span>
                         </li>
                         <li class="sidebar-menu__item">
                             <a href="{{ route('guru.projects.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('guru.projects.*') ? 'activePage' : '' }}">
@@ -288,8 +403,9 @@
                                 <span class="text text-nowrap">Review Tugas</span>
                             </a>
                         </li>
-                        <li class="sidebar-menu__item">
-                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase text-nowrap">Bimbingan PKL</span>
+
+                        <li class="sidebar-menu__category">
+                            <span class="sidebar-category-title">Bimbingan PKL</span>
                         </li>
                         <li class="sidebar-menu__item">
                             <a href="{{ route('guru.pkl-groups.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('guru.pkl-groups.*') ? 'activePage' : '' }}">
@@ -306,8 +422,8 @@
 
                     @else
                         <!-- SISWA / KETUA KELOMPOK MENU -->
-                        <li class="sidebar-menu__item">
-                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase text-nowrap">PjBL Siswa</span>
+                        <li class="sidebar-menu__category">
+                            <span class="sidebar-category-title">Pembelajaran PjBL</span>
                         </li>
                         <li class="sidebar-menu__item">
                             <a href="{{ route('siswa.projects.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('siswa.projects.*') ? 'activePage' : '' }}">
@@ -321,8 +437,9 @@
                                 <span class="text text-nowrap">Logbook Harian</span>
                             </a>
                         </li>
-                        <li class="sidebar-menu__item">
-                            <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase text-nowrap">Laporan PKL</span>
+
+                        <li class="sidebar-menu__category">
+                            <span class="sidebar-category-title">Praktik Kerja Lapangan</span>
                         </li>
                         <li class="sidebar-menu__item">
                             <a href="{{ route('siswa.pkl.index') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('siswa.pkl.*') ? 'activePage' : '' }}">
@@ -332,8 +449,8 @@
                         </li>
                     @endif
 
-                    <li class="sidebar-menu__item">
-                        <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase text-nowrap">Pengaturan Akun</span>
+                    <li class="sidebar-menu__category">
+                        <span class="sidebar-category-title">Pengaturan</span>
                     </li>
                     <li class="sidebar-menu__item">
                         <a href="{{ route('profile.edit') }}" class="sidebar-menu__link text-nowrap {{ request()->routeIs('profile.edit') ? 'activePage' : '' }}">
@@ -342,19 +459,6 @@
                         </a>
                     </li>
                 </ul>
-            </div>
-
-            <!-- Role Indicator Badge Card -->
-            <div class="p-20 pt-20">
-                <div class="bg-main-50 p-16 rounded-16 text-center border border-primary-50">
-                    <span class="w-48 h-48 rounded-circle bg-white shadow-sm flex-center mx-auto text-main-600 text-24 mb-12">
-                        <i class="ph ph-identification-badge"></i>
-                    </span>
-                    <h6 class="mb-4 text-15 fw-bold text-gray-800">{{ $user->name ?? 'Pengguna' }}</h6>
-                    <span class="badge bg-main-600 text-white rounded-pill px-12 py-4 text-12 text-uppercase">
-                        {{ str_replace('_', ' ', $role) }}
-                    </span>
-                </div>
             </div>
         </div>
     </aside>
@@ -369,17 +473,41 @@
                 <button type="button" class="toggle-btn d-xl-none d-flex text-26 text-gray-500">
                     <i class="ph ph-list"></i>
                 </button>
-                <div class="d-none d-md-flex align-items-center">
-                    <span class="fw-semibold text-gray-700 text-16">KREASI RPL &bull; SMKN Rekayasa Perangkat Lunak</span>
+                <div class="d-none d-md-flex align-items-center gap-12">
+                    <span class="fw-bold text-gray-800 text-16 flex-align gap-8">
+                        <img src="{{ asset('assets/images/thumbs/panda.png') }}" alt="" class="w-24 h-24 bounce-cute d-inline-block">
+                        <span>KREASI RPL</span>
+                        <span class="text-gray-400 fw-normal">&bull; SMKN Rekayasa Perangkat Lunak</span>
+                    </span>
                 </div>
             </div>
 
             <div class="flex-align gap-16">
+                <!-- Date Pill -->
+                <div class="d-none d-lg-flex align-items-center gap-6 bg-gray-50 border border-gray-100 rounded-pill px-14 py-6 text-12 text-gray-600">
+                    <i class="ph ph-calendar-blank text-main-600 text-16"></i>
+                    <span class="fw-medium">{{ \Carbon\Carbon::now()->isoFormat('dddd, D MMMM Y') }}</span>
+                </div>
+
                 <!-- Role Tag -->
                 <div class="d-none d-sm-block">
-                    <span class="badge bg-main-50 text-main-600 border border-main-200 px-12 py-6 rounded-pill text-13 fw-semibold">
-                        <i class="ph ph-user-check me-4"></i> {{ strtoupper(str_replace('_', ' ', $role)) }}
-                    </span>
+                    @if($role === 'admin')
+                        <span class="badge bg-main-50 text-main-700 border border-main-200 px-12 py-6 rounded-pill text-12 fw-semibold">
+                            👑 Administrator
+                        </span>
+                    @elseif($role === 'guru')
+                        <span class="badge bg-success-50 text-success-700 border border-success-200 px-12 py-6 rounded-pill text-12 fw-semibold">
+                            👨‍🏫 Guru Pembimbing
+                        </span>
+                    @elseif($role === 'ketua_kelompok')
+                        <span class="badge bg-warning-50 text-warning-700 border border-warning-200 px-12 py-6 rounded-pill text-12 fw-semibold">
+                            ⭐ Ketua Kelompok
+                        </span>
+                    @else
+                        <span class="badge bg-primary-50 text-primary-700 border border-primary-200 px-12 py-6 rounded-pill text-12 fw-semibold">
+                            🚀 Siswa RPL
+                        </span>
+                    @endif
                 </div>
 
                 <!-- User Dropdown Menu -->
@@ -387,7 +515,7 @@
                     <button class="users arrow-down-icon border border-gray-200 rounded-pill p-4 d-inline-block pe-40 position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="position-relative">
                             <img src="{{ $user->avatar_url ?? asset('assets/images/thumbs/user-img.png') }}" alt="{{ $user->name ?? 'User' }}" class="h-32 w-32 rounded-circle object-fit-cover">
-                            <span class="activation-badge w-8 h-8 position-absolute inset-block-end-0 inset-inline-end-0"></span>
+                            <span class="activation-badge w-8 h-8 position-absolute inset-block-end-0 inset-inline-end-0 pulse-badge"></span>
                         </span>
                     </button>
                     <div class="dropdown-menu dropdown-menu--lg border-0 bg-transparent p-0">
@@ -499,6 +627,81 @@
     <script src="{{ asset('assets/js/phosphor-icon.js') }}"></script>
     <script src="{{ asset('assets/js/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script src="{{ asset('assets/js/sweetalert2.all.min.js') }}"></script>
+
+    <!-- SweetAlert2 Global Confirm & Toast Handler -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Reusable Toast
+            window.KreasiToast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3500,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                    toast.addEventListener('mouseleave', Swal.resumeTimer);
+                }
+            });
+
+            @if(session('swal_success'))
+                window.KreasiToast.fire({
+                    icon: 'success',
+                    title: '{{ addslashes(session('swal_success')) }}'
+                });
+            @endif
+
+            @if(session('swal_error'))
+                window.KreasiToast.fire({
+                    icon: 'error',
+                    title: '{{ addslashes(session('swal_error')) }}'
+                });
+            @endif
+
+            // Intercept [data-confirm] buttons / forms
+            document.addEventListener('click', function(e) {
+                const target = e.target.closest('[data-confirm]');
+                if (!target) return;
+
+                e.preventDefault();
+                const message = target.getAttribute('data-confirm') || 'Apakah Anda yakin ingin melanjutkan tindakan ini?';
+                const title = target.getAttribute('data-confirm-title') || 'Konfirmasi Tindakan';
+                const icon = target.getAttribute('data-confirm-icon') || 'warning';
+                const confirmBtnText = target.getAttribute('data-confirm-btn') || 'Ya, Lanjutkan';
+                const isDangerous = target.classList.contains('btn-danger') || target.classList.contains('btn-outline-danger') || icon === 'warning';
+
+                Swal.fire({
+                    title: title,
+                    text: message,
+                    icon: icon,
+                    showCancelButton: true,
+                    confirmButtonText: confirmBtnText,
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true,
+                    focusCancel: true,
+                    buttonsStyling: false,
+                    customClass: {
+                        popup: 'rounded-16 shadow-lg border border-gray-100 p-24',
+                        title: 'text-18 fw-bold text-gray-800 mb-8',
+                        htmlContainer: 'text-14 text-gray-600 mb-20',
+                        confirmButton: (isDangerous ? 'btn btn-danger' : 'btn btn-main') + ' rounded-pill px-24 py-10 fw-semibold',
+                        cancelButton: 'btn btn-outline-secondary rounded-pill px-20 py-10 fw-medium me-12',
+                        actions: 'gap-8'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const form = target.closest('form');
+                        if (form) {
+                            form.submit();
+                        } else if (target.tagName === 'A' && target.href && target.href !== '#') {
+                            window.location.href = target.href;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
     @livewireScripts
     @stack('scripts')
     <!-- Service Worker Registration -->
