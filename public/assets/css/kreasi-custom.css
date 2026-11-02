@@ -123,6 +123,30 @@
 }
 
 /* ==========================================================================
+   CUSTOM GRID GUTTERS (g-8, g-12, g-16, g-20, g-24)
+   Fixes cards sticking together vertically in Bootstrap rows
+   ========================================================================== */
+.g-8, .gy-8 { --bs-gutter-y: 8px !important; }
+.g-8, .gx-8 { --bs-gutter-x: 8px !important; }
+
+.g-12, .gy-12 { --bs-gutter-y: 12px !important; }
+.g-12, .gx-12 { --bs-gutter-x: 12px !important; }
+
+.g-16, .gy-16 { --bs-gutter-y: 16px !important; }
+.g-16, .gx-16 { --bs-gutter-x: 16px !important; }
+
+.g-20, .gy-20 { --bs-gutter-y: 20px !important; }
+.g-20, .gx-20 { --bs-gutter-x: 20px !important; }
+
+.g-24, .gy-24 { --bs-gutter-y: 24px !important; }
+.g-24, .gx-24 { --bs-gutter-x: 24px !important; }
+
+.row.g-12 > *, .row.gy-12 > * { margin-top: 12px !important; }
+.row.g-16 > *, .row.gy-16 > * { margin-top: 16px !important; }
+.row.g-20 > *, .row.gy-20 > * { margin-top: 20px !important; }
+.row.g-24 > *, .row.gy-24 > * { margin-top: 24px !important; }
+
+/* ==========================================================================
    MINIMALIST TOAST NOTIFICATION SYSTEM (KREASI MODERN TOAST)
    ========================================================================== */
 .kreasi-toast-container {

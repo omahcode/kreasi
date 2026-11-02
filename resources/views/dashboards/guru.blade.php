@@ -99,7 +99,7 @@
                 </div>
             </div>
             <div class="pt-12 border-top border-success-200 border-opacity-60 flex-between text-12">
-                <span class="badge bg-white text-success-800 rounded-pill px-10 py-4 fw-semibold shadow-xs">
+                <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #15803d !important;">
                     Menunggu Dinilai
                 </span>
                 <span class="text-success-700 fw-medium">Tugas Siswa</span>
@@ -143,7 +143,7 @@
                 </div>
             </div>
             <div class="pt-12 border-top border-purple-200 border-opacity-60 flex-between text-12">
-                <span class="badge bg-white text-purple-800 rounded-pill px-10 py-4 fw-semibold shadow-xs">
+                <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #6b21a8 !important;">
                     {{ $myPklGroups->sum(fn($g) => $g->students->count()) ?: $myPklMentees->count() }} Siswa Bimbingan
                 </span>
                 <span class="text-purple-700 fw-medium">Mitra DU/DI</span>
@@ -302,7 +302,7 @@
             </div>
 
             @if($myPklGroups->isNotEmpty())
-                <div class="row g-16">
+                <div class="row g-3">
                     @foreach($myPklGroups as $group)
                         <div class="col-xl-4 col-md-6 col-12">
                             <div class="p-16 rounded-16 border border-gray-100 hover-border-main-600 hover-shadow-sm transition-2 h-100 d-flex flex-column justify-content-between bg-white shadow-2xs">

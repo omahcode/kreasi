@@ -3,7 +3,7 @@
 @section('title', 'Admin Dashboard')
 
 @section('content')
-<div class="row gy-4">
+<div class="row g-24">
     <!-- Hero Welcome Banner (Clean, Jelas, Rapi & Elegan) -->
     <div class="col-12">
         <div class="card border-0 rounded-20 position-relative overflow-hidden p-24 text-white" 
@@ -87,11 +87,11 @@
                 </div>
             </div>
             <h3 class="mb-8 fw-bold text-gray-900 text-28">{{ number_format($totalStudents) }}</h3>
-            <div class="flex-align gap-6 text-12 text-gray-500">
-                <span class="badge bg-main-50 text-main-700 px-8 py-3 rounded-pill fw-semibold">
+            <div class="flex-align gap-6 text-12">
+                <span class="badge bg-main-50 text-main-700 border border-main-200 px-8 py-3 rounded-pill fw-semibold">
                     <i class="ph ph-check-circle me-2"></i> Aktif Belajar
                 </span>
-                <span>Jurusan RPL</span>
+                <span class="text-gray-600 fw-medium">Jurusan RPL</span>
             </div>
         </div>
     </div>
@@ -106,11 +106,11 @@
                 </div>
             </div>
             <h3 class="mb-8 fw-bold text-gray-900 text-28">{{ number_format($totalTeachers) }}</h3>
-            <div class="flex-align gap-6 text-12 text-gray-500">
-                <span class="badge bg-success-50 text-success-700 px-8 py-3 rounded-pill fw-semibold">
+            <div class="flex-align gap-6 text-12">
+                <span class="badge bg-success-50 text-success-700 border border-success-200 px-8 py-3 rounded-pill fw-semibold">
                     <i class="ph ph-check-circle me-2"></i> Terverifikasi
                 </span>
-                <span>PjBL & PKL</span>
+                <span class="text-gray-600 fw-medium">PjBL & PKL</span>
             </div>
         </div>
     </div>
@@ -125,11 +125,11 @@
                 </div>
             </div>
             <h3 class="mb-8 fw-bold text-gray-900 text-28">{{ number_format($totalProjects) }}</h3>
-            <div class="flex-align gap-6 text-12 text-gray-500">
-                <span class="badge bg-warning-50 text-warning-800 px-8 py-3 rounded-pill fw-semibold">
+            <div class="flex-align gap-6 text-12">
+                <span class="badge bg-warning-50 text-warning-800 border border-warning-200 px-8 py-3 rounded-pill fw-semibold">
                     <i class="ph ph-lightning me-2"></i> Project Based
                 </span>
-                <span>Karya Siswa</span>
+                <span class="text-gray-600 fw-medium">Karya Siswa</span>
             </div>
         </div>
     </div>
@@ -144,11 +144,11 @@
                 </div>
             </div>
             <h3 class="mb-8 fw-bold text-gray-900 text-28">{{ number_format($totalClasses) }}</h3>
-            <div class="flex-align gap-6 text-12 text-gray-500">
-                <span class="badge bg-purple-50 text-purple-700 px-8 py-3 rounded-pill fw-semibold">
+            <div class="flex-align gap-6 text-12">
+                <span class="badge bg-purple-50 text-purple-700 border border-purple-200 px-8 py-3 rounded-pill fw-semibold">
                     <i class="ph ph-graduation-cap me-2"></i> Tingkat X, XI, XII
                 </span>
-                <span>Kelas RPL</span>
+                <span class="text-gray-600 fw-medium">Kelas RPL</span>
             </div>
         </div>
     </div>
@@ -171,10 +171,10 @@
                 </span>
             </div>
 
-            <div class="row g-12">
+            <div class="row g-3">
                 <!-- Approved -->
                 <div class="col-sm-6">
-                    <div class="p-16 rounded-14 flex-between align-items-center" style="background-color: #f0fdf4; border: 1px solid #bbf7d0;">
+                    <div class="p-16 rounded-14 flex-between align-items-center h-100 shadow-2xs" style="background-color: #f0fdf4; border: 1px solid #bbf7d0;">
                         <div>
                             <span class="text-12 fw-semibold d-block" style="color: #166534;">Disetujui (Approved)</span>
                             <h3 class="mb-0 fw-bold mt-4 text-22" style="color: #15803d;">{{ $pklStats['approved'] }}</h3>
@@ -188,7 +188,7 @@
 
                 <!-- Submitted -->
                 <div class="col-sm-6">
-                    <div class="p-16 rounded-14 flex-between align-items-center" style="background-color: #f0f9ff; border: 1px solid #bae6fd;">
+                    <div class="p-16 rounded-14 flex-between align-items-center h-100 shadow-2xs" style="background-color: #f0f9ff; border: 1px solid #bae6fd;">
                         <div>
                             <span class="text-12 fw-semibold d-block" style="color: #075985;">Diajukan (Submitted)</span>
                             <h3 class="mb-0 fw-bold mt-4 text-22" style="color: #0284c7;">{{ $pklStats['submitted'] }}</h3>
@@ -202,7 +202,7 @@
 
                 <!-- Revision -->
                 <div class="col-sm-6">
-                    <div class="p-16 rounded-14 flex-between align-items-center" style="background-color: #fff7ed; border: 1px solid #fed7aa;">
+                    <div class="p-16 rounded-14 flex-between align-items-center h-100 shadow-2xs" style="background-color: #fff7ed; border: 1px solid #fed7aa;">
                         <div>
                             <span class="text-12 fw-semibold d-block" style="color: #9a3412;">Perlu Revisi</span>
                             <h3 class="mb-0 fw-bold mt-4 text-22" style="color: #ea580c;">{{ $pklStats['revision_required'] }}</h3>
@@ -216,7 +216,7 @@
 
                 <!-- Draft -->
                 <div class="col-sm-6">
-                    <div class="p-16 rounded-14 flex-between align-items-center" style="background-color: #f8fafc; border: 1px solid #e2e8f0;">
+                    <div class="p-16 rounded-14 flex-between align-items-center h-100 shadow-2xs" style="background-color: #f8fafc; border: 1px solid #e2e8f0;">
                         <div>
                             <span class="text-12 fw-semibold d-block" style="color: #475569;">Draf Penyusunan</span>
                             <h3 class="mb-0 fw-bold mt-4 text-22" style="color: #334155;">{{ $pklStats['draft'] }}</h3>
@@ -261,24 +261,52 @@
                 @forelse($recentActivities as $log)
                     @php
                         $act = strtoupper($log->action);
-                        $badgeColor = 'primary';
+                        $badgeBg = '#f1f5f9';
+                        $badgeColor = '#475569';
+                        $badgeBorder = '#cbd5e1';
                         $icon = 'ph-activity';
+                        $iconBg = '#f1f5f9';
+                        $iconColor = '#475569';
+
                         if (str_contains($act, 'LOGIN')) {
-                            $badgeColor = 'success';
+                            $badgeBg = '#ecfdf5';
+                            $badgeColor = '#047857';
+                            $badgeBorder = '#a7f3d0';
                             $icon = 'ph-sign-in';
+                            $iconBg = '#ecfdf5';
+                            $iconColor = '#059669';
                         } elseif (str_contains($act, 'LOGOUT')) {
-                            $badgeColor = 'secondary';
+                            $badgeBg = '#f1f5f9';
+                            $badgeColor = '#334155';
+                            $badgeBorder = '#cbd5e1';
                             $icon = 'ph-sign-out';
-                        } elseif (str_contains($act, 'DELETE') || str_contains($act, 'CLEAR')) {
-                            $badgeColor = 'danger';
+                            $iconBg = '#f1f5f9';
+                            $iconColor = '#475569';
+                        } elseif (str_contains($act, 'DELETE') || str_contains($act, 'CLEAR') || str_contains($act, 'HAPUS')) {
+                            $badgeBg = '#fef2f2';
+                            $badgeColor = '#b91c1c';
+                            $badgeBorder = '#fecaca';
                             $icon = 'ph-trash';
+                            $iconBg = '#fef2f2';
+                            $iconColor = '#dc2626';
                         } elseif (str_contains($act, 'UPLOAD') || str_contains($act, 'SYNC')) {
-                            $badgeColor = 'info';
+                            $badgeBg = '#eff6ff';
+                            $badgeColor = '#0369a1';
+                            $badgeBorder = '#bae6fd';
                             $icon = 'ph-cloud-arrow-up';
+                            $iconBg = '#eff6ff';
+                            $iconColor = '#0284c7';
+                        } elseif (str_contains($act, 'UPDATE') || str_contains($act, 'EDIT') || str_contains($act, 'REVIEW')) {
+                            $badgeBg = '#fff7ed';
+                            $badgeColor = '#c2410c';
+                            $badgeBorder = '#fed7aa';
+                            $icon = 'ph-pencil-simple';
+                            $iconBg = '#fff7ed';
+                            $iconColor = '#ea580c';
                         }
                     @endphp
                     <div class="d-flex align-items-start gap-12 pb-14 mb-14 border-bottom border-gray-50 hover-bg-gray-50 p-8 rounded-12 transition-1">
-                        <div class="w-36 h-36 rounded-circle bg-{{ $badgeColor }}-50 text-{{ $badgeColor }}-600 flex-center flex-shrink-0 text-16">
+                        <div class="w-36 h-36 rounded-circle flex-center flex-shrink-0 text-16" style="background-color: {{ $iconBg }}; color: {{ $iconColor }};">
                             <i class="ph {{ $icon }}"></i>
                         </div>
                         <div class="flex-grow-1">
@@ -289,7 +317,7 @@
                                 <span class="text-gray-400 text-11">{{ $log->created_at->diffForHumans() }}</span>
                             </div>
                             <p class="text-gray-600 text-12 mb-4">{{ $log->description ?? $log->action }}</p>
-                            <span class="badge bg-{{ $badgeColor }}-50 text-{{ $badgeColor }}-700 border border-{{ $badgeColor }}-200 px-8 py-2 rounded-pill text-10 fw-semibold">
+                            <span class="badge rounded-pill px-8 py-3 text-10 fw-semibold" style="background-color: {{ $badgeBg }} !important; color: {{ $badgeColor }} !important; border: 1px solid {{ $badgeBorder }} !important;">
                                 {{ $log->action }}
                             </span>
                         </div>

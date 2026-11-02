@@ -127,7 +127,7 @@
                 </div>
             </div>
             <div class="pt-12 border-top border-success-200 border-opacity-60 flex-between text-12">
-                <span class="badge bg-white text-success-800 rounded-pill px-10 py-4 fw-semibold shadow-xs">
+                <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #15803d !important;">
                     Jurnal Terisi
                 </span>
                 <span class="text-success-700 fw-medium">Aktivitas Harian</span>
@@ -165,7 +165,7 @@
                 </div>
             </div>
             <div class="pt-12 border-top border-purple-200 border-opacity-60 flex-between text-12">
-                <span class="badge bg-white text-purple-800 rounded-pill px-10 py-4 fw-semibold shadow-xs">
+                <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #6b21a8 !important;">
                     {{ $pklReport ? Str::limit($pklReport->company_name, 16) : 'Belum Ajukan' }}
                 </span>
                 <span class="text-purple-700 fw-medium">Mitra DU/DI</span>
