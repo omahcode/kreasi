@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class PklTest extends TestCase
@@ -328,5 +329,42 @@ class PklTest extends TestCase
         $this->assertSame('Judul Revisi Sempurna', $report->title);
         $this->assertSame('PT. Asli Tetap', $report->company_name); // unchanged!
         $this->assertSame('submitted', $report->title_status);
+    }
+
+    public function test_teacher_can_delete_pkl_report(): void
+    {
+        Storage::fake('public');
+
+        $student = $this->siswa->student;
+        $report = PklReport::create([
+            'student_id' => $student->id,
+            'title' => 'Laporan PKL Akan Dihapus',
+            'company_name' => 'PT. Hapus DUDI',
+            'mentor_teacher_id' => $this->guru->id,
+            'status' => 'in_progress',
+        ]);
+
+        $filePath = UploadedFile::fake()->create('bab1.pdf', 100)->store('pkl_chapters', 'public');
+
+        $chapter = PklChapter::create([
+            'report_id' => $report->id,
+            'chapter_number' => 1,
+            'title' => 'Bab I: Pendahuluan',
+            'file' => $filePath,
+            'status' => 'submitted',
+        ]);
+
+        Storage::disk('public')->assertExists($filePath);
+
+        $this->actingAs($this->guru);
+
+        $response = $this->delete(route('guru.pkl.destroy', $report->id));
+
+        $response->assertRedirect(route('guru.pkl.index'));
+        $response->assertSessionHas('success');
+
+        $this->assertDatabaseMissing('pkl_reports', ['id' => $report->id]);
+        $this->assertDatabaseMissing('pkl_chapters', ['id' => $chapter->id]);
+        Storage::disk('public')->assertMissing($filePath);
     }
 }

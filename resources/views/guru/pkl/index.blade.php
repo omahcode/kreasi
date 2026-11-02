@@ -116,9 +116,18 @@
                                         @endif
                                     </td>
                                     <td class="text-end pe-24">
-                                        <a href="{{ route('guru.pkl.show', $rep->id) }}" class="btn btn-sm btn-main rounded-pill px-16 text-12">
-                                            Bimbing Laporan &rarr;
-                                        </a>
+                                        <div class="d-inline-flex align-items-center gap-8 justify-content-end">
+                                            <a href="{{ route('guru.pkl.show', $rep->id) }}" class="btn btn-sm btn-main rounded-pill px-14 py-6 text-12 fw-semibold d-inline-flex align-items-center gap-4 shadow-2xs">
+                                                Bimbing Laporan <i class="ph ph-arrow-right text-12"></i>
+                                            </a>
+                                            <form method="POST" action="{{ route('guru.pkl.destroy', $rep->id) }}" class="d-inline" data-confirm="Hapus data bimbingan laporan PKL siswa {{ $rep->student->user->name ?? 'ini' }} ({{ $rep->title }}) beserta seluruh riwayat berkas bab yang telah diunggah?" data-confirm-title="Hapus Laporan PKL" data-confirm-btn="Ya, Hapus!">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle w-32 h-32 flex-center" title="Hapus Laporan PKL">
+                                                    <i class="ph ph-trash text-14"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @empty

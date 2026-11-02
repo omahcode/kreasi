@@ -9,6 +9,7 @@ use App\Models\PklChapter;
 use App\Models\PklReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PklController extends Controller
 {
@@ -196,5 +197,47 @@ class PklController extends Controller
         AuditLog::record(Auth::id(), 'final_approval_pkl', "Memberikan persetujuan akhir (Final Approval) laporan PKL siswa {$report->student->user->name}");
 
         return back()->with('success', 'Persetujuan final berhasil disahkan. Laporan PKL siswa dinyatakan tuntas.');
+    }
+
+    public function destroy($id)
+    {
+        $user = Auth::user();
+        $query = PklReport::with(['chapters', 'student.user']);
+
+        if ($user->role !== 'admin') {
+            $query->where(function ($q) use ($user) {
+                $q->where('mentor_teacher_id', $user->id)
+                    ->orWhereNull('mentor_teacher_id');
+            });
+        }
+
+        $report = $query->findOrFail($id);
+
+        $studentUser = $report->student?->user;
+        $studentName = $studentUser?->name ?? 'Siswa';
+        $title = $report->title;
+
+        // Clean up all physical files associated with the chapters
+        foreach ($report->chapters as $chapter) {
+            if ($chapter->file && Storage::disk('public')->exists($chapter->file)) {
+                Storage::disk('public')->delete($chapter->file);
+            }
+        }
+
+        $report->chapters()->delete();
+        $report->delete();
+
+        if ($studentUser) {
+            Notification::create([
+                'user_id' => $studentUser->id,
+                'title' => 'Pengajuan Laporan PKL Dihapus',
+                'message' => "Data pengajuan bimbingan laporan PKL Anda ('{$title}') telah dihapus oleh Guru Pembimbing. Anda dapat mengajukan judul laporan baru.",
+                'link' => route('siswa.pkl.index'),
+            ]);
+        }
+
+        AuditLog::record($user->id, 'delete_pkl_report', "Menghapus pengajuan laporan PKL siswa {$studentName} ('{$title}')");
+
+        return redirect()->route('guru.pkl.index')->with('success', "Data bimbingan laporan PKL siswa {$studentName} berhasil dihapus.");
     }
 }

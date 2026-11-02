@@ -16,9 +16,18 @@
                     <li><span class="text-main-600 fw-medium text-14">Detail Bimbingan</span></li>
                 </ul>
             </div>
-            <a href="{{ route('guru.pkl.index') }}" class="btn btn-outline-gray rounded-pill px-16 text-13">
-                <i class="ph ph-arrow-left me-4"></i> Kembali
-            </a>
+            <div class="flex-align gap-8 flex-wrap">
+                <a href="{{ route('guru.pkl.index') }}" class="btn btn-outline-gray rounded-pill px-16 text-13">
+                    <i class="ph ph-arrow-left me-4"></i> Kembali
+                </a>
+                <form method="POST" action="{{ route('guru.pkl.destroy', $report->id) }}" class="d-inline" data-confirm="Hapus data bimbingan laporan PKL siswa {{ $report->student->user->name ?? 'ini' }} ({{ $report->title }}) beserta seluruh riwayat berkas bab yang telah diunggah?" data-confirm-title="Hapus Laporan PKL" data-confirm-btn="Ya, Hapus!">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-outline-danger rounded-pill px-14 py-8 text-13">
+                        <i class="ph ph-trash me-4"></i> Hapus Laporan
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 

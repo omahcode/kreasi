@@ -163,6 +163,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/pkl/{id}/review-title', [PklController::class, 'reviewTitle'])->name('pkl.title.review');
         Route::post('/pkl/chapters/{chapterId}/review', [PklController::class, 'reviewChapter'])->name('pkl.chapters.review');
         Route::post('/pkl/{id}/final-approval', [PklController::class, 'finalApproval'])->name('pkl.final-approval');
+        Route::delete('/pkl/{id}', [PklController::class, 'destroy'])->name('pkl.destroy');
     });
 
     /*
