@@ -137,7 +137,7 @@ class PklController extends Controller
 
         $successMsg = ($request->status === 'approved')
             ? 'Judul laporan PKL siswa berhasil disetujui. Siswa kini dapat melanjutkan bimbingan Bab I s/d Bab V.'
-            : 'Catatan revisi judul laporan PKL berhasil dikirimkan kepada siswa.';
+            : 'Status judul berhasil diubah menjadi perlu revisi. Akses edit judul kini terbuka kembali untuk siswa.';
 
         return back()->with('success', $successMsg);
     }

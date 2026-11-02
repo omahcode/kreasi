@@ -3,7 +3,7 @@
 @section('title', 'Masuk ke Akun')
 
 @section('content')
-    <h2 class="mb-8">Selamat Datang Kembali! &#128075;</h2>
+    <h2 class="mb-8">Selamat Datang Kembali!</h2>
     <p class="text-gray-600 text-15 mb-32">Masuk untuk mengakses dashboard PjBL dan bimbingan PKL Anda.</p>
 
     @if (session('status'))

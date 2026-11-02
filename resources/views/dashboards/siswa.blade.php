@@ -73,7 +73,7 @@
         <div class="card card-cute card-hover-cute candy-sky p-20 h-100 shadow-none">
             <div class="flex-between align-items-start gap-12 mb-16">
                 <div>
-                    <span class="text-sky-700 text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1">
+                    <span class="text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1" style="color: #0369a1 !important;">
                         🎨 Proyek PjBL Diikuti
                     </span>
                     <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $myProjects->count() }}</h2>
@@ -83,10 +83,10 @@
                 </div>
             </div>
             <div class="pt-12 border-top border-sky-200 border-opacity-60 flex-between text-12">
-                <span class="badge bg-white text-sky-800 rounded-pill px-10 py-4 fw-semibold shadow-xs">
+                <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #0369a1 !important;">
                     Aktif Semester Ini
                 </span>
-                <span class="text-sky-700 fw-medium">Tugas Tim</span>
+                <span class="fw-semibold" style="color: #0284c7 !important;">Tugas Tim</span>
             </div>
         </div>
     </div>
@@ -95,20 +95,20 @@
         <div class="card card-cute card-hover-cute candy-peach p-20 h-100 shadow-none">
             <div class="flex-between align-items-start gap-12 mb-16">
                 <div>
-                    <span class="text-orange-800 text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1">
+                    <span class="text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1" style="color: #9a3412 !important;">
                         ⏰ Deadline Mendatang
                     </span>
                     <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $upcomingDeadlines->count() }}</h2>
                 </div>
-                <div class="w-52 h-52 rounded-20 bg-white text-orange-600 flex-center flex-shrink-0 text-26 shadow-sm">
+                <div class="w-52 h-52 rounded-20 bg-white flex-center flex-shrink-0 text-26 shadow-sm" style="color: #ea580c !important;">
                     <i class="ph-fill ph-calendar-check"></i>
                 </div>
             </div>
             <div class="pt-12 border-top border-orange-200 border-opacity-60 flex-between text-12">
-                <span class="badge bg-white text-orange-800 rounded-pill px-10 py-4 fw-semibold shadow-xs">
+                <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #c2410c !important;">
                     Perhatikan Waktu
                 </span>
-                <span class="text-orange-700 fw-medium">Target Tugas</span>
+                <span class="fw-semibold" style="color: #ea580c !important;">Target Tugas</span>
             </div>
         </div>
     </div>
@@ -384,10 +384,10 @@
 
             @if($pklReport)
                 <div class="p-16 rounded-16 candy-sky mb-20">
-                    <h6 class="mb-4 text-14 fw-bold text-sky-900">{{ $pklReport->title }}</h6>
-                    <span class="text-12 text-sky-700 d-block">{{ $pklReport->company_name }}</span>
+                    <h6 class="mb-4 text-14 fw-bold" style="color: #0c4a6e !important;">{{ $pklReport->title }}</h6>
+                    <span class="text-12 d-block" style="color: #0369a1 !important;">{{ $pklReport->company_name }}</span>
                     <div class="mt-8">
-                        <span class="badge bg-white text-sky-800 rounded-pill px-10 py-4 text-11 fw-bold shadow-xs">
+                        <span class="badge bg-white rounded-pill px-10 py-4 text-11 fw-bold shadow-xs" style="color: #0369a1 !important;">
                             Status: @if($pklReport->status === 'in_progress') In Progress @elseif($pklReport->status === 'revision_required') Perlu Revisi @elseif($pklReport->status === 'submitted') Menunggu Review @elseif($pklReport->status === 'approved' && $pklReport->chapters->where('status', 'approved')->count() >= 5) Disetujui Final @else {{ ucwords(str_replace('_', ' ', $pklReport->status)) }} @endif
                         </span>
                     </div>

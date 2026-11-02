@@ -121,12 +121,17 @@
 
                 <div class="col-md-4 text-md-end">
                     @if(($report->title_status ?? '') === 'approved')
-                        <span class="badge bg-success-50 text-success-700 border border-success-200 rounded-pill px-16 py-8 text-12 fw-semibold d-inline-flex align-items-center gap-6">
-                            <i class="ph ph-check-circle text-16"></i> Judul Telah Disetujui
-                        </span>
+                        <div class="d-inline-flex align-items-center gap-8 flex-wrap justify-content-md-end">
+                            <span class="badge bg-success-50 text-success-700 border border-success-200 rounded-pill px-14 py-7 text-12 fw-semibold d-inline-flex align-items-center gap-6">
+                                <i class="ph ph-check-circle text-16"></i> Judul Telah Disetujui
+                            </span>
+                            <button type="button" class="btn btn-sm btn-outline-warning rounded-pill px-14 py-6 text-12 fw-semibold" data-bs-toggle="modal" data-bs-target="#reviewTitleModal" title="Ubah status persetujuan judul jika ingin meminta revisi">
+                                <i class="ph ph-pencil-simple me-2"></i> Ubah / Minta Revisi
+                            </button>
+                        </div>
                     @else
                         <!-- Title Verification Actions -->
-                        <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-16 text-12 mb-8" data-bs-toggle="modal" data-bs-target="#reviewTitleModal">
+                        <button type="button" class="btn btn-sm btn-primary rounded-pill px-16 py-8 text-12 fw-semibold shadow-xs" data-bs-toggle="modal" data-bs-target="#reviewTitleModal">
                             <i class="ph ph-check-circle me-4"></i> Verifikasi / Revisi Judul
                         </button>
                     @endif
@@ -326,7 +331,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded-16 border-0 shadow-lg">
             <div class="modal-header border-bottom border-gray-100 py-16 px-24">
-                <h5 class="modal-title fw-bold">Verifikasi Judul Laporan PKL</h5>
+                <h5 class="modal-title fw-bold">{{ ($report->title_status ?? '') === 'approved' ? 'Ubah Status / Revisi Judul Laporan PKL' : 'Verifikasi Judul Laporan PKL' }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form method="POST" action="{{ route('guru.pkl.title.review', $report->id) }}">
@@ -335,13 +340,16 @@
                     <div class="mb-16">
                         <label class="form-label text-13 fw-semibold">Status Judul <span class="text-danger">*</span></label>
                         <select name="status" class="form-select" required>
-                            <option value="approved" {{ $report->status === 'approved' ? 'selected' : '' }}>Setujui Judul (Siswa Dapat Mulai Unggah Bab I - V)</option>
-                            <option value="revision_required" {{ $report->status === 'revision_required' ? 'selected' : '' }}>Minta Revisi Judul</option>
+                            <option value="approved" {{ ($report->title_status ?? $report->status) === 'approved' ? 'selected' : '' }}>Setujui Judul (ACC - Siswa Dapat Unggah Bab I - V)</option>
+                            <option value="revision_required" {{ ($report->title_status ?? $report->status) === 'revision_required' ? 'selected' : '' }}>Minta Revisi Judul (Buka Kunci untuk Siswa Mengedit)</option>
                         </select>
+                        <small class="text-gray-500 text-12 d-block mt-4">
+                            Pilih "Minta Revisi Judul" jika Anda salah klik setujui atau judul perlu disempurnakan. Akses edit akan otomatis terbuka di akun siswa.
+                        </small>
                     </div>
                     <div class="mb-16">
-                        <label class="form-label text-13 fw-semibold">Catatan Revisi / Saran (Wajib jika revisi)</label>
-                        <textarea name="rejection_note" rows="3" class="form-control" placeholder="Tuliskan saran penyempurnaan judul atau kriteria industri...">{{ old('rejection_note', $report->rejection_note) }}</textarea>
+                        <label class="form-label text-13 fw-semibold">Catatan Revisi / Saran Pembimbing</label>
+                        <textarea name="rejection_note" rows="3" class="form-control" placeholder="Tuliskan arahan atau alasan revisi judul agar siswa dapat menyesuaikan...">{{ old('rejection_note', $report->rejection_note) }}</textarea>
                     </div>
                 </div>
                 <div class="modal-footer border-top border-gray-100 py-12 px-24">

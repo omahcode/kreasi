@@ -79,14 +79,62 @@ class PklTest extends TestCase
             'status' => 'in_progress',
         ]);
 
-        // When title is approved, verification button is hidden, and report is in progress
+        // When title is approved, verification button shows badge and edit/revisi button
         $viewResponse = $this->get(route('guru.pkl.show', $report->id));
         $viewResponse->assertStatus(200);
-        $viewResponse->assertDontSee('Verifikasi / Revisi Judul');
         $viewResponse->assertSee('Judul Telah Disetujui');
+        $viewResponse->assertSee('Ubah / Minta Revisi');
         $viewResponse->assertDontSee('DISETUJUI FINAL');
         $viewResponse->assertDontSee('Seluruh Bab Tuntas & Disahkan');
         $viewResponse->assertSee('BIMBINGAN BERJALAN');
+    }
+
+    public function test_teacher_can_change_approved_title_to_revision_and_student_can_edit(): void
+    {
+        $student = $this->siswa->student;
+        $report = PklReport::create([
+            'student_id' => $student->id,
+            'title' => 'Judul Awal yang Salah',
+            'company_name' => 'PT. Inovasi Digital',
+            'mentor_teacher_id' => $this->guru->id,
+            'title_status' => 'approved',
+            'status' => 'in_progress',
+        ]);
+
+        // 1. Teacher changes their mind and sets status to revision_required
+        $this->actingAs($this->guru);
+        $response = $this->post(route('guru.pkl.title.review', $report->id), [
+            'status' => 'revision_required',
+            'rejection_note' => 'Judul tidak sesuai lingkup RPL, mohon disesuaikan.',
+        ]);
+        $response->assertRedirect();
+
+        $this->assertDatabaseHas('pkl_reports', [
+            'id' => $report->id,
+            'title_status' => 'revision_required',
+            'status' => 'revision_required',
+            'rejection_note' => 'Judul tidak sesuai lingkup RPL, mohon disesuaikan.',
+        ]);
+
+        // 2. Student opens PKL index and sees the revision alert and note
+        $this->actingAs($this->siswa);
+        $studentIndex = $this->get(route('siswa.pkl.index'));
+        $studentIndex->assertStatus(200);
+        $studentIndex->assertSee('Pengajuan Judul Perlu Revisi!');
+        $studentIndex->assertSee('Judul tidak sesuai lingkup RPL, mohon disesuaikan.');
+
+        // 3. Student successfully updates the title
+        $updateResponse = $this->put(route('siswa.pkl.title.update'), [
+            'title' => 'Rancang Bangun Sistem Informasi Kasir Berbasis Web',
+        ]);
+        $updateResponse->assertRedirect();
+
+        $this->assertDatabaseHas('pkl_reports', [
+            'id' => $report->id,
+            'title' => 'Rancang Bangun Sistem Informasi Kasir Berbasis Web',
+            'title_status' => 'submitted',
+            'status' => 'submitted',
+        ]);
     }
 
     public function test_student_can_upload_pkl_chapter_and_teacher_can_review(): void

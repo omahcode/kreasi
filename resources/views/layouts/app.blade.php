@@ -253,6 +253,20 @@
             margin: 0 !important;
             padding: 0 8px !important;
         }
+        /* Card Cute Color Text Utilities for High Contrast */
+        .text-sky-700 { color: #0284c7 !important; }
+        .text-sky-800 { color: #0369a1 !important; }
+        .text-sky-900 { color: #0c4a6e !important; }
+        .text-orange-600 { color: #ea580c !important; }
+        .text-orange-700 { color: #c2410c !important; }
+        .text-orange-800 { color: #9a3412 !important; }
+
+        /* Force badges inside candy cards to always have strong contrast */
+        .candy-sky .badge.bg-white { color: #0369a1 !important; }
+        .candy-peach .badge.bg-white { color: #c2410c !important; }
+        .candy-mint .badge.bg-white { color: #15803d !important; }
+        .candy-berry .badge.bg-white { color: #6b21a8 !important; }
+
         /* Mobile Bottom Navigation */
         @media (max-width: 991.98px) {
             .mobile-bottom-nav {

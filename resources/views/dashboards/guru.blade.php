@@ -67,7 +67,7 @@
         <div class="card card-cute card-hover-cute candy-sky p-20 h-100 shadow-none">
             <div class="flex-between align-items-start gap-12 mb-16">
                 <div>
-                    <span class="text-sky-700 text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1">
+                    <span class="text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1" style="color: #0369a1 !important;">
                         🚀 Proyek Aktif Saya
                     </span>
                     <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $activeProjects }}</h2>
@@ -77,10 +77,10 @@
                 </div>
             </div>
             <div class="pt-12 border-top border-sky-200 border-opacity-60 flex-between text-12">
-                <span class="badge bg-white text-sky-800 rounded-pill px-10 py-4 fw-semibold shadow-xs">
+                <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #0369a1 !important;">
                     {{ $totalMyProjects }} Proyek Dibuat
                 </span>
-                <span class="text-sky-700 fw-medium">Semester Ini</span>
+                <span class="fw-semibold" style="color: #0284c7 !important;">Semester Ini</span>
             </div>
         </div>
     </div>
@@ -111,20 +111,20 @@
         <div class="card card-cute card-hover-cute candy-peach p-20 h-100 shadow-none">
             <div class="flex-between align-items-start gap-12 mb-16">
                 <div>
-                    <span class="text-orange-800 text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1">
+                    <span class="text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1" style="color: #9a3412 !important;">
                         ✏️ Perlu Revisi
                     </span>
                     <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $pendingReviews }}</h2>
                 </div>
-                <div class="w-52 h-52 rounded-20 bg-white text-orange-600 flex-center flex-shrink-0 text-26 shadow-sm">
+                <div class="w-52 h-52 rounded-20 bg-white flex-center flex-shrink-0 text-26 shadow-sm" style="color: #ea580c !important;">
                     <i class="ph-fill ph-clock-counter-clockwise"></i>
                 </div>
             </div>
             <div class="pt-12 border-top border-orange-200 border-opacity-60 flex-between text-12">
-                <span class="badge bg-white text-orange-800 rounded-pill px-10 py-4 fw-semibold shadow-xs">
+                <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #c2410c !important;">
                     Tinjau Ulang
                 </span>
-                <span class="text-orange-700 fw-medium">Feedback Aktif</span>
+                <span class="fw-semibold" style="color: #ea580c !important;">Feedback Aktif</span>
             </div>
         </div>
     </div>
