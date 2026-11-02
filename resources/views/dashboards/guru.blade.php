@@ -3,154 +3,159 @@
 @section('title', 'Guru Dashboard')
 
 @section('content')
-<div class="row gy-4">
-    <!-- Hero Welcome Banner (Clean, Jelas, Rapi & Elegan) -->
-    <div class="col-12">
-        <div class="card border-0 rounded-20 position-relative overflow-hidden p-24 text-white" 
-             style="background: linear-gradient(135deg, #064A8E 0%, #0861B5 60%, #13B8B0 100%) !important; box-shadow: 0 10px 25px -5px rgba(6, 74, 142, 0.22);">
-            
-            <img src="{{ asset('assets/images/bg/grettings-pattern.png') }}" alt="" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover pointer-events-none" style="opacity: 0.15; mix-blend-mode: overlay;">
+<!-- Hero Welcome Banner (Clean, Jelas, Rapi & Elegan) -->
+<div class="mb-24" style="margin-bottom: 24px !important;">
+    <div class="card border-0 rounded-20 position-relative overflow-hidden p-24 text-white" 
+         style="background: linear-gradient(135deg, #064A8E 0%, #0861B5 60%, #13B8B0 100%) !important; box-shadow: 0 10px 25px -5px rgba(6, 74, 142, 0.22);">
+        
+        <img src="{{ asset('assets/images/bg/grettings-pattern.png') }}" alt="" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover pointer-events-none" style="opacity: 0.15; mix-blend-mode: overlay;">
 
-            <div class="row align-items-center g-20 position-relative z-1">
-                <div class="col-lg-8">
-                    <div class="d-inline-flex align-items-center gap-8 rounded-pill px-14 py-6 text-12 fw-semibold mb-12 shadow-xs" 
-                         style="background: rgba(255, 255, 255, 0.2); color: #ffffff; backdrop-filter: blur(4px);">
-                        <span class="text-16">👋</span>
-                        <span>Semangat Mengajar, {{ Auth::user()->name }}!</span>
-                        <span class="badge rounded-pill px-8 py-2 text-11 fw-bold" style="background: #22c55e; color: #ffffff;">Guru Pembimbing 🌟</span>
-                    </div>
-                    <h3 class="text-white fw-bold mb-8 text-24">
-                        Dashboard Guru Pembimbing &bull; Ruang PjBL & PKL ✨
-                    </h3>
-                    <p class="text-white text-14 mb-20" style="opacity: 0.9; max-width: 560px; line-height: 1.55;">
-                        Bimbing siswa-siswi RPL menjadi talenta digital unggulan. Buat proyek tantangan baru, tinjau progres tugas, dan evaluasi laporan bab PKL secara interaktif.
-                    </p>
-                    
-                    <div class="d-flex flex-wrap gap-10">
-                        <a href="{{ route('guru.projects.create') }}" 
-                           class="btn rounded-pill px-16 py-8 text-13 fw-bold flex-align gap-6 shadow-sm"
-                           style="background-color: #ffffff !important; color: #064A8E !important; border: 0 !important;">
-                            <i class="ph ph-plus-circle text-16" style="color: #064A8E !important;"></i>
-                            <span style="color: #064A8E !important;">Buat Proyek Baru</span>
-                        </a>
-                        <a href="{{ route('guru.submissions.index') }}" 
-                           class="btn rounded-pill px-16 py-8 text-13 fw-semibold flex-align gap-6"
-                           style="background: rgba(255, 255, 255, 0.18) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.35) !important;">
-                            <i class="ph ph-tray text-16 text-white"></i>
-                            <span class="text-white">Review Tugas</span>
-                        </a>
-                        <a href="{{ route('guru.pkl.index') }}" 
-                           class="btn rounded-pill px-16 py-8 text-13 fw-semibold flex-align gap-6"
-                           style="background: rgba(255, 255, 255, 0.18) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.35) !important;">
-                            <i class="ph ph-briefcase text-16 text-white"></i>
-                            <span class="text-white">Laporan Bab PKL</span>
-                        </a>
-                    </div>
+        <div class="row align-items-center g-20 position-relative z-1">
+            <div class="col-lg-8">
+                <div class="d-inline-flex align-items-center gap-8 rounded-pill px-14 py-6 text-12 fw-semibold mb-12 shadow-xs" 
+                     style="background: rgba(255, 255, 255, 0.2); color: #ffffff; backdrop-filter: blur(4px);">
+                    <span class="text-16">👋</span>
+                    <span>Semangat Mengajar, {{ Auth::user()->name }}!</span>
+                    <span class="badge rounded-pill px-8 py-2 text-11 fw-bold" style="background: #22c55e; color: #ffffff;">Guru Pembimbing 🌟</span>
                 </div>
+                <h3 class="text-white fw-bold mb-8 text-24">
+                    Dashboard Guru Pembimbing &bull; Ruang PjBL & PKL ✨
+                </h3>
+                <p class="text-white text-14 mb-20" style="opacity: 0.9; max-width: 560px; line-height: 1.55;">
+                    Bimbing siswa-siswi RPL menjadi talenta digital unggulan. Buat proyek tantangan baru, tinjau progres tugas, dan evaluasi laporan bab PKL secara interaktif.
+                </p>
+                
+                <div class="d-flex flex-wrap gap-10">
+                    <a href="{{ route('guru.projects.create') }}" 
+                       class="btn rounded-pill px-16 py-8 text-13 fw-bold flex-align gap-6 shadow-sm"
+                       style="background-color: #ffffff !important; color: #064A8E !important; border: 0 !important;">
+                        <i class="ph ph-plus-circle text-16" style="color: #064A8E !important;"></i>
+                        <span style="color: #064A8E !important;">Buat Proyek Baru</span>
+                    </a>
+                    <a href="{{ route('guru.submissions.index') }}" 
+                       class="btn rounded-pill px-16 py-8 text-13 fw-semibold flex-align gap-6"
+                       style="background: rgba(255, 255, 255, 0.18) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.35) !important;">
+                        <i class="ph ph-tray text-16 text-white"></i>
+                        <span class="text-white">Review Tugas</span>
+                    </a>
+                    <a href="{{ route('guru.pkl.index') }}" 
+                       class="btn rounded-pill px-16 py-8 text-13 fw-semibold flex-align gap-6"
+                       style="background: rgba(255, 255, 255, 0.18) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.35) !important;">
+                        <i class="ph ph-briefcase text-16 text-white"></i>
+                        <span class="text-white">Laporan Bab PKL</span>
+                    </a>
+                </div>
+            </div>
 
-                <div class="col-lg-4 text-center d-none d-lg-flex justify-content-center align-items-center position-relative">
-                    <div class="position-relative d-inline-block">
-                        <img src="{{ asset('assets/images/thumbs/panda.png') }}" 
-                             alt="Panda Maskot" 
-                             style="width: 145px; height: 145px; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.18));">
-                        <div class="bg-white rounded-pill px-12 py-4 shadow-sm position-absolute top-0 end-0 translate-middle-y text-11 fw-bold text-gray-800 flex-align gap-4" style="border: 1px solid #e2e8f0;">
-                            <span>Inspirasi RPL! 💡</span>
-                        </div>
+            <div class="col-lg-4 text-center d-none d-lg-flex justify-content-center align-items-center position-relative">
+                <div class="position-relative d-inline-block">
+                    <img src="{{ asset('assets/images/thumbs/panda.png') }}" 
+                         alt="Panda Maskot" 
+                         style="width: 145px; height: 145px; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.18));">
+                    <div class="bg-white rounded-pill px-12 py-4 shadow-sm position-absolute top-0 end-0 translate-middle-y text-11 fw-bold text-gray-800 flex-align gap-4" style="border: 1px solid #e2e8f0;">
+                        <span>Inspirasi RPL! 💡</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- 4 Cute Candy Stat Cards -->
-    <div class="col-xxl-3 col-sm-6">
-        <div class="card card-cute card-hover-cute candy-sky p-20 h-100 shadow-none">
-            <div class="flex-between align-items-start gap-12 mb-16">
-                <div>
-                    <span class="text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1" style="color: #0369a1 !important;">
-                        🚀 Proyek Aktif Saya
-                    </span>
-                    <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $activeProjects }}</h2>
+<!-- 4 Cute Candy Stat Cards -->
+<div class="mb-24" style="margin-bottom: 24px !important;">
+    <div class="row g-4 gy-4" style="row-gap: 24px;">
+        <div class="col-xxl-3 col-xl-3 col-sm-6 mb-16 mb-xl-0">
+            <div class="card card-cute card-hover-cute candy-sky p-20 h-100 shadow-none">
+                <div class="flex-between align-items-start gap-12 mb-16">
+                    <div>
+                        <span class="text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1" style="color: #0369a1 !important;">
+                            🚀 Proyek Aktif Saya
+                        </span>
+                        <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $activeProjects }}</h2>
+                    </div>
+                    <div class="w-52 h-52 rounded-20 bg-white text-main-600 flex-center flex-shrink-0 text-26 shadow-sm">
+                        <i class="ph-fill ph-folder-notch"></i>
+                    </div>
                 </div>
-                <div class="w-52 h-52 rounded-20 bg-white text-main-600 flex-center flex-shrink-0 text-26 shadow-sm">
-                    <i class="ph-fill ph-folder-notch"></i>
+                <div class="pt-12 border-top border-sky-200 border-opacity-60 flex-between text-12">
+                    <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #0369a1 !important;">
+                        {{ $totalMyProjects }} Proyek Dibuat
+                    </span>
+                    <span class="fw-semibold" style="color: #0284c7 !important;">Semester Ini</span>
                 </div>
             </div>
-            <div class="pt-12 border-top border-sky-200 border-opacity-60 flex-between text-12">
-                <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #0369a1 !important;">
-                    {{ $totalMyProjects }} Proyek Dibuat
-                </span>
-                <span class="fw-semibold" style="color: #0284c7 !important;">Semester Ini</span>
+        </div>
+
+        <div class="col-xxl-3 col-xl-3 col-sm-6 mb-16 mb-xl-0">
+            <div class="card card-cute card-hover-cute candy-mint p-20 h-100 shadow-none">
+                <div class="flex-between align-items-start gap-12 mb-16">
+                    <div>
+                        <span class="text-success-800 text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1">
+                            📥 Pengumpulan Masuk
+                        </span>
+                        <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $incomingSubmissions }}</h2>
+                    </div>
+                    <div class="w-52 h-52 rounded-20 bg-white text-success-600 flex-center flex-shrink-0 text-26 shadow-sm">
+                        <i class="ph-fill ph-tray"></i>
+                    </div>
+                </div>
+                <div class="pt-12 border-top border-success-200 border-opacity-60 flex-between text-12">
+                    <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #15803d !important;">
+                        Menunggu Dinilai
+                    </span>
+                    <span class="text-success-700 fw-medium">Tugas Siswa</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xxl-3 col-xl-3 col-sm-6 mb-16 mb-xl-0">
+            <div class="card card-cute card-hover-cute candy-peach p-20 h-100 shadow-none">
+                <div class="flex-between align-items-start gap-12 mb-16">
+                    <div>
+                        <span class="text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1" style="color: #9a3412 !important;">
+                            ✏️ Perlu Revisi
+                        </span>
+                        <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $pendingReviews }}</h2>
+                    </div>
+                    <div class="w-52 h-52 rounded-20 bg-white flex-center flex-shrink-0 text-26 shadow-sm" style="color: #ea580c !important;">
+                        <i class="ph-fill ph-clock-counter-clockwise"></i>
+                    </div>
+                </div>
+                <div class="pt-12 border-top border-orange-200 border-opacity-60 flex-between text-12">
+                    <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #c2410c !important;">
+                        Tinjau Ulang
+                    </span>
+                    <span class="fw-semibold" style="color: #ea580c !important;">Feedback Aktif</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xxl-3 col-xl-3 col-sm-6 mb-16 mb-xl-0">
+            <div class="card card-cute card-hover-cute candy-berry p-20 h-100 shadow-none">
+                <div class="flex-between align-items-start gap-12 mb-16">
+                    <div>
+                        <span class="text-purple-800 text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1">
+                            💼 Kelompok PKL
+                        </span>
+                        <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $myPklGroups->count() }}</h2>
+                    </div>
+                    <div class="w-52 h-52 rounded-20 bg-white text-purple-600 flex-center flex-shrink-0 text-26 shadow-sm">
+                        <i class="ph-fill ph-users-three"></i>
+                    </div>
+                </div>
+                <div class="pt-12 border-top border-purple-200 border-opacity-60 flex-between text-12">
+                    <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #6b21a8 !important;">
+                        {{ $myPklGroups->sum(fn($g) => $g->students->count()) ?: $myPklMentees->count() }} Siswa Bimbingan
+                    </span>
+                    <span class="text-purple-700 fw-medium">Mitra DU/DI</span>
+                </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="col-xxl-3 col-sm-6">
-        <div class="card card-cute card-hover-cute candy-mint p-20 h-100 shadow-none">
-            <div class="flex-between align-items-start gap-12 mb-16">
-                <div>
-                    <span class="text-success-800 text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1">
-                        📥 Pengumpulan Masuk
-                    </span>
-                    <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $incomingSubmissions }}</h2>
-                </div>
-                <div class="w-52 h-52 rounded-20 bg-white text-success-600 flex-center flex-shrink-0 text-26 shadow-sm">
-                    <i class="ph-fill ph-tray"></i>
-                </div>
-            </div>
-            <div class="pt-12 border-top border-success-200 border-opacity-60 flex-between text-12">
-                <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #15803d !important;">
-                    Menunggu Dinilai
-                </span>
-                <span class="text-success-700 fw-medium">Tugas Siswa</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xxl-3 col-sm-6">
-        <div class="card card-cute card-hover-cute candy-peach p-20 h-100 shadow-none">
-            <div class="flex-between align-items-start gap-12 mb-16">
-                <div>
-                    <span class="text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1" style="color: #9a3412 !important;">
-                        ✏️ Perlu Revisi
-                    </span>
-                    <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $pendingReviews }}</h2>
-                </div>
-                <div class="w-52 h-52 rounded-20 bg-white flex-center flex-shrink-0 text-26 shadow-sm" style="color: #ea580c !important;">
-                    <i class="ph-fill ph-clock-counter-clockwise"></i>
-                </div>
-            </div>
-            <div class="pt-12 border-top border-orange-200 border-opacity-60 flex-between text-12">
-                <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #c2410c !important;">
-                    Tinjau Ulang
-                </span>
-                <span class="fw-semibold" style="color: #ea580c !important;">Feedback Aktif</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xxl-3 col-sm-6">
-        <div class="card card-cute card-hover-cute candy-berry p-20 h-100 shadow-none">
-            <div class="flex-between align-items-start gap-12 mb-16">
-                <div>
-                    <span class="text-purple-800 text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1">
-                        💼 Kelompok PKL
-                    </span>
-                    <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $myPklGroups->count() }}</h2>
-                </div>
-                <div class="w-52 h-52 rounded-20 bg-white text-purple-600 flex-center flex-shrink-0 text-26 shadow-sm">
-                    <i class="ph-fill ph-users-three"></i>
-                </div>
-            </div>
-            <div class="pt-12 border-top border-purple-200 border-opacity-60 flex-between text-12">
-                <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #6b21a8 !important;">
-                    {{ $myPklGroups->sum(fn($g) => $g->students->count()) ?: $myPklMentees->count() }} Siswa Bimbingan
-                </span>
-                <span class="text-purple-700 fw-medium">Mitra DU/DI</span>
-            </div>
-        </div>
-    </div>
-
+<!-- Submissions & Projects Row -->
+<div class="row g-4 gy-4 mb-24" style="row-gap: 24px; margin-bottom: 24px !important;">
     <!-- Recent Submissions Table -->
     <div class="col-lg-7">
         <div class="card card-cute border border-gray-100 bg-white p-24 h-100 shadow-none">

@@ -3,11 +3,10 @@
 @section('title', 'Siswa Dashboard')
 
 @section('content')
-<div class="row gy-4">
-    <!-- Student Header Banner (Clean, Jelas, Rapi & Elegan) -->
-    <div class="col-12">
-        <div class="card border-0 rounded-20 position-relative overflow-hidden p-24 text-white" 
-             style="background: linear-gradient(135deg, #064A8E 0%, #0861B5 60%, #13B8B0 100%) !important; box-shadow: 0 10px 25px -5px rgba(6, 74, 142, 0.22);">
+<!-- Student Header Banner (Clean, Jelas, Rapi & Elegan) -->
+<div class="mb-24" style="margin-bottom: 24px !important;">
+    <div class="card border-0 rounded-20 position-relative overflow-hidden p-24 text-white" 
+         style="background: linear-gradient(135deg, #064A8E 0%, #0861B5 60%, #13B8B0 100%) !important; box-shadow: 0 10px 25px -5px rgba(6, 74, 142, 0.22);">
             
             <img src="{{ asset('assets/images/bg/grettings-pattern.png') }}" alt="" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover pointer-events-none" style="opacity: 0.15; mix-blend-mode: overlay;">
 
@@ -67,9 +66,12 @@
             </div>
         </div>
     </div>
+</div>
 
-    <!-- 4 Cute Candy Stat Cards -->
-    <div class="col-xxl-3 col-sm-6">
+<!-- 4 Cute Candy Stat Cards -->
+<div class="mb-24" style="margin-bottom: 24px !important;">
+    <div class="row g-4 gy-4" style="row-gap: 24px;">
+        <div class="col-xxl-3 col-xl-3 col-sm-6 mb-16 mb-xl-0">
         <div class="card card-cute card-hover-cute candy-sky p-20 h-100 shadow-none">
             <div class="flex-between align-items-start gap-12 mb-16">
                 <div>
@@ -91,90 +93,94 @@
         </div>
     </div>
 
-    <div class="col-xxl-3 col-sm-6">
-        <div class="card card-cute card-hover-cute candy-peach p-20 h-100 shadow-none">
-            <div class="flex-between align-items-start gap-12 mb-16">
-                <div>
-                    <span class="text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1" style="color: #9a3412 !important;">
-                        ⏰ Deadline Mendatang
+        <div class="col-xxl-3 col-xl-3 col-sm-6 mb-16 mb-xl-0">
+            <div class="card card-cute card-hover-cute candy-peach p-20 h-100 shadow-none">
+                <div class="flex-between align-items-start gap-12 mb-16">
+                    <div>
+                        <span class="text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1" style="color: #9a3412 !important;">
+                            ⏰ Deadline Mendatang
+                        </span>
+                        <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $upcomingDeadlines->count() }}</h2>
+                    </div>
+                    <div class="w-52 h-52 rounded-20 bg-white flex-center flex-shrink-0 text-26 shadow-sm" style="color: #ea580c !important;">
+                        <i class="ph-fill ph-calendar-check"></i>
+                    </div>
+                </div>
+                <div class="pt-12 border-top border-orange-200 border-opacity-60 flex-between text-12">
+                    <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #c2410c !important;">
+                        Perhatikan Waktu
                     </span>
-                    <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $upcomingDeadlines->count() }}</h2>
+                    <span class="fw-semibold" style="color: #ea580c !important;">Target Tugas</span>
                 </div>
-                <div class="w-52 h-52 rounded-20 bg-white flex-center flex-shrink-0 text-26 shadow-sm" style="color: #ea580c !important;">
-                    <i class="ph-fill ph-calendar-check"></i>
-                </div>
-            </div>
-            <div class="pt-12 border-top border-orange-200 border-opacity-60 flex-between text-12">
-                <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #c2410c !important;">
-                    Perhatikan Waktu
-                </span>
-                <span class="fw-semibold" style="color: #ea580c !important;">Target Tugas</span>
             </div>
         </div>
-    </div>
 
-    <div class="col-xxl-3 col-sm-6">
-        <div class="card card-cute card-hover-cute candy-mint p-20 h-100 shadow-none">
-            <div class="flex-between align-items-start gap-12 mb-16">
-                <div>
-                    <span class="text-success-800 text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1">
-                        📖 Catatan Logbook
+        <div class="col-xxl-3 col-xl-3 col-sm-6 mb-16 mb-xl-0">
+            <div class="card card-cute card-hover-cute candy-mint p-20 h-100 shadow-none">
+                <div class="flex-between align-items-start gap-12 mb-16">
+                    <div>
+                        <span class="text-success-800 text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1">
+                            📖 Catatan Logbook
+                        </span>
+                        <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $recentLogs->count() }}</h2>
+                    </div>
+                    <div class="w-52 h-52 rounded-20 bg-white text-success-600 flex-center flex-shrink-0 text-26 shadow-sm">
+                        <i class="ph-fill ph-notepad"></i>
+                    </div>
+                </div>
+                <div class="pt-12 border-top border-success-200 border-opacity-60 flex-between text-12">
+                    <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #15803d !important;">
+                        Jurnal Terisi
                     </span>
-                    <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $recentLogs->count() }}</h2>
+                    <span class="text-success-700 fw-medium">Aktivitas Harian</span>
                 </div>
-                <div class="w-52 h-52 rounded-20 bg-white text-success-600 flex-center flex-shrink-0 text-26 shadow-sm">
-                    <i class="ph-fill ph-notepad"></i>
-                </div>
-            </div>
-            <div class="pt-12 border-top border-success-200 border-opacity-60 flex-between text-12">
-                <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #15803d !important;">
-                    Jurnal Terisi
-                </span>
-                <span class="text-success-700 fw-medium">Aktivitas Harian</span>
             </div>
         </div>
-    </div>
 
-    <div class="col-xxl-3 col-sm-6">
-        <div class="card card-cute card-hover-cute candy-berry p-20 h-100 shadow-none">
-            <div class="flex-between align-items-start gap-12 mb-16">
-                <div>
-                    <span class="text-purple-800 text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1">
-                        💼 Status Laporan PKL
-                    </span>
-                    <h4 class="mb-0 fw-bold text-gray-900 mt-4">
-                        @if($pklReport)
-                            @if($pklReport->status === 'approved' && $pklReport->chapters->where('status', 'approved')->count() >= 5)
-                                Disetujui Final
-                            @elseif($pklReport->status === 'in_progress')
-                                In Progress
-                            @elseif($pklReport->status === 'revision_required')
-                                Perlu Revisi
-                            @elseif($pklReport->status === 'submitted')
-                                Menunggu Review
+        <div class="col-xxl-3 col-xl-3 col-sm-6 mb-16 mb-xl-0">
+            <div class="card card-cute card-hover-cute candy-berry p-20 h-100 shadow-none">
+                <div class="flex-between align-items-start gap-12 mb-16">
+                    <div>
+                        <span class="text-purple-800 text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1">
+                            💼 Status Laporan PKL
+                        </span>
+                        <h4 class="mb-0 fw-bold text-gray-900 mt-4">
+                            @if($pklReport)
+                                @if($pklReport->status === 'approved' && $pklReport->chapters->where('status', 'approved')->count() >= 5)
+                                    Disetujui Final
+                                @elseif($pklReport->status === 'in_progress')
+                                    In Progress
+                                @elseif($pklReport->status === 'revision_required')
+                                    Perlu Revisi
+                                @elseif($pklReport->status === 'submitted')
+                                    Menunggu Review
+                                @else
+                                    {{ ucwords(str_replace('_', ' ', $pklReport->status)) }}
+                                @endif
                             @else
-                                {{ ucwords(str_replace('_', ' ', $pklReport->status)) }}
+                                Belum Ada
                             @endif
-                        @else
-                            Belum Ada
-                        @endif
-                    </h4>
+                        </h4>
+                    </div>
+                    <div class="w-52 h-52 rounded-20 bg-white text-purple-600 flex-center flex-shrink-0 text-26 shadow-sm">
+                        <i class="ph-fill ph-briefcase"></i>
+                    </div>
                 </div>
-                <div class="w-52 h-52 rounded-20 bg-white text-purple-600 flex-center flex-shrink-0 text-26 shadow-sm">
-                    <i class="ph-fill ph-briefcase"></i>
+                <div class="pt-12 border-top border-purple-200 border-opacity-60 flex-between text-12">
+                    <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #6b21a8 !important;">
+                        {{ $pklReport ? Str::limit($pklReport->company_name, 16) : 'Belum Ajukan' }}
+                    </span>
+                    <span class="text-purple-700 fw-medium">Mitra DU/DI</span>
                 </div>
-            </div>
-            <div class="pt-12 border-top border-purple-200 border-opacity-60 flex-between text-12">
-                <span class="badge bg-white rounded-pill px-10 py-4 fw-bold shadow-xs" style="color: #6b21a8 !important;">
-                    {{ $pklReport ? Str::limit($pklReport->company_name, 16) : 'Belum Ajukan' }}
-                </span>
-                <span class="text-purple-700 fw-medium">Mitra DU/DI</span>
             </div>
         </div>
     </div>
+</div>
 
+<!-- Main Siswa Content -->
+<div class="row g-4 gy-4" style="row-gap: 24px;">
     <!-- Card Penempatan & Rekan Kelompok PKL -->
-    <div class="col-12">
+    <div class="col-12 mb-24">
         <div class="card card-cute border border-gray-100 bg-white shadow-none overflow-hidden">
             <div class="card-header bg-main-50 py-16 px-24 border-bottom border-gray-100 flex-between flex-wrap gap-12">
                 <div class="d-flex align-items-center gap-12">

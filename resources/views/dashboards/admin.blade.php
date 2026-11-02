@@ -3,158 +3,163 @@
 @section('title', 'Admin Dashboard')
 
 @section('content')
-<div class="row g-24">
-    <!-- Hero Welcome Banner (Clean, Jelas, Rapi & Elegan) -->
-    <div class="col-12">
-        <div class="card border-0 rounded-20 position-relative overflow-hidden p-24 text-white" 
-             style="background: linear-gradient(135deg, #064A8E 0%, #0861B5 60%, #13B8B0 100%) !important; box-shadow: 0 10px 25px -5px rgba(6, 74, 142, 0.22);">
-            
-            <!-- Pattern Overlay -->
-            <img src="{{ asset('assets/images/bg/grettings-pattern.png') }}" alt="" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover pointer-events-none" style="opacity: 0.15; mix-blend-mode: overlay;">
-            
-            <div class="row align-items-center g-20 position-relative z-1">
-                <div class="col-lg-8">
-                    <!-- Greeting Badge -->
-                    <div class="d-inline-flex align-items-center gap-8 rounded-pill px-14 py-6 text-12 fw-semibold mb-12 shadow-xs" 
-                         style="background: rgba(255, 255, 255, 0.2); color: #ffffff; backdrop-filter: blur(4px);">
-                        <span class="text-16">👋</span>
-                        <span>Halo, {{ Auth::user()->name }}!</span>
-                        <span class="badge rounded-pill px-8 py-2 text-11 fw-bold" style="background: #FFB703; color: #0f172a;">
-                            👑 Administrator
-                        </span>
-                    </div>
-
-                    <!-- Heading & Subtitle -->
-                    <h3 class="text-white fw-bold mb-8 text-24">
-                        Dashboard Administrator &bull; Pusat Komando KREASI RPL ✨
-                    </h3>
-                    <p class="text-white text-14 mb-20" style="opacity: 0.9; max-width: 560px; line-height: 1.55;">
-                        Pantau aktivitas pembelajaran PjBL, bimbingan laporan PKL siswa kelas XII, dan kelola integritas file sistem secara realtime dalam satu pusat kendali terpadu.
-                    </p>
-                    
-                    <!-- Quick Action Buttons -->
-                    <div class="d-flex flex-wrap gap-10">
-                        <a href="{{ route('admin.traffic.index') }}" 
-                           class="btn rounded-pill px-16 py-8 text-13 fw-bold flex-align gap-6 shadow-sm"
-                           style="background-color: #ffffff !important; color: #064A8E !important; border: 0 !important;">
-                            <i class="ph ph-chart-line-up text-16" style="color: #064A8E !important;"></i>
-                            <span style="color: #064A8E !important;">Trafik & Storage</span>
-                        </a>
-                        <a href="{{ route('admin.student-progress.index') }}" 
-                           class="btn rounded-pill px-16 py-8 text-13 fw-semibold flex-align gap-6"
-                           style="background: rgba(255, 255, 255, 0.18) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.35) !important;">
-                            <i class="ph ph-folder-open text-16 text-white"></i>
-                            <span class="text-white">Berkas Siswa</span>
-                        </a>
-                        <a href="{{ route('admin.students.sync') }}" 
-                           class="btn rounded-pill px-16 py-8 text-13 fw-semibold flex-align gap-6"
-                           style="background: rgba(255, 255, 255, 0.18) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.35) !important;">
-                            <i class="ph ph-arrows-clockwise text-16 text-white"></i>
-                            <span class="text-white">Sinkron API</span>
-                        </a>
-                        <a href="{{ route('admin.students.import') }}" 
-                           class="btn rounded-pill px-16 py-8 text-13 fw-semibold flex-align gap-6"
-                           style="background: rgba(255, 255, 255, 0.18) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.35) !important;">
-                            <i class="ph ph-file-arrow-up text-16 text-white"></i>
-                            <span class="text-white">Import Siswa</span>
-                        </a>
-                    </div>
+<!-- Hero Welcome Banner (Clean, Jelas, Rapi & Elegan) -->
+<div class="mb-24" style="margin-bottom: 24px !important;">
+    <div class="card border-0 rounded-20 position-relative overflow-hidden p-24 text-white" 
+         style="background: linear-gradient(135deg, #064A8E 0%, #0861B5 60%, #13B8B0 100%) !important; box-shadow: 0 10px 25px -5px rgba(6, 74, 142, 0.22);">
+        
+        <!-- Pattern Overlay -->
+        <img src="{{ asset('assets/images/bg/grettings-pattern.png') }}" alt="" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover pointer-events-none" style="opacity: 0.15; mix-blend-mode: overlay;">
+        
+        <div class="row align-items-center g-20 position-relative z-1">
+            <div class="col-lg-8">
+                <!-- Greeting Badge -->
+                <div class="d-inline-flex align-items-center gap-8 rounded-pill px-14 py-6 text-12 fw-semibold mb-12 shadow-xs" 
+                     style="background: rgba(255, 255, 255, 0.2); color: #ffffff; backdrop-filter: blur(4px);">
+                    <span class="text-16">👋</span>
+                    <span>Halo, {{ Auth::user()->name }}!</span>
+                    <span class="badge rounded-pill px-8 py-2 text-11 fw-bold" style="background: #FFB703; color: #0f172a;">
+                        👑 Administrator
+                    </span>
                 </div>
 
-                <!-- Mascot Image (Proportional & Cute) -->
-                <div class="col-lg-4 text-center d-none d-lg-flex justify-content-center align-items-center position-relative">
-                    <div class="position-relative d-inline-block">
-                        <img src="{{ asset('assets/images/thumbs/panda.png') }}" 
-                             alt="Maskot KREASI" 
-                             style="width: 145px; height: 145px; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.18));">
-                        <div class="bg-white rounded-pill px-12 py-4 shadow-sm position-absolute top-0 end-0 translate-middle-y text-11 fw-bold text-gray-800 flex-align gap-4" style="border: 1px solid #e2e8f0;">
-                            <span>Semangat RPL! 🚀</span>
-                        </div>
+                <!-- Heading & Subtitle -->
+                <h3 class="text-white fw-bold mb-8 text-24">
+                    Dashboard Administrator &bull; Pusat Komando KREASI RPL ✨
+                </h3>
+                <p class="text-white text-14 mb-20" style="opacity: 0.9; max-width: 560px; line-height: 1.55;">
+                    Pantau aktivitas pembelajaran PjBL, bimbingan laporan PKL siswa kelas XII, dan kelola integritas file sistem secara realtime dalam satu pusat kendali terpadu.
+                </p>
+                
+                <!-- Quick Action Buttons -->
+                <div class="d-flex flex-wrap gap-10">
+                    <a href="{{ route('admin.traffic.index') }}" 
+                       class="btn rounded-pill px-16 py-8 text-13 fw-bold flex-align gap-6 shadow-sm"
+                       style="background-color: #ffffff !important; color: #064A8E !important; border: 0 !important;">
+                        <i class="ph ph-chart-line-up text-16" style="color: #064A8E !important;"></i>
+                        <span style="color: #064A8E !important;">Trafik & Storage</span>
+                    </a>
+                    <a href="{{ route('admin.student-progress.index') }}" 
+                       class="btn rounded-pill px-16 py-8 text-13 fw-semibold flex-align gap-6"
+                       style="background: rgba(255, 255, 255, 0.18) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.35) !important;">
+                        <i class="ph ph-folder-open text-16 text-white"></i>
+                        <span class="text-white">Berkas Siswa</span>
+                    </a>
+                    <a href="{{ route('admin.students.sync') }}" 
+                       class="btn rounded-pill px-16 py-8 text-13 fw-semibold flex-align gap-6"
+                       style="background: rgba(255, 255, 255, 0.18) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.35) !important;">
+                        <i class="ph ph-arrows-clockwise text-16 text-white"></i>
+                        <span class="text-white">Sinkron API</span>
+                    </a>
+                    <a href="{{ route('admin.students.import') }}" 
+                       class="btn rounded-pill px-16 py-8 text-13 fw-semibold flex-align gap-6"
+                       style="background: rgba(255, 255, 255, 0.18) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.35) !important;">
+                        <i class="ph ph-file-arrow-up text-16 text-white"></i>
+                        <span class="text-white">Import Siswa</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mascot Image (Proportional & Cute) -->
+            <div class="col-lg-4 text-center d-none d-lg-flex justify-content-center align-items-center position-relative">
+                <div class="position-relative d-inline-block">
+                    <img src="{{ asset('assets/images/thumbs/panda.png') }}" 
+                         alt="Maskot KREASI" 
+                         style="width: 145px; height: 145px; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.18));">
+                    <div class="bg-white rounded-pill px-12 py-4 shadow-sm position-absolute top-0 end-0 translate-middle-y text-11 fw-bold text-gray-800 flex-align gap-4" style="border: 1px solid #e2e8f0;">
+                        <span>Semangat RPL! 🚀</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- 4 Clean & Attractive Stat Cards -->
-    <!-- Card 1: Total Siswa -->
-    <div class="col-xxl-3 col-xl-3 col-sm-6 mb-24 mb-xl-0">
-        <div class="card border border-gray-100 rounded-16 p-20 bg-white h-100 shadow-none hover-shadow-sm transition-2">
-            <div class="flex-between align-items-center mb-12">
-                <span class="text-gray-500 text-13 fw-semibold">Total Siswa Terdaftar</span>
-                <div class="w-44 h-44 rounded-12 bg-main-50 text-main-600 flex-center text-22 flex-shrink-0">
-                    <i class="ph-fill ph-student"></i>
+<!-- 4 Clean & Attractive Stat Cards -->
+<div class="mb-24" style="margin-bottom: 24px !important;">
+    <div class="row g-4 gy-4" style="row-gap: 24px;">
+        <!-- Card 1: Total Siswa -->
+        <div class="col-xxl-3 col-xl-3 col-sm-6 mb-16 mb-xl-0">
+            <div class="card border border-gray-100 rounded-16 p-20 bg-white h-100 shadow-none hover-shadow-sm transition-2">
+                <div class="flex-between align-items-center mb-12">
+                    <span class="text-gray-500 text-13 fw-semibold">Total Siswa Terdaftar</span>
+                    <div class="w-44 h-44 rounded-12 bg-main-50 text-main-600 flex-center text-22 flex-shrink-0">
+                        <i class="ph-fill ph-student"></i>
+                    </div>
+                </div>
+                <h3 class="mb-8 fw-bold text-gray-900 text-28">{{ number_format($totalStudents) }}</h3>
+                <div class="flex-align gap-6 text-12">
+                    <span class="badge bg-main-50 text-main-700 border border-main-200 px-8 py-3 rounded-pill fw-semibold">
+                        <i class="ph ph-check-circle me-2"></i> Aktif Belajar
+                    </span>
+                    <span class="text-gray-600 fw-medium">Jurusan RPL</span>
                 </div>
             </div>
-            <h3 class="mb-8 fw-bold text-gray-900 text-28">{{ number_format($totalStudents) }}</h3>
-            <div class="flex-align gap-6 text-12">
-                <span class="badge bg-main-50 text-main-700 border border-main-200 px-8 py-3 rounded-pill fw-semibold">
-                    <i class="ph ph-check-circle me-2"></i> Aktif Belajar
-                </span>
-                <span class="text-gray-600 fw-medium">Jurusan RPL</span>
+        </div>
+
+        <!-- Card 2: Total Guru -->
+        <div class="col-xxl-3 col-xl-3 col-sm-6 mb-16 mb-xl-0">
+            <div class="card border border-gray-100 rounded-16 p-20 bg-white h-100 shadow-none hover-shadow-sm transition-2">
+                <div class="flex-between align-items-center mb-12">
+                    <span class="text-gray-500 text-13 fw-semibold">Guru Pembimbing</span>
+                    <div class="w-44 h-44 rounded-12 bg-success-50 text-success-600 flex-center text-22 flex-shrink-0">
+                        <i class="ph-fill ph-chalkboard-teacher"></i>
+                    </div>
+                </div>
+                <h3 class="mb-8 fw-bold text-gray-900 text-28">{{ number_format($totalTeachers) }}</h3>
+                <div class="flex-align gap-6 text-12">
+                    <span class="badge bg-success-50 text-success-700 border border-success-200 px-8 py-3 rounded-pill fw-semibold">
+                        <i class="ph ph-check-circle me-2"></i> Terverifikasi
+                    </span>
+                    <span class="text-gray-600 fw-medium">PjBL & PKL</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: Total Proyek -->
+        <div class="col-xxl-3 col-xl-3 col-sm-6 mb-16 mb-xl-0">
+            <div class="card border border-gray-100 rounded-16 p-20 bg-white h-100 shadow-none hover-shadow-sm transition-2">
+                <div class="flex-between align-items-center mb-12">
+                    <span class="text-gray-500 text-13 fw-semibold">Proyek PjBL Aktif</span>
+                    <div class="w-44 h-44 rounded-12 bg-warning-50 text-warning-600 flex-center text-22 flex-shrink-0">
+                        <i class="ph-fill ph-rocket-launch"></i>
+                    </div>
+                </div>
+                <h3 class="mb-8 fw-bold text-gray-900 text-28">{{ number_format($totalProjects) }}</h3>
+                <div class="flex-align gap-6 text-12">
+                    <span class="badge bg-warning-50 text-warning-800 border border-warning-200 px-8 py-3 rounded-pill fw-semibold">
+                        <i class="ph ph-lightning me-2"></i> Project Based
+                    </span>
+                    <span class="text-gray-600 fw-medium">Karya Siswa</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4: Kelas / Rombel -->
+        <div class="col-xxl-3 col-xl-3 col-sm-6 mb-16 mb-xl-0">
+            <div class="card border border-gray-100 rounded-16 p-20 bg-white h-100 shadow-none hover-shadow-sm transition-2">
+                <div class="flex-between align-items-center mb-12">
+                    <span class="text-gray-500 text-13 fw-semibold">Rombongan Belajar</span>
+                    <div class="w-44 h-44 rounded-12 bg-purple-50 text-purple-600 flex-center text-22 flex-shrink-0">
+                        <i class="ph-fill ph-chalkboard"></i>
+                    </div>
+                </div>
+                <h3 class="mb-8 fw-bold text-gray-900 text-28">{{ number_format($totalClasses) }}</h3>
+                <div class="flex-align gap-6 text-12">
+                    <span class="badge bg-purple-50 text-purple-700 border border-purple-200 px-8 py-3 rounded-pill fw-semibold">
+                        <i class="ph ph-graduation-cap me-2"></i> Tingkat X, XI, XII
+                    </span>
+                    <span class="text-gray-600 fw-medium">Kelas RPL</span>
+                </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Card 2: Total Guru -->
-    <div class="col-xxl-3 col-xl-3 col-sm-6 mb-24 mb-xl-0">
-        <div class="card border border-gray-100 rounded-16 p-20 bg-white h-100 shadow-none hover-shadow-sm transition-2">
-            <div class="flex-between align-items-center mb-12">
-                <span class="text-gray-500 text-13 fw-semibold">Guru Pembimbing</span>
-                <div class="w-44 h-44 rounded-12 bg-success-50 text-success-600 flex-center text-22 flex-shrink-0">
-                    <i class="ph-fill ph-chalkboard-teacher"></i>
-                </div>
-            </div>
-            <h3 class="mb-8 fw-bold text-gray-900 text-28">{{ number_format($totalTeachers) }}</h3>
-            <div class="flex-align gap-6 text-12">
-                <span class="badge bg-success-50 text-success-700 border border-success-200 px-8 py-3 rounded-pill fw-semibold">
-                    <i class="ph ph-check-circle me-2"></i> Terverifikasi
-                </span>
-                <span class="text-gray-600 fw-medium">PjBL & PKL</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Card 3: Total Proyek -->
-    <div class="col-xxl-3 col-xl-3 col-sm-6 mb-24 mb-xl-0">
-        <div class="card border border-gray-100 rounded-16 p-20 bg-white h-100 shadow-none hover-shadow-sm transition-2">
-            <div class="flex-between align-items-center mb-12">
-                <span class="text-gray-500 text-13 fw-semibold">Proyek PjBL Aktif</span>
-                <div class="w-44 h-44 rounded-12 bg-warning-50 text-warning-600 flex-center text-22 flex-shrink-0">
-                    <i class="ph-fill ph-rocket-launch"></i>
-                </div>
-            </div>
-            <h3 class="mb-8 fw-bold text-gray-900 text-28">{{ number_format($totalProjects) }}</h3>
-            <div class="flex-align gap-6 text-12">
-                <span class="badge bg-warning-50 text-warning-800 border border-warning-200 px-8 py-3 rounded-pill fw-semibold">
-                    <i class="ph ph-lightning me-2"></i> Project Based
-                </span>
-                <span class="text-gray-600 fw-medium">Karya Siswa</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Card 4: Kelas / Rombel -->
-    <div class="col-xxl-3 col-xl-3 col-sm-6 mb-24 mb-xl-0">
-        <div class="card border border-gray-100 rounded-16 p-20 bg-white h-100 shadow-none hover-shadow-sm transition-2">
-            <div class="flex-between align-items-center mb-12">
-                <span class="text-gray-500 text-13 fw-semibold">Rombongan Belajar</span>
-                <div class="w-44 h-44 rounded-12 bg-purple-50 text-purple-600 flex-center text-22 flex-shrink-0">
-                    <i class="ph-fill ph-chalkboard"></i>
-                </div>
-            </div>
-            <h3 class="mb-8 fw-bold text-gray-900 text-28">{{ number_format($totalClasses) }}</h3>
-            <div class="flex-align gap-6 text-12">
-                <span class="badge bg-purple-50 text-purple-700 border border-purple-200 px-8 py-3 rounded-pill fw-semibold">
-                    <i class="ph ph-graduation-cap me-2"></i> Tingkat X, XI, XII
-                </span>
-                <span class="text-gray-600 fw-medium">Kelas RPL</span>
-            </div>
-        </div>
-    </div>
-
+<!-- PKL Statistics & Audit Logs Section -->
+<div class="row g-4 gy-4" style="row-gap: 24px;">
     <!-- PKL Statistics Breakdown -->
-    <div class="col-lg-6">
+    <div class="col-lg-6 mb-24 mb-lg-0">
         <div class="card border border-gray-100 rounded-16 bg-white p-24 h-100 shadow-none">
             <div class="flex-between flex-wrap gap-12 mb-20">
                 <div>
@@ -173,7 +178,7 @@
 
             <div class="row g-16 gy-16" style="row-gap: 16px;">
                 <!-- Approved -->
-                <div class="col-sm-6 mb-16">
+                <div class="col-sm-6 mb-16" style="margin-bottom: 16px !important;">
                     <div class="p-16 rounded-14 flex-between align-items-center h-100 shadow-2xs" style="background-color: #f0fdf4; border: 1px solid #bbf7d0;">
                         <div>
                             <span class="text-12 fw-semibold d-block" style="color: #166534;">Disetujui (Approved)</span>
@@ -187,7 +192,7 @@
                 </div>
 
                 <!-- Submitted -->
-                <div class="col-sm-6 mb-16">
+                <div class="col-sm-6 mb-16" style="margin-bottom: 16px !important;">
                     <div class="p-16 rounded-14 flex-between align-items-center h-100 shadow-2xs" style="background-color: #f0f9ff; border: 1px solid #bae6fd;">
                         <div>
                             <span class="text-12 fw-semibold d-block" style="color: #075985;">Diajukan (Submitted)</span>

@@ -29,7 +29,7 @@
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}?v=1.0.1">
     <!-- KREASI RPL Custom Branding -->
-    <link rel="stylesheet" href="{{ asset('assets/css/kreasi-custom.css') }}?v=2.2.0">
+    <link rel="stylesheet" href="{{ asset('assets/css/kreasi-custom.css') }}?v={{ filemtime(public_path('assets/css/kreasi-custom.css')) }}">
     
     <style>
         /* ========================================================
