@@ -240,23 +240,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     statusDiv.innerHTML = `<i class="ph ph-check-circle"></i> Berhasil dikompres: <b>${rawMb} MB</b> ➔ <b>${compressedKb} KB</b>`;
                 }
 
-                // Toast notification
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3500,
-                    timerProgressBar: true,
-                    width: 'auto',
-                    customClass: {
-                        popup: 'rounded-16 shadow-lg border border-gray-100 py-12 px-18',
-                        title: 'text-14 fw-semibold text-gray-800'
-                    }
-                });
-                Toast.fire({
-                    icon: 'success',
-                    title: `Foto berhasil dikompres (${compressedKb} KB)`
-                });
+                // Minimalist Toast notification
+                if (window.KreasiToast) {
+                    window.KreasiToast.success(`Foto profil berhasil dikompres otomatis (${compressedKb} KB)`);
+                }
             });
         } else {
             // Under 2MB

@@ -237,21 +237,165 @@
             font-size: 14px !important;
         }
 
-        /* Clean SweetAlert Toast Styling (Prevents awkward single-word wrapping) */
+        /* ==========================================================================
+           MINIMALIST TOAST NOTIFICATION SYSTEM (KREASI MODERN TOAST)
+           Ultra-sleek, clean typography, soft shadow, no scrollbar
+           ========================================================================== */
+        .kreasi-toast-container {
+            position: fixed;
+            top: 20px;
+            right: 24px;
+            z-index: 9999999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+            max-width: 420px;
+            width: calc(100% - 48px);
+        }
+
+        .kreasi-toast-item {
+            pointer-events: auto;
+            background: #ffffff;
+            border: 1px solid rgba(226, 232, 240, 0.95);
+            border-radius: 14px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.02);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(-12px) scale(0.96);
+            opacity: 0;
+            transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .kreasi-toast-item.show {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .kreasi-toast-item.hide {
+            transform: translateY(-8px) scale(0.96);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .kreasi-toast-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 15px;
+        }
+
+        .kreasi-toast-item.success .kreasi-toast-icon {
+            background-color: #ecfdf5;
+            color: #059669;
+        }
+
+        .kreasi-toast-item.error .kreasi-toast-icon {
+            background-color: #fef2f2;
+            color: #dc2626;
+        }
+
+        .kreasi-toast-item.warning .kreasi-toast-icon {
+            background-color: #fffbeb;
+            color: #d97706;
+        }
+
+        .kreasi-toast-item.info .kreasi-toast-icon {
+            background-color: #eff6ff;
+            color: #0284c7;
+        }
+
+        .kreasi-toast-message {
+            flex-grow: 1;
+            font-size: 13.5px;
+            font-weight: 500;
+            color: #1e293b;
+            line-height: 1.45;
+            word-break: break-word;
+            white-space: normal;
+        }
+
+        .kreasi-toast-close {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+            transition: all 0.15s ease;
+        }
+
+        .kreasi-toast-close:hover {
+            color: #334155;
+            background-color: #f1f5f9;
+        }
+
+        .kreasi-toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            width: 100%;
+            background-color: #10b981;
+            transform-origin: left center;
+        }
+
+        .kreasi-toast-item.error .kreasi-toast-progress { background-color: #ef4444; }
+        .kreasi-toast-item.warning .kreasi-toast-progress { background-color: #f59e0b; }
+        .kreasi-toast-item.info .kreasi-toast-progress { background-color: #0284c7; }
+
+        @media (max-width: 576px) {
+            .kreasi-toast-container {
+                top: 16px;
+                left: 16px;
+                right: 16px;
+                width: auto;
+                max-width: 100%;
+            }
+        }
+
+        /* Fallback override for any SweetAlert2 toast (NO horizontal scrollbar) */
         .swal2-toast {
             width: auto !important;
-            min-width: 320px !important;
-            max-width: 500px !important;
-            padding: 12px 18px !important;
+            max-width: 440px !important;
+            padding: 12px 16px !important;
             border-radius: 14px !important;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08) !important;
+            overflow: hidden !important;
         }
         .swal2-toast .swal2-title {
-            white-space: nowrap !important;
+            white-space: normal !important;
+            word-break: break-word !important;
             font-size: 13.5px !important;
-            font-weight: 600 !important;
+            font-weight: 500 !important;
+            color: #1e293b !important;
+            line-height: 1.45 !important;
+            padding: 0 4px !important;
+        }
+        .swal2-toast .swal2-icon {
+            width: 26px !important;
+            height: 26px !important;
+            min-width: 26px !important;
             margin: 0 !important;
-            padding: 0 8px !important;
+            font-size: 12px !important;
+        }
+        .swal2-toast .swal2-timer-progress-bar {
+            height: 2px !important;
+            background: #10b981 !important;
         }
         /* Card Cute Color Text Utilities for High Contrast */
         .text-sky-700 { color: #0284c7 !important; }
@@ -585,18 +729,6 @@
 
         <!-- Dashboard Content Body -->
         <div class="dashboard-body">
-            @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show mb-20 rounded-16 border-0 shadow-xs bg-success-50 text-success-900 d-flex align-items-center gap-12 py-14 px-20" role="alert">
-                    <span class="w-32 h-32 rounded-circle bg-success text-white flex-center text-18 shrink-0 shadow-xs">
-                        <i class="ph ph-check"></i>
-                    </span>
-                    <div class="text-14 fw-medium flex-grow-1">
-                        {{ session('success') }}
-                    </div>
-                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Tutup"></button>
-                </div>
-            @endif
-
             @if (session('error'))
                 <div class="alert alert-danger alert-dismissible fade show mb-20 rounded-16 border-0 shadow-xs bg-danger-50 text-danger-900 d-flex align-items-center gap-12 py-14 px-20" role="alert">
                     <span class="w-32 h-32 rounded-circle bg-danger text-white flex-center text-18 shrink-0 shadow-xs">
@@ -604,18 +736,6 @@
                     </span>
                     <div class="text-14 fw-medium flex-grow-1">
                         {{ session('error') }}
-                    </div>
-                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Tutup"></button>
-                </div>
-            @endif
-
-            @if (session('status'))
-                <div class="alert alert-info alert-dismissible fade show mb-20 rounded-16 border-0 shadow-xs bg-primary-50 text-primary-900 d-flex align-items-center gap-12 py-14 px-20" role="alert">
-                    <span class="w-32 h-32 rounded-circle bg-primary-600 text-white flex-center text-18 shrink-0 shadow-xs">
-                        <i class="ph ph-info"></i>
-                    </span>
-                    <div class="text-14 fw-medium flex-grow-1">
-                        {{ session('status') }}
                     </div>
                     <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Tutup"></button>
                 </div>
@@ -700,53 +820,124 @@
             });
         };
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Reusable Toast
-            window.KreasiToast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3500,
-                timerProgressBar: true,
-                width: 'auto',
-                customClass: {
-                    popup: 'rounded-16 shadow-lg border border-gray-100 py-12 px-18',
-                    title: 'text-13 fw-semibold text-gray-800'
-                },
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer);
-                    toast.addEventListener('mouseleave', Swal.resumeTimer);
-                }
-            });
+        // Minimalist Kreasi Toast System (Zero scrollbars, sleek typography, micro-progress)
+        window.KreasiToast = (function() {
+            let container = null;
 
-            @if(session('success') || session('swal_success'))
-                window.KreasiToast.fire({
-                    icon: 'success',
-                    title: '{{ addslashes(session('success') ?? session('swal_success')) }}'
+            function getContainer() {
+                if (!container || !document.body.contains(container)) {
+                    container = document.createElement('div');
+                    container.className = 'kreasi-toast-container';
+                    document.body.appendChild(container);
+                }
+                return container;
+            }
+
+            const icons = {
+                success: 'ph-bold ph-check',
+                error: 'ph-bold ph-x',
+                warning: 'ph-bold ph-warning',
+                info: 'ph-bold ph-info'
+            };
+
+            function show(message, type = 'success', duration = 3800) {
+                if (!message) return;
+                const cont = getContainer();
+
+                const toast = document.createElement('div');
+                toast.className = `kreasi-toast-item ${type}`;
+
+                const iconClass = icons[type] || icons.info;
+                toast.innerHTML = `
+                    <div class="kreasi-toast-icon">
+                        <i class="${iconClass}"></i>
+                    </div>
+                    <div class="kreasi-toast-message">${message}</div>
+                    <button type="button" class="kreasi-toast-close" title="Tutup">
+                        <i class="ph ph-x"></i>
+                    </button>
+                    <div class="kreasi-toast-progress"></div>
+                `;
+
+                cont.appendChild(toast);
+
+                // Animate entrance
+                requestAnimationFrame(() => {
+                    toast.classList.add('show');
                 });
+
+                const progressBar = toast.querySelector('.kreasi-toast-progress');
+                let remaining = duration;
+                let startTime = Date.now();
+                let timer = null;
+
+                function startProgress() {
+                    progressBar.style.transition = `transform ${remaining}ms linear`;
+                    progressBar.style.transform = 'scaleX(0)';
+                    timer = setTimeout(dismiss, remaining);
+                }
+
+                function pauseProgress() {
+                    clearTimeout(timer);
+                    const elapsed = Date.now() - startTime;
+                    remaining = Math.max(0, remaining - elapsed);
+                    const currentScale = remaining / duration;
+                    progressBar.style.transition = 'none';
+                    progressBar.style.transform = `scaleX(${currentScale})`;
+                }
+
+                function resumeProgress() {
+                    startTime = Date.now();
+                    startProgress();
+                }
+
+                function dismiss() {
+                    clearTimeout(timer);
+                    toast.classList.remove('show');
+                    toast.classList.add('hide');
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.parentNode.removeChild(toast);
+                        }
+                    }, 250);
+                }
+
+                toast.addEventListener('mouseenter', pauseProgress);
+                toast.addEventListener('mouseleave', resumeProgress);
+                toast.querySelector('.kreasi-toast-close').addEventListener('click', dismiss);
+
+                startProgress();
+
+                return { dismiss };
+            }
+
+            return {
+                show: show,
+                success: (msg, d) => show(msg, 'success', d),
+                error: (msg, d) => show(msg, 'error', d),
+                warning: (msg, d) => show(msg, 'warning', d),
+                info: (msg, d) => show(msg, 'info', d),
+                fire: function(opts) {
+                    if (typeof opts === 'string') return show(opts, 'success');
+                    const type = opts.icon || opts.type || 'success';
+                    const msg = opts.title || opts.text || opts.message || '';
+                    const dur = opts.timer || 3800;
+                    return show(msg, type, dur);
+                }
+            };
+        })();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            @if(session('success') || session('swal_success'))
+                window.KreasiToast.success('{{ addslashes(session('success') ?? session('swal_success')) }}');
             @endif
 
             @if(session('error') || session('swal_error'))
-                Swal.fire({
-                    title: 'Terjadi Kesalahan',
-                    text: '{{ addslashes(session('error') ?? session('swal_error')) }}',
-                    icon: 'error',
-                    confirmButtonText: 'Tutup',
-                    confirmButtonColor: '#dc2626',
-                    customClass: {
-                        popup: 'rounded-24 p-24 shadow-xl border border-gray-100',
-                        title: 'text-18 fw-bold text-gray-900 mb-8',
-                        htmlContainer: 'text-14 text-gray-600 mb-20',
-                        confirmButton: 'btn btn-danger rounded-pill px-24 py-10 fw-semibold'
-                    }
-                });
+                window.KreasiToast.error('{{ addslashes(session('error') ?? session('swal_error')) }}');
             @endif
 
             @if(session('status'))
-                window.KreasiToast.fire({
-                    icon: 'info',
-                    title: '{{ addslashes(session('status')) }}'
-                });
+                window.KreasiToast.info('{{ addslashes(session('status')) }}');
             @endif
 
             // Automatically upgrade all forms with onsubmit containing confirm(...) to data-confirm
