@@ -302,9 +302,9 @@
             </div>
 
             @if($myPklGroups->isNotEmpty())
-                <div class="row g-3">
+                <div class="row g-16 gy-16" style="row-gap: 16px;">
                     @foreach($myPklGroups as $group)
-                        <div class="col-xl-4 col-md-6 col-12">
+                        <div class="col-xl-4 col-md-6 col-12 mb-16">
                             <div class="p-16 rounded-16 border border-gray-100 hover-border-main-600 hover-shadow-sm transition-2 h-100 d-flex flex-column justify-content-between bg-white shadow-2xs">
                                 <div>
                                     <!-- Group Header & Industry -->

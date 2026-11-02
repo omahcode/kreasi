@@ -78,7 +78,7 @@
 
     <!-- 4 Clean & Attractive Stat Cards -->
     <!-- Card 1: Total Siswa -->
-    <div class="col-xxl-3 col-sm-6">
+    <div class="col-xxl-3 col-xl-3 col-sm-6 mb-24 mb-xl-0">
         <div class="card border border-gray-100 rounded-16 p-20 bg-white h-100 shadow-none hover-shadow-sm transition-2">
             <div class="flex-between align-items-center mb-12">
                 <span class="text-gray-500 text-13 fw-semibold">Total Siswa Terdaftar</span>
@@ -97,7 +97,7 @@
     </div>
 
     <!-- Card 2: Total Guru -->
-    <div class="col-xxl-3 col-sm-6">
+    <div class="col-xxl-3 col-xl-3 col-sm-6 mb-24 mb-xl-0">
         <div class="card border border-gray-100 rounded-16 p-20 bg-white h-100 shadow-none hover-shadow-sm transition-2">
             <div class="flex-between align-items-center mb-12">
                 <span class="text-gray-500 text-13 fw-semibold">Guru Pembimbing</span>
@@ -116,7 +116,7 @@
     </div>
 
     <!-- Card 3: Total Proyek -->
-    <div class="col-xxl-3 col-sm-6">
+    <div class="col-xxl-3 col-xl-3 col-sm-6 mb-24 mb-xl-0">
         <div class="card border border-gray-100 rounded-16 p-20 bg-white h-100 shadow-none hover-shadow-sm transition-2">
             <div class="flex-between align-items-center mb-12">
                 <span class="text-gray-500 text-13 fw-semibold">Proyek PjBL Aktif</span>
@@ -135,7 +135,7 @@
     </div>
 
     <!-- Card 4: Kelas / Rombel -->
-    <div class="col-xxl-3 col-sm-6">
+    <div class="col-xxl-3 col-xl-3 col-sm-6 mb-24 mb-xl-0">
         <div class="card border border-gray-100 rounded-16 p-20 bg-white h-100 shadow-none hover-shadow-sm transition-2">
             <div class="flex-between align-items-center mb-12">
                 <span class="text-gray-500 text-13 fw-semibold">Rombongan Belajar</span>
@@ -171,9 +171,9 @@
                 </span>
             </div>
 
-            <div class="row g-3">
+            <div class="row g-16 gy-16" style="row-gap: 16px;">
                 <!-- Approved -->
-                <div class="col-sm-6">
+                <div class="col-sm-6 mb-16">
                     <div class="p-16 rounded-14 flex-between align-items-center h-100 shadow-2xs" style="background-color: #f0fdf4; border: 1px solid #bbf7d0;">
                         <div>
                             <span class="text-12 fw-semibold d-block" style="color: #166534;">Disetujui (Approved)</span>
@@ -187,7 +187,7 @@
                 </div>
 
                 <!-- Submitted -->
-                <div class="col-sm-6">
+                <div class="col-sm-6 mb-16">
                     <div class="p-16 rounded-14 flex-between align-items-center h-100 shadow-2xs" style="background-color: #f0f9ff; border: 1px solid #bae6fd;">
                         <div>
                             <span class="text-12 fw-semibold d-block" style="color: #075985;">Diajukan (Submitted)</span>
@@ -201,7 +201,7 @@
                 </div>
 
                 <!-- Revision -->
-                <div class="col-sm-6">
+                <div class="col-sm-6 mb-16 mb-sm-0">
                     <div class="p-16 rounded-14 flex-between align-items-center h-100 shadow-2xs" style="background-color: #fff7ed; border: 1px solid #fed7aa;">
                         <div>
                             <span class="text-12 fw-semibold d-block" style="color: #9a3412;">Perlu Revisi</span>

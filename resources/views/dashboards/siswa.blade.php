@@ -246,9 +246,9 @@
                                 </span>
                             </div>
 
-                            <div class="row g-12">
+                            <div class="row g-12 gy-12" style="row-gap: 12px;">
                                 @foreach($pklGroup->students as $member)
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-6 mb-12">
                                         <div class="p-14 rounded-16 border {{ $member->user_id === Auth::id() ? 'border-primary-600 bg-main-50' : 'border-gray-100 bg-white' }} h-100 flex-between">
                                             <div class="d-flex align-items-center gap-10">
                                                 <div class="w-36 h-36 rounded-circle bg-gray-100 text-gray-700 flex-center text-13 fw-bold flex-shrink-0">
