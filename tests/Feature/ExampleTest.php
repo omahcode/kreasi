@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\Company;
+use App\Models\PklGroup;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -62,6 +65,29 @@ class ExampleTest extends TestCase
         $dashResponse = $this->get('/guru/dashboard');
         $dashResponse->assertStatus(200);
         $dashResponse->assertSee('Dashboard Guru Pembimbing');
+    }
+
+    public function test_guru_dashboard_displays_assigned_pkl_groups(): void
+    {
+        $guru = User::where('email', 'guru@kreasi.test')->first();
+        $company = Company::first();
+        $student = Student::first();
+
+        $group = PklGroup::create([
+            'name' => 'Kelompok Harimau RPL',
+            'company_id' => $company->id,
+            'mentor_teacher_id' => $guru->id,
+            'status' => 'active',
+        ]);
+        $group->students()->attach($student->id, ['is_leader' => true]);
+
+        $this->actingAs($guru);
+
+        $response = $this->get(route('guru.dashboard'));
+        $response->assertStatus(200);
+        $response->assertSee('Kelompok Harimau RPL');
+        $response->assertSee($company->name);
+        $response->assertSee($student->user->name);
     }
 
     public function test_siswa_can_login_using_nis_and_access_dashboard(): void

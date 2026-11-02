@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AuditLog;
+use App\Models\PklGroup;
 use App\Models\PklReport;
 use App\Models\Project;
 use App\Models\SchoolClass;
@@ -80,6 +81,11 @@ class DashboardController extends Controller
             ->where('mentor_teacher_id', $user->id)
             ->get();
 
+        $myPklGroups = PklGroup::with(['company', 'students.user', 'students.schoolClass'])
+            ->where('mentor_teacher_id', $user->id)
+            ->latest()
+            ->get();
+
         return view('dashboards.guru', compact(
             'activeProjects',
             'totalMyProjects',
@@ -87,7 +93,8 @@ class DashboardController extends Controller
             'pendingReviews',
             'recentSubmissions',
             'myProjects',
-            'myPklMentees'
+            'myPklMentees',
+            'myPklGroups'
         ));
     }
 

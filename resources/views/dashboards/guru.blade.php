@@ -134,19 +134,19 @@
             <div class="flex-between align-items-start gap-12 mb-16">
                 <div>
                     <span class="text-purple-800 text-13 fw-bold text-uppercase d-block mb-4 letter-spacing-1">
-                        💼 Bimbingan PKL
+                        💼 Kelompok PKL
                     </span>
-                    <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $myPklMentees->count() }}</h2>
+                    <h2 class="mb-0 fw-bold text-gray-900 text-32">{{ $myPklGroups->count() }}</h2>
                 </div>
                 <div class="w-52 h-52 rounded-20 bg-white text-purple-600 flex-center flex-shrink-0 text-26 shadow-sm">
-                    <i class="ph-fill ph-briefcase"></i>
+                    <i class="ph-fill ph-users-three"></i>
                 </div>
             </div>
             <div class="pt-12 border-top border-purple-200 border-opacity-60 flex-between text-12">
                 <span class="badge bg-white text-purple-800 rounded-pill px-10 py-4 fw-semibold shadow-xs">
-                    Siswa Bimbingan
+                    {{ $myPklGroups->sum(fn($g) => $g->students->count()) ?: $myPklMentees->count() }} Siswa Bimbingan
                 </span>
-                <span class="text-purple-700 fw-medium">Mitra Industri</span>
+                <span class="text-purple-700 fw-medium">Mitra DU/DI</span>
             </div>
         </div>
     </div>
@@ -272,6 +272,146 @@
                     </div>
                 @endforelse
             </div>
+        </div>
+    </div>
+
+    <!-- Kelompok Siswa Bimbingan PKL -->
+    <div class="col-12">
+        <div class="card card-cute border border-gray-100 bg-white p-24 shadow-none">
+            <div class="flex-between flex-wrap gap-12 mb-20">
+                <div>
+                    <h5 class="mb-4 text-16 fw-bold text-gray-900 flex-align gap-8">
+                        <span class="w-32 h-32 rounded-10 bg-main-50 text-main-600 flex-center text-18">
+                            <i class="ph-fill ph-users-three"></i>
+                        </span>
+                        <span>Kelompok Siswa Bimbingan PKL</span>
+                    </h5>
+                    <p class="text-gray-400 text-13 mb-0">Daftar kelompok PKL binaan Anda beserta mitra industri DU/DI.</p>
+                </div>
+                <div class="flex-align gap-8 flex-wrap">
+                    <span class="badge bg-main-50 text-main-700 border border-main-200 rounded-pill px-12 py-6 text-12 fw-bold">
+                        Total: {{ $myPklGroups->count() }} Kelompok
+                    </span>
+                    <a href="{{ route('guru.pkl-groups.create') }}" class="btn btn-sm btn-main rounded-pill px-14 py-6 text-12 fw-semibold">
+                        <i class="ph ph-plus-circle me-4"></i> + Buat Kelompok
+                    </a>
+                    <a href="{{ route('guru.pkl-groups.index') }}" class="btn btn-sm btn-outline-gray rounded-pill px-14 py-6 text-12 fw-semibold">
+                        Kelola Semua &rarr;
+                    </a>
+                </div>
+            </div>
+
+            @if($myPklGroups->isNotEmpty())
+                <div class="row g-16">
+                    @foreach($myPklGroups as $group)
+                        <div class="col-xl-4 col-md-6 col-12">
+                            <div class="p-16 rounded-16 border border-gray-100 hover-border-main-600 hover-shadow-sm transition-2 h-100 d-flex flex-column justify-content-between bg-white shadow-2xs">
+                                <div>
+                                    <!-- Group Header & Industry -->
+                                    <div class="d-flex align-items-start justify-content-between gap-12 mb-12">
+                                        <div class="d-flex align-items-center gap-12">
+                                            <span class="w-44 h-44 rounded-14 bg-main-50 text-main-600 flex-center text-22 flex-shrink-0 shadow-xs border border-main-100">
+                                                <i class="ph-fill ph-buildings"></i>
+                                            </span>
+                                            <div>
+                                                <h6 class="text-15 fw-bold text-gray-900 mb-2">{{ $group->name }}</h6>
+                                                <div class="d-flex align-items-center gap-6 text-12">
+                                                    <span class="fw-semibold text-main-700">{{ $group->company->name ?? '-' }}</span>
+                                                    @if($group->company?->city)
+                                                        <span class="text-gray-300">&bull;</span>
+                                                        <span class="text-gray-500 d-inline-flex align-items-center gap-2">
+                                                            <i class="ph ph-map-pin text-11"></i> {{ $group->company->city }}
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @if($group->status === 'active')
+                                            <span class="badge bg-success-50 text-success-700 border border-success-200 rounded-pill px-8 py-3 text-10 fw-semibold d-inline-flex align-items-center gap-4">
+                                                <span class="w-6 h-6 rounded-circle bg-success"></span> Aktif
+                                            </span>
+                                        @else
+                                            <span class="badge bg-gray-100 text-gray-600 rounded-pill px-8 py-3 text-10 fw-semibold">
+                                                {{ ucfirst($group->status) }}
+                                            </span>
+                                        @endif
+                                    </div>
+
+                                    <!-- Anggota Tim Siswa -->
+                                    @php
+                                        $leader = $group->students->firstWhere('pivot.is_leader', true) ?? $group->students->first();
+                                        $otherStudents = $group->students->reject(fn($s) => $s->id === $leader?->id);
+                                    @endphp
+                                    <div class="py-12 border-top border-bottom border-gray-100 my-12">
+                                        <div class="d-flex align-items-center justify-content-between text-11 text-gray-400 mb-8">
+                                            <span class="fw-semibold text-uppercase letter-spacing-1">Anggota Kelompok ({{ $group->students->count() }})</span>
+                                            <span class="text-gray-400"><i class="ph ph-users"></i></span>
+                                        </div>
+                                        <div class="d-flex flex-column gap-6">
+                                            @if($leader)
+                                                <div class="d-flex align-items-center gap-6 flex-wrap">
+                                                    <span class="badge bg-warning-50 text-warning-800 border border-warning-200 rounded-pill px-10 py-4 text-11 fw-semibold d-inline-flex align-items-center gap-4 shadow-2xs" title="Ketua Kelompok &bull; NIS: {{ $leader->nis }}">
+                                                        <i class="ph-fill ph-crown text-warning-600"></i> Ketua: {{ $leader->user->name }}
+                                                    </span>
+                                                    <span class="text-11 text-gray-400">NIS: {{ $leader->nis }}</span>
+                                                </div>
+                                            @endif
+                                            @if($otherStudents->isNotEmpty())
+                                                <div class="d-flex flex-wrap gap-4 align-items-center mt-2">
+                                                    @foreach($otherStudents as $student)
+                                                        <span class="badge bg-white text-gray-700 border border-gray-200 rounded-pill px-8 py-3 text-11 fw-medium shadow-2xs" title="NIS: {{ $student->nis }} &bull; {{ $student->user->name }}">
+                                                            {{ $student->user->name }}
+                                                        </span>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Footer: Periode & Actions -->
+                                <div>
+                                    <div class="d-flex align-items-center justify-content-between text-11 text-gray-500 mb-12">
+                                        <span class="d-inline-flex align-items-center gap-4">
+                                            <i class="ph ph-calendar text-main-600 text-13"></i>
+                                            {{ $group->start_date ? $group->start_date->format('d M') : '-' }} s/d {{ $group->end_date ? $group->end_date->format('d M Y') : '-' }}
+                                        </span>
+                                        @if($group->start_date && $group->end_date)
+                                            @php
+                                                $months = round($group->start_date->diffInMonths($group->end_date));
+                                            @endphp
+                                            <span class="badge bg-gray-50 text-gray-600 border border-gray-200 rounded-pill px-6 py-2 text-10">
+                                                ~{{ $months > 0 ? $months : 1 }} Bulan
+                                            </span>
+                                        @endif
+                                    </div>
+                                    <div class="d-flex align-items-center gap-8">
+                                        <a href="{{ route('guru.pkl-groups.edit', $group->id) }}" class="btn btn-sm btn-outline-main rounded-pill px-12 py-6 text-11 fw-semibold flex-grow-1 text-center">
+                                            <i class="ph ph-pencil-simple me-2"></i> Edit
+                                        </a>
+                                        <a href="{{ route('guru.pkl.index') }}" class="btn btn-sm btn-main rounded-pill px-12 py-6 text-11 fw-semibold flex-grow-1 text-center">
+                                            <i class="ph ph-briefcase me-2"></i> Bimbingan
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="text-center py-40 text-gray-400">
+                    <div class="w-64 h-64 rounded-circle bg-gray-50 text-gray-400 flex-center text-32 mx-auto mb-12">
+                        <i class="ph ph-users-three"></i>
+                    </div>
+                    <h6 class="text-14 fw-bold text-gray-700 mb-4">Belum Ada Kelompok Bimbingan PKL</h6>
+                    <p class="text-gray-400 text-12 mb-16" style="max-width: 420px; margin: 0 auto;">
+                        Anda belum memiliki kelompok siswa binaan PKL. Silakan buat kelompok baru untuk memplot siswa bimbingan ke mitra industri DU/DI.
+                    </p>
+                    <a href="{{ route('guru.pkl-groups.create') }}" class="btn btn-sm btn-main rounded-pill px-18 py-8 text-12 fw-semibold">
+                        <i class="ph ph-plus-circle me-4"></i> + Buat Kelompok Siswa
+                    </a>
+                </div>
+            @endif
         </div>
     </div>
 </div>
