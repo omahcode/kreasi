@@ -38,14 +38,18 @@
                                 <i class="ph ph-magnifying-glass"></i>
                             </span>
                         </div>
-                        <button type="submit" class="btn btn-main rounded-pill px-16 py-8 text-13">Cari</button>
+                        <button type="submit" class="btn btn-main rounded-pill px-18 py-8 text-13 fw-semibold">
+                            <i class="ph ph-magnifying-glass me-2"></i> Cari
+                        </button>
                         @if($search)
-                            <a href="{{ route('admin.pkl-groups.index') }}" class="btn btn-outline-gray rounded-pill px-12 py-8 text-13">Reset</a>
+                            <a href="{{ route('admin.pkl-groups.index') }}" class="btn btn-outline-gray rounded-pill px-14 py-8 text-13">Reset</a>
                         @endif
                     </form>
 
-                    <div class="text-gray-500 text-13">
-                        Total Ploting: <strong class="text-gray-900">{{ $groups->total() }} Kelompok PKL</strong>
+                    <div>
+                        <span class="badge bg-gray-50 text-gray-700 border border-gray-200 rounded-pill px-12 py-6 text-12 fw-semibold">
+                            Total: <strong class="text-gray-900">{{ $groups->total() }} Kelompok PKL</strong>
+                        </span>
                     </div>
                 </div>
 
@@ -64,66 +68,108 @@
                         </thead>
                         <tbody>
                             @forelse($groups as $group)
-                                <tr class="border-bottom border-gray-100">
+                                <tr class="border-bottom border-gray-100 hover-bg-gray-50 transition-1">
                                     <td class="py-16 px-16">
                                         <div class="d-flex align-items-center gap-12">
-                                            <span class="w-40 h-40 rounded-circle bg-main-50 text-main-600 flex-center text-18 fw-bold flex-shrink-0">
-                                                <i class="ph ph-users-three"></i>
+                                            <span class="w-44 h-44 rounded-14 bg-main-50 text-main-600 flex-center text-22 flex-shrink-0 shadow-xs border border-main-100">
+                                                <i class="ph-fill ph-buildings"></i>
                                             </span>
                                             <div>
                                                 <h6 class="text-14 fw-bold text-gray-900 mb-2">{{ $group->name }}</h6>
-                                                <span class="text-12 text-main-600 fw-semibold">
-                                                    <i class="ph ph-buildings me-2"></i> {{ $group->company->name ?? '-' }}
-                                                </span>
+                                                <div class="d-flex align-items-center gap-6 text-12">
+                                                    <span class="fw-semibold text-main-700">{{ $group->company->name ?? '-' }}</span>
+                                                    @if($group->company?->city)
+                                                        <span class="text-gray-300">&bull;</span>
+                                                        <span class="text-gray-500 d-inline-flex align-items-center gap-2">
+                                                            <i class="ph ph-map-pin text-11"></i> {{ $group->company->city }}
+                                                        </span>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="py-16 px-16">
-                                        <div class="text-13 fw-semibold text-gray-900">
-                                            {{ $group->mentorTeacher->name ?? 'Belum Ditentukan' }}
+                                        <div class="d-flex align-items-center gap-8">
+                                            <span class="w-32 h-32 rounded-circle bg-gray-100 text-gray-600 flex-center text-14 flex-shrink-0">
+                                                <i class="ph ph-chalkboard-teacher"></i>
+                                            </span>
+                                            <div>
+                                                <div class="text-13 fw-bold text-gray-900">
+                                                    {{ $group->mentorTeacher->name ?? 'Belum Ditentukan' }}
+                                                </div>
+                                                <small class="text-11 text-gray-400">
+                                                    NIP: {{ $group->mentorTeacher->teacher->teacher_number ?? '-' }}
+                                                </small>
+                                            </div>
                                         </div>
-                                        <small class="text-12 text-gray-500">
-                                            NIP: {{ $group->mentorTeacher->teacher->teacher_number ?? '-' }}
-                                        </small>
                                     </td>
                                     <td class="py-16 px-16">
-                                        <div class="d-flex flex-wrap gap-6" style="max-width: 320px;">
-                                            @foreach($group->students as $student)
-                                                <span class="badge {{ $student->pivot->is_leader ? 'bg-warning-50 text-warning-700 border border-warning-200' : 'bg-gray-50 text-gray-700 border border-gray-200' }} rounded-pill px-8 py-4 text-11">
-                                                    @if($student->pivot->is_leader)
-                                                        <i class="ph ph-crown me-2"></i>
-                                                    @endif
-                                                    {{ $student->user->name }}
+                                        @php
+                                            $leader = $group->students->firstWhere('pivot.is_leader', true) ?? $group->students->first();
+                                            $otherStudents = $group->students->reject(fn($s) => $s->id === $leader?->id);
+                                        @endphp
+                                        <div class="d-flex flex-column gap-6" style="min-width: 250px; max-width: 380px;">
+                                            @if($leader)
+                                                <div class="d-flex align-items-center gap-6 flex-wrap">
+                                                    <span class="badge bg-warning-50 text-warning-800 border border-warning-200 rounded-pill px-10 py-4 text-11 fw-semibold d-inline-flex align-items-center gap-4 shadow-2xs">
+                                                        <i class="ph-fill ph-crown text-warning-600"></i> Ketua: {{ $leader->user->name }}
+                                                    </span>
+                                                    <span class="text-11 text-gray-400">NIS: {{ $leader->nis }}</span>
+                                                </div>
+                                            @endif
+                                            @if($otherStudents->isNotEmpty())
+                                                <div class="d-flex flex-wrap gap-4 align-items-center">
+                                                    @foreach($otherStudents as $student)
+                                                        <span class="badge bg-white text-gray-700 border border-gray-200 rounded-pill px-8 py-3 text-11 fw-medium shadow-2xs" title="NIS: {{ $student->nis }} &bull; {{ $student->user->name }}">
+                                                            {{ $student->user->name }}
+                                                        </span>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                            <span class="text-11 text-gray-400 d-inline-flex align-items-center gap-4 mt-2">
+                                                <i class="ph ph-users text-gray-400"></i> {{ $group->students->count() }} Siswa Terdaftar
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="py-16 px-16">
+                                        <div class="d-flex flex-column gap-2 text-12">
+                                            <span class="fw-semibold text-gray-800 d-inline-flex align-items-center gap-6">
+                                                <i class="ph ph-calendar text-main-600 text-14"></i>
+                                                {{ $group->start_date ? $group->start_date->format('d M Y') : 'TBA' }} &ndash;
+                                                {{ $group->end_date ? $group->end_date->format('d M Y') : 'TBA' }}
+                                            </span>
+                                            @if($group->start_date && $group->end_date)
+                                                @php
+                                                    $months = round($group->start_date->diffInMonths($group->end_date));
+                                                @endphp
+                                                <span class="text-11 text-gray-400 ps-20">
+                                                    Durasi: ~{{ $months > 0 ? $months : 1 }} Bulan
                                                 </span>
-                                            @endforeach
-                                        </div>
-                                        <small class="text-11 text-gray-400 mt-4 d-block">
-                                            Total: {{ $group->students->count() }} siswa
-                                        </small>
-                                    </td>
-                                    <td class="py-16 px-16">
-                                        <div class="text-12 text-gray-700">
-                                            <i class="ph ph-calendar text-main-600 me-2"></i>
-                                            {{ $group->start_date ? $group->start_date->format('d M Y') : 'TBA' }} &ndash;
-                                            {{ $group->end_date ? $group->end_date->format('d M Y') : 'TBA' }}
+                                            @endif
                                         </div>
                                     </td>
                                     <td class="py-16 px-16 text-center">
-                                        <span class="badge bg-success-50 text-success-700 rounded-pill px-10 py-4 text-11 fw-semibold">
-                                            {{ strtoupper($group->status) }}
-                                        </span>
+                                        @if($group->status === 'active')
+                                            <span class="badge bg-success-50 text-success-700 border border-success-200 rounded-pill px-12 py-5 text-11 fw-semibold d-inline-flex align-items-center gap-4">
+                                                <span class="w-6 h-6 rounded-circle bg-success"></span> Aktif
+                                            </span>
+                                        @else
+                                            <span class="badge bg-gray-100 text-gray-700 rounded-pill px-12 py-5 text-11 fw-semibold">
+                                                {{ ucfirst($group->status) }}
+                                            </span>
+                                        @endif
                                     </td>
                                     <td class="py-16 px-16 text-end">
-                                        <div class="d-inline-flex align-items-center gap-6">
+                                        <div class="d-inline-flex align-items-center gap-8 justify-content-end">
                                             <a href="{{ route('admin.pkl-groups.edit', $group->id) }}" 
-                                               class="btn btn-sm btn-outline-main rounded-circle p-6 w-32 h-32 flex-center"
+                                               class="btn btn-sm btn-outline-main rounded-pill px-12 py-6 text-12 fw-semibold d-inline-flex align-items-center gap-4 shadow-2xs"
                                                title="Edit Kelompok">
-                                                <i class="ph ph-pencil-simple text-14"></i>
+                                                <i class="ph ph-pencil-simple text-13"></i> Edit
                                             </a>
                                             <form method="POST" action="{{ route('admin.pkl-groups.destroy', $group->id) }}" class="d-inline" data-confirm="Hapus kelompok PKL {{ $group->name }}?" data-confirm-title="Hapus Kelompok PKL" data-confirm-btn="Ya, Hapus!">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle p-6 w-32 h-32 flex-center" title="Hapus Kelompok">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle w-32 h-32 flex-center" title="Hapus Kelompok">
                                                     <i class="ph ph-trash text-14"></i>
                                                 </button>
                                             </form>
