@@ -445,7 +445,10 @@
                 font-weight: 600;
             }
             .dashboard-body {
-                padding-bottom: 75px !important;
+                padding-bottom: 100px !important;
+            }
+            .dashboard-footer {
+                margin-bottom: 75px !important;
             }
         }
     </style>

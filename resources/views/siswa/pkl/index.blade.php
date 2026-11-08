@@ -184,10 +184,10 @@
 
         <!-- PKL Info Banner -->
         <div class="col-12">
-            <div class="card border border-gray-100 rounded-16 p-24 bg-white">
-                <div class="d-flex flex-wrap justify-content-between align-items-start gap-16">
-                    <div>
-                        <div class="d-flex align-items-center gap-8 mb-8">
+            <div class="card border border-gray-100 rounded-16 p-20 p-md-24 bg-white shadow-xs">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-16">
+                    <div class="w-100 flex-grow-1">
+                        <div class="d-flex flex-wrap align-items-center gap-8 mb-12">
                             <span class="badge bg-main-50 text-main-600 text-12 text-uppercase px-12 py-4">
                                 Laporan PKL Kelas XII
                             </span>
@@ -214,9 +214,9 @@
                             @endif
                         </div>
                     </div>
-                    <div class="text-end">
+                    <div class="text-start text-md-end w-100 w-md-auto mt-4 mt-md-0 pt-12 pt-md-0 border-top border-md-top-0 border-gray-100">
                         @if(($report->title_status ?? '') !== 'approved')
-                            <button type="button" class="btn btn-sm btn-outline-gray rounded-pill px-16 text-12" data-bs-toggle="modal" data-bs-target="#editTitleModal">
+                            <button type="button" class="btn btn-sm btn-outline-gray rounded-pill px-16 py-8 text-12 w-100 w-md-auto" data-bs-toggle="modal" data-bs-target="#editTitleModal">
                                 <i class="ph ph-pencil-simple me-2"></i> {{ (($report->title_status ?? '') === 'revision_required' || $report->status === 'revision_required') ? 'Revisi Judul PKL' : 'Ubah Judul PKL' }}
                             </button>
                         @else
@@ -231,27 +231,27 @@
 
         <!-- 5 Chapters Section (Bab I - V) -->
         <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-16">
-                <h5 class="mb-0 fw-bold text-gray-900">Proses Bimbingan Bab I s/d Bab V</h5>
-                <span class="badge bg-main-50 text-main-600 px-12 py-6 rounded-pill text-13">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-8 mb-16">
+                <h5 class="mb-0 fw-bold text-gray-900 text-16 text-md-18">Proses Bimbingan Bab I s/d Bab V</h5>
+                <span class="badge bg-main-50 text-main-600 px-12 py-6 rounded-pill text-12 text-md-13 fw-semibold">
                     Progres: {{ $report->chapters->where('status', 'approved')->count() }}/5 Bab Disetujui
                 </span>
             </div>
 
-            <div class="row g-4">
+            <div class="row g-3 g-md-4">
                 @for($i = 1; $i <= 5; $i++)
                     @php
                         $chapter = $report->chapters->firstWhere('chapter_number', $i);
                     @endphp
                     <div class="col-12">
-                        <div class="card border border-gray-100 rounded-16 p-20 bg-white">
-                            <div class="flex-between flex-wrap gap-12 mb-12">
-                                <div class="d-flex align-items-center gap-12">
-                                    <span class="w-40 h-40 rounded-circle {{ $chapter && $chapter->status === 'approved' ? 'bg-success text-white' : 'bg-main-50 text-main-600' }} flex-center fw-bold text-16">
+                        <div class="card border border-gray-100 rounded-16 p-16 p-md-20 bg-white shadow-xs">
+                            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-16 mb-12">
+                                <div class="d-flex align-items-start gap-12 w-100 flex-grow-1">
+                                    <span class="w-36 h-36 w-md-40 h-md-40 rounded-circle {{ $chapter && $chapter->status === 'approved' ? 'bg-success text-white' : 'bg-main-50 text-main-600' }} flex-center fw-bold text-15 text-md-16 flex-shrink-0 mt-2 mt-md-0">
                                         {{ $i }}
                                     </span>
-                                    <div>
-                                        <h6 class="mb-2 text-15 fw-bold text-gray-900">{{ $chapterTitles[$i] }}</h6>
+                                    <div class="flex-grow-1 min-w-0">
+                                        <h6 class="mb-2 text-14 text-md-15 fw-bold line-height-1-4 text-gray-900">{{ $chapterTitles[$i] }}</h6>
                                         @if($chapter && $chapter->file)
                                             <span class="text-12 text-gray-500">
                                                 Berkas saat ini: <a href="{{ asset('storage/' . $chapter->file) }}" target="_blank" class="text-main-600 fw-semibold hover-text-decoration-underline"><i class="ph ph-eye me-2"></i> Lihat / Unduh Bab {{ $i }}</a>
@@ -262,7 +262,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-center gap-8">
+                                <div class="d-flex align-items-center justify-content-between justify-content-md-end gap-8 w-100 w-md-auto pt-8 pt-md-0 border-top border-md-top-0 border-gray-100">
                                     @if($chapter && $chapter->status === 'approved')
                                         <span class="badge bg-success-50 text-success-700 text-12 px-12 py-6 rounded-pill">
                                             <i class="ph ph-check-circle me-2"></i> Disetujui Guru

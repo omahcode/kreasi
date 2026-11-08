@@ -22,7 +22,7 @@
 
     <!-- Logbook Timeline Content -->
     <div class="col-12">
-        <div class="card border border-gray-100 rounded-16 p-24 bg-white">
+        <div class="card border border-gray-100 rounded-16 p-16 p-md-24 bg-white shadow-xs">
             <div class="flex-between mb-20 pb-16 border-bottom border-gray-100">
                 <div>
                     <h5 class="mb-2 fw-bold text-gray-900">Catatan Jurnal Aktivitas Siswa</h5>
@@ -32,7 +32,7 @@
 
             <div class="d-flex flex-column gap-16">
                 @forelse($logs as $log)
-                    <div class="p-20 rounded-16 border border-gray-100 hover-border-main-600 transition-2 bg-white">
+                    <div class="p-16 p-md-20 rounded-16 border border-gray-100 hover-border-main-600 transition-2 bg-white shadow-xs">
                         <div class="flex-between flex-wrap gap-12 mb-12">
                             <div>
                                 <span class="badge bg-main-50 text-main-600 text-12 mb-6">
